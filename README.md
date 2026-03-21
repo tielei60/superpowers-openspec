@@ -16,6 +16,18 @@ flowchart LR
     F --> G[requesting-code-review]
 ```
 
+## 怎么调用这个 skill
+
+如果你希望明确触发 `superpowers-openspec`，可以直接使用下面这类命令：
+
+- `请使用 superpowers-openspec，基于下面的需求产出中文 OpenSpec 初稿。`
+- `请使用 superpowers-openspec，先列出已知事实、缺失信息和待确认项，再输出 spec。`
+- `请使用 superpowers-openspec，把会议纪要整理成可执行规范，并补齐 Mermaid 图。`
+- `请使用 superpowers-openspec，先分析现有规则与新需求的差异，再输出变更 spec。`
+- `请使用 superpowers-openspec，对下面这份 spec 做 review，并给出明确结论。`
+
+更完整的调用方式见 `references/openspec-command-examples.md`。
+
 ## 各技能职责
 
 - `using-superpowers`
