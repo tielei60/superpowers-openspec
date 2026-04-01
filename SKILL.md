@@ -1,112 +1,149 @@
 ---
 name: superpowers-openspec
-description: superpowers 的规范阶段子技能。用户只要要求先分析、先写 spec、先做详细设计、先整理会议纪要/口语需求，或要求把需求变成可执行的中文 OpenSpec 时就使用；在规范完成前卡住实现、拆解和测试。纯代码修复且不涉及新规则、流程、接口或状态时不要使用。
+description: 当用户要求先分析、先写 spec、先整理需求、先做详细设计，或明确要进入 OpenSpec 阶段时使用。本 skill 负责把 superpowers 工作流桥接到官方 OpenSpec / OPSX：根据输入情况引导到 /opsx:explore、/opsx:propose、/opsx:new、/opsx:continue 或 /opsx:ff，并在规范阶段完成前阻止直接进入实现。纯 bug 修复、纯文案修改、纯样式调整、纯配置修改且不涉及新规则、流程、接口或状态时不要使用。
 ---
 
-# Superpowers OpenSpec
+# superpowers-openspec
 
-这是 `superpowers` 在规范阶段调用的子技能。它只做一件事：把需求收敛成可执行的 spec，并确保在 spec 完成前不进入实现。
+这是一个用于 `superpowers` 体系的桥接 skill。
+它的职责不是重新定义 OpenSpec，而是把“先分析、先写规范、先整理需求”的用户意图，映射到官方 OpenSpec / OPSX 工作流。
 
-## 什么时候用
+## 权威来源
 
-在这些情况下使用本 skill：
+以下内容以上游 OpenSpec / OPSX 为准：
 
-- 用户要求先分析、先写 spec、先做详细设计再开发
-- 用户要求把会议纪要、口语需求或草稿整理成规范文档
-- 用户明确提到 `OpenSpec`、规范阶段、详细设计、需求分析
-- `superpowers` 已经进入规范阶段，当前任务是产出 spec
+- 目录结构：`openspec/specs/` 与 `openspec/changes/`
+- 命令体系：`openspec init`、`openspec update` 与 `/opsx:*`
+- 变更产物：`proposal.md`、`spec.md`、`design.md`、`tasks.md`
 
-## 不该用的时候
+本 skill 不重新定义 OpenSpec 的目录、文件名或命令集合。
 
-以下情况不要强行进入本 skill：
+## 适用场景
+
+满足任一情况时，进入本 skill：
+
+1. 用户明确要求先做规范工作，例如：
+   - 先分析
+   - 先写 spec
+   - 先整理需求
+   - 先做详细设计
+   - 先沉淀规范再开发
+
+2. 任务本身涉及规范阶段判断，例如：
+   - 新功能
+   - 业务规则变更
+   - 接口或交互变更
+   - 数据结构变更
+   - 状态流转变化
+   - 模块边界调整
+   - 多角色协作流程
+
+3. 用户明确提到 OpenSpec、详细设计、规范阶段、需求文档等表达，并希望先定义再实现。
+
+## 不适用场景
+
+以下情况不要强制进入本 skill：
 
 - 纯 bug 修复，且不涉及新规则、流程、接口或状态
-- 用户只想快速定位代码问题，不需要规范产物
-- 任务本质上是实施、联调、测试或发布，而不是定义需求
+- 纯文案修改、样式微调、配置值调整
+- 单点技术修复，影响范围明确且无需新增规范
+- 用户只要求快速定位问题或直接给出修复建议
+
+若无法判断，先做最小边界判断：
+
+- 只要涉及规则、流程、接口、状态、角色或数据结构变化，就进入 OpenSpec 阶段
+- 否则交还上层 superpowers skill 或按普通任务处理
 
 ## 核心职责
 
-1. 先收敛事实，再写规范。
-2. 产出中文 OpenSpec 风格文档。
-3. 补齐必要的架构图、流程图、时序图。
-4. 做 Spec Review，发现问题就回改。
-5. spec 未完成前，不进入拆解、实现、测试。
+本 skill 只负责桥接和门禁：
 
-## 使用方式
+1. 在上层 superpowers 已决定进入规范阶段后，选择合适的官方 OPSX 入口
+2. 把用户输入映射到合适的官方 OPSX 命令
+3. 明确当前应生成或更新哪些 OpenSpec 产物
+4. 在规范阶段未完成前，阻止直接进入实现
 
-### 触发口令
+它不负责发明新的 OpenSpec 目录格式，也不负责取代 OpenSpec 的命令工作流。
 
-当用户出现以下表达时，直接进入 OpenSpec 工作流，而不是先给实现方案：
+## 可选的原始输入记录
 
-- “先分析一下，再开发”
-- “先写 spec”
-- “帮我整理成 OpenSpec”
-- “把这段会议纪要转成详细设计”
-- “先不要写代码，先把规则梳理清楚”
+官方 OpenSpec 默认没有固定的“用户原始输入记录”产物规范。
+如果用户明确希望保留本次需求来源、会议纪要原文或对话摘录，可以作为可选补充产物记录在当前 change 目录下。
 
-### 建议执行命令
+推荐文件名：
 
-将用户诉求转换为类似下面的内部执行命令，并按对应模式产出：
+- `openspec/changes/<change-name>/source-notes.md`
+  - 用于记录原始输入摘录、会议纪要片段、需求来源摘要、关键决策依据
 
-1. `使用 superpowers-openspec：基于以下需求产出中文 OpenSpec 初稿。`
-2. `使用 superpowers-openspec：先列出已知事实、缺失信息、待确认项，再输出 spec。`
-3. `使用 superpowers-openspec：把会议纪要整理成可执行规范，并补齐 Mermaid 图。`
-4. `使用 superpowers-openspec：对现有规则和新需求做差异分析，再输出变更 spec。`
-5. `使用 superpowers-openspec：完成 spec 后执行一次 Spec Review，只输出 review 结论与修改项。`
+- `openspec/changes/<change-name>/transcript.md`
+  - 用于记录更完整的原始对话或沟通过程
 
-如果用户需求较模糊，优先使用第 2 条；如果输入是会议纪要或聊天记录，优先使用第 3 条；如果是已有系统改造，优先使用第 4 条。
+这两个文件都是可选补充，不是官方强制 artifact，也不替代 `proposal.md`、`spec.md`、`design.md`、`tasks.md`。
 
-### 可直接给用户的示例话术
+## 默认映射
 
-必要时可以主动引导用户这样下达命令：
+进入本 skill 后，优先使用以下映射：
 
-- “请使用 superpowers-openspec，先整理需求再给实现建议。”
-- “请使用 superpowers-openspec，把下面内容转成中文 OpenSpec。”
-- “请使用 superpowers-openspec，先输出事实、缺口和待确认项。”
-- “请使用 superpowers-openspec，补齐流程图、时序图和验收标准。”
+- 输入完整、需求边界较清晰
+  - 优先进入 `/opsx:propose`
 
-更完整的命令示例见 `references/openspec-command-examples.md`。
+- 输入零散、来自会议纪要、聊天记录或口语描述
+  - 优先进入 `/opsx:explore`
+  - 收敛后进入 `/opsx:propose`
 
-## 标准工作流
+- 用户希望按步骤生成 proposal / spec / design / tasks
+  - 使用 `/opsx:new`
+  - 然后使用 `/opsx:continue`
+  - 或一次性使用 `/opsx:ff`
 
-1. 判断输入属于新需求、需求变更、会议纪要整理，还是方案澄清。
-2. 先提炼已知事实、缺失信息、待确认项。
-3. 根据 `references/spec-template.md` 生成中文 OpenSpec。
-4. 若涉及现有规则、接口、状态或页面，先写冲突和差异，再写新规则。
-5. 补齐必要图表与验收标准。
-6. 根据 `references/spec-checklist.md` 做 Spec Review。
-7. 输出 review 结论：通过、退回修改，或仍需补充。
-8. 停在规范阶段，把后续工作交还给 `superpowers`。
+- 规范已完成，开始实现
+  - 交给 `/opsx:apply`
 
-## 执行要求
+- 变更已完成，准备归档
+  - 交给 `/opsx:archive`
 
-- 输入不完整时，先列出已知事实、缺失信息和待确认项。
-- 按参考文档中的 OpenSpec 结构写作。
-- 如果现有规则、接口、状态或页面会受影响，先把冲突和差异写清楚。
-- review 结论必须明确：通过、退回修改，或仍需补充。
-- 若用户催促实现，也要先给最小可行 spec，再说明尚未进入实现阶段。
+- 需要验证实现与规范一致性，或把变更 spec 同步回主规范
+  - 在所选 profile 支持时使用 `/opsx:verify` 与 `/opsx:sync`
 
-## 输出要求
+## 对外说明方式
 
-默认输出应包含：
+必要时可直接向上层 agent 或用户说明：
 
-- 已知事实
-- 缺失信息 / 待确认项
-- 中文 OpenSpec 正文
-- Mermaid 图（架构图、流程图、时序图）
-- 验收标准
-- Spec Review 结论
+- 当前任务应先进入 OpenSpec 阶段
+- 该阶段使用官方 `openspec/` 目录和 `/opsx:*` 命令
+- `superpowers-openspec` 的职责是桥接，不是重写 OpenSpec
 
-如果用户只要求其中一部分，可以裁剪，但必须明确当前是否已经完成规范阶段。
+默认使用中文说明桥接结论、命令建议和产物去向，除非用户明确要求其他语言。
 
-## 停止条件
+更具体地说，桥接后的输出应当落到三类结果之一：
 
-当 spec 已写完并完成 review 后，停在规范阶段，把后续工作交还给 `superpowers`。
-如果用户只要求规范产物，不要顺手继续拆任务或写实现建议。
+- 选择当前应执行的 `/opsx:*` 命令
+- 说明当前应生成或更新的 OpenSpec 产物，例如 `proposal.md`、`spec.md`、`design.md`、`tasks.md`
+- 如果用户明确要求保留原始输入，还可建议增加 `source-notes.md` 或 `transcript.md`
+- 明确当前仍处于规范阶段，因此不应直接进入实现
 
-## 参考
+## 与 superpowers 的关系
 
+推荐关系如下：
+
+1. `using-superpowers` 选择合适 skill
+2. `brainstorming` 澄清目标与范围
+3. `superpowers-openspec` 决定如何进入官方 OpenSpec / OPSX
+4. 后续执行环节基于 OpenSpec 已生成的产物继续推进
+
+也就是说：
+
+- superpowers 负责调度、门禁和阶段切换
+- OpenSpec / OPSX 负责规范产物与命令工作流
+- 本 skill 负责把两者接起来
+
+## 参考文件
+
+如需具体示例，按需查看：
+
+- `references/openspec-directory-structure.md`
+- `references/openspec-command-examples.md`
 - `references/skill-usage-sequence.md`
 - `references/spec-template.md`
 - `references/spec-checklist.md`
-- `references/openspec-command-examples.md`
+- `references/source-input-recording.md`

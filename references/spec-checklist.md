@@ -1,46 +1,40 @@
-# 中文 OpenSpec 检查清单
+# OpenSpec 对齐检查清单
 
-> 用于 review 和自检。
+本清单用于检查当前输出是否仍然符合官方 OpenSpec / OPSX 语义，而不是旧的自定义模型。
 
-## 异常处理
+## 目录检查
 
-异常路径应单列，至少覆盖：
+- 是否使用 `openspec/specs/` 表示当前事实规范
+- 是否使用 `openspec/changes/` 表示单次变更工作区
+- 是否避免把 `docs/specs/<feature>/openspec.md` 当作官方标准
 
-- 输入非法
-- 权限不足
-- 状态不允许
-- 数据不存在
-- 重复提交
-- 并发冲突
-- 外部依赖失败
-- 用户取消
+## 命令检查
 
-## Review 标准
+- 是否使用 `openspec init`
+- 是否使用 `openspec update`
+- 是否正确使用 `/opsx:explore`
+- 是否正确使用 `/opsx:propose`
+- 是否在需要时说明 `/opsx:new`、`/opsx:continue`、`/opsx:ff`
+- 是否在实现阶段使用 `/opsx:apply`
+- 是否在归档阶段使用 `/opsx:archive`
 
-spec 初稿完成后必须 review。review 至少检查：
+## 产物检查
 
-- 结构是否完整
-- 是否全中文
-- 是否存在模糊词
-- 是否缺少 Mermaid 三图
-- 是否缺少异常处理
-- 是否缺少验收标准
-- 图与正文是否一致
-- 数据与流程是否一致
-- 是否足够支持开发
+- 是否以 `proposal.md`、`spec.md`、`design.md`、`tasks.md` 为主
+- 是否把 Mermaid 图当作设计补充，而不是重新定义为官方强制产物
+- 是否明确当前应生成或更新哪些 OpenSpec 产物
+- 如果用户要求保留原始输入，是否使用可选的 `source-notes.md` 或 `transcript.md`
+- 是否明确这些原始输入记录文件只是可选补充，而不是官方默认 artifact
 
-review 结论要明确写出：通过、退回修改，或仍需补充。
+## 边界检查
 
-## 需求可追踪性
+- 是否清楚说明 `superpowers` 负责调度
+- 是否清楚说明 OpenSpec / OPSX 负责规范
+- 是否清楚说明 `superpowers-openspec` 负责桥接
+- 是否避免把本 skill 写成独立规范体系
 
-建议使用这些编号前缀：
+## 误触发检查
 
-- FR-xxx：功能需求
-- BR-xxx：业务规则
-- DR-xxx：数据需求
-- API-xxx：接口约束
-- UI-xxx：交互约束
-- NFR-xxx：非功能需求
-- AC-xxx：验收标准
-
-后续说明尽量引用编号，减少重复解释。
+- 纯 bug 修复时，是否避免强制进入 OpenSpec
+- 纯文案、纯样式、纯配置修改时，是否避免强制进入 OpenSpec
+- 只有在规则、流程、接口、状态或数据结构变化时，才进入规范桥接

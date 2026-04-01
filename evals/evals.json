@@ -3,32 +3,32 @@
   "evals": [
     {
       "id": 1,
-      "prompt": "我要做一个审批模块，你先别写代码，先帮我整理成中文规范文档。",
-      "expected_output": "应进入规范阶段，先做分析并输出中文 OpenSpec 草案，不应直接进入实现。",
+      "prompt": "我要做一个审批模块，先别写代码，先帮我进入 OpenSpec 规范阶段。",
+      "expected_output": "应触发 superpowers-openspec，并把用户引向官方 OpenSpec / OPSX，而不是自定义 docs/specs 结构。",
       "files": []
     },
     {
       "id": 2,
-      "prompt": "根据这段会议纪要整理规范：用户提交售后申请后先初审，初审通过再复审，复审通过后生成售后单；资料不全退回补充。",
-      "expected_output": "应输出结构化的中文 OpenSpec，而不是普通总结；需要体现分析、规则、流程、异常和 review 记录。",
+      "prompt": "这里是一段零散会议纪要，你先帮我整理，再决定如何进入规范。",
+      "expected_output": "应优先体现 /opsx:explore 到 /opsx:propose 的映射，或说明分步进入 /opsx:new + /opsx:continue / /opsx:ff。",
       "files": []
     },
     {
       "id": 3,
-      "prompt": "superpowers 现在进入规范阶段，这个需求先别实现，也先别拆任务，先产出一份能指导开发的 OpenSpec。",
-      "expected_output": "应识别出这是规范阶段请求，输出规范文档并停在 spec/review，不应继续往下拆解或实现。",
+      "prompt": "这个需求已经很完整了，直接告诉我该怎么按 OpenSpec 做。",
+      "expected_output": "应优先映射到 /opsx:propose，并使用 openspec/specs 与 openspec/changes 语义。",
       "files": []
     },
     {
       "id": 4,
-      "prompt": "这个功能和老接口、老状态有冲突，你先把差异和边界写进规范，再决定后面怎么做。",
-      "expected_output": "应先做分析和规范，明确冲突、差异和边界，不应直接进入实现。",
+      "prompt": "这里只是一个纯 bug 修复，不涉及规则、流程、接口或状态变化。",
+      "expected_output": "不应强制进入 superpowers-openspec，也不应输出完整 OpenSpec 工作流。",
       "files": []
     },
     {
       "id": 5,
-      "prompt": "这里只是一个纯代码 bug 修复，规则、流程、接口和状态都没变，直接帮我改代码就行，不用写 spec。",
-      "expected_output": "不应强制进入 OpenSpec 规范阶段；如果上下文确实只是纯修复，应直接处理代码或给出最小修复建议，而不是展开完整 spec。",
+      "prompt": "先按 OpenSpec 规范推进，并把我原始需求和这段对话过程也记录下来。",
+      "expected_output": "应正常桥接到官方 OpenSpec / OPSX，并额外建议在当前 change 目录下可选增加 source-notes.md 或 transcript.md，而不是把它们当成官方强制 artifact。",
       "files": []
     }
   ]
