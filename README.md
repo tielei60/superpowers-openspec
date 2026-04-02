@@ -55,8 +55,10 @@ openspec/
 
 如所选 profile 支持，高级命令还包括：
 
-- `/opsx:verify`
-- `/opsx:sync`
+- `/opsx:verify`：验证实现是否符合规范，需当前 profile 明确支持此命令
+- `/opsx:sync`：把变更 spec 同步回主规范，需当前 profile 明确支持此命令
+
+若所选 profile 不支持，不要主动引导用户使用上述两个命令。
 
 默认理解如下：
 
@@ -105,3 +107,4 @@ openspec/
 - `references/spec-template.md`
 - `references/spec-checklist.md`
 - `references/source-input-recording.md`
+- `references/output-example.md`

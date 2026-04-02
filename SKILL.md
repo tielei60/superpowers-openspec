@@ -1,6 +1,9 @@
 ---
 name: superpowers-openspec
-description: 当用户要求先分析、先写 spec、先整理需求、先做详细设计，或明确要进入 OpenSpec 阶段时使用。本 skill 负责把 superpowers 工作流桥接到官方 OpenSpec / OPSX：根据输入情况引导到 /opsx:explore、/opsx:propose、/opsx:new、/opsx:continue 或 /opsx:ff，并在规范阶段完成前阻止直接进入实现。纯 bug 修复、纯文案修改、纯样式调整、纯配置修改且不涉及新规则、流程、接口或状态时不要使用。
+description: >
+  适用：用户要求先分析/先写 spec/先整理需求/先做详细设计；或任务涉及新功能、规则变更、接口变更、数据结构变更、状态流转变化。
+  职责：把 superpowers 意图桥接到官方 OpenSpec / OPSX，映射到 /opsx:explore、/opsx:propose、/opsx:new、/opsx:continue 或 /opsx:ff，并在规范阶段完成前阻止进入实现。
+  不适用：纯 bug 修复、纯文案/样式/配置修改，且不涉及规则、流程、接口或状态变化。
 ---
 
 # superpowers-openspec
@@ -67,18 +70,9 @@ description: 当用户要求先分析、先写 spec、先整理需求、先做�
 
 ## 可选的原始输入记录
 
-官方 OpenSpec 默认没有固定的“用户原始输入记录”产物规范。
-如果用户明确希望保留本次需求来源、会议纪要原文或对话摘录，可以作为可选补充产物记录在当前 change 目录下。
+如果用户明确要求保留原始输入，可在当前 change 目录下可选补充 `source-notes.md`（摘录/来源）或 `transcript.md`（完整对话过程）。两者均为可选补充，不是官方强制 artifact。
 
-推荐文件名：
-
-- `openspec/changes/<change-name>/source-notes.md`
-  - 用于记录原始输入摘录、会议纪要片段、需求来源摘要、关键决策依据
-
-- `openspec/changes/<change-name>/transcript.md`
-  - 用于记录更完整的原始对话或沟通过程
-
-这两个文件都是可选补充，不是官方强制 artifact，也不替代 `proposal.md`、`spec.md`、`design.md`、`tasks.md`。
+详见 `references/source-input-recording.md`。
 
 ## 默认映射
 
@@ -115,27 +109,30 @@ description: 当用户要求先分析、先写 spec、先整理需求、先做�
 
 默认使用中文说明桥接结论、命令建议和产物去向，除非用户明确要求其他语言。
 
-更具体地说，桥接后的输出应当落到三类结果之一：
+更具体地说，桥接后的输出应当包含以下三类必要结果，以及一个可选补充：
 
 - 选择当前应执行的 `/opsx:*` 命令
 - 说明当前应生成或更新的 OpenSpec 产物，例如 `proposal.md`、`spec.md`、`design.md`、`tasks.md`
-- 如果用户明确要求保留原始输入，还可建议增加 `source-notes.md` 或 `transcript.md`
 - 明确当前仍处于规范阶段，因此不应直接进入实现
+- （可选）如果用户明确要求保留原始输入，建议增加 `source-notes.md` 或 `transcript.md`
+
+## 停止条件
+
+本 skill 在完成以下三件事后即停止，不再继续展开：
+
+1. 已明确给出当前应执行的 `/opsx:*` 命令
+2. 已说明当前阶段应生成或更新哪些 OpenSpec 产物
+3. 已声明当前仍处于规范阶段，不应直接进入实现
+
+停止后的接力由 OpenSpec / OPSX 承接，而不是由本 skill 继续推进产物内容。
+
+如果用户继续追问具体的规范内容（如"帮我写 proposal.md"），应说明：这属于 OpenSpec 工作流本身的职责，当前 skill 的职责已完成。
 
 ## 与 superpowers 的关系
 
-推荐关系如下：
+superpowers 负责调度 → `superpowers-openspec` 负责桥接 → OpenSpec / OPSX 负责规范产物。
 
-1. `using-superpowers` 选择合适 skill
-2. `brainstorming` 澄清目标与范围
-3. `superpowers-openspec` 决定如何进入官方 OpenSpec / OPSX
-4. 后续执行环节基于 OpenSpec 已生成的产物继续推进
-
-也就是说：
-
-- superpowers 负责调度、门禁和阶段切换
-- OpenSpec / OPSX 负责规范产物与命令工作流
-- 本 skill 负责把两者接起来
+详见 `references/skill-usage-sequence.md`。
 
 ## 参考文件
 
@@ -147,3 +144,4 @@ description: 当用户要求先分析、先写 spec、先整理需求、先做�
 - `references/spec-template.md`
 - `references/spec-checklist.md`
 - `references/source-input-recording.md`
+- `references/output-example.md`
