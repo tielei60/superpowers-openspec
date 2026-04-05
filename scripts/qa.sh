@@ -91,12 +91,15 @@ bad_patterns = [
     r"flowchart\.mermaid",
     r"sequence\.mermaid",
 ]
+negative_context_markers = ["不要把", "不应", "不是", "而不是", "重新定义", "旧模式", "残留"]
 
 fail = False
 for fname in normative:
     with open(fname) as f:
         lines = f.readlines()
     for i, line in enumerate(lines, 1):
+        if any(marker in line for marker in negative_context_markers):
+            continue
         for pat in bad_patterns:
             if re.search(pat, line):
                 print(f"  FAIL: [{fname}:{i}] 旧模式残留 [{pat}]")
@@ -166,23 +169,34 @@ EOF
 if [ $? -ne 0 ]; then FAIL=$((FAIL + 1)); else PASS=$((PASS + 1)); fi
 
 # ─────────────────────────────────────────────
-# [7] description frontmatter 三段结构完整性
+# [7] description frontmatter 质量检查
 # ─────────────────────────────────────────────
-section "[7] Description frontmatter completeness"
+section "[7] Description frontmatter quality"
 python3 - <<'EOF'
-import sys
+import re, sys
 
 with open("SKILL.md") as f:
     content = f.read()
 
+parts = content.split("---", 2)
+if len(parts) < 3:
+    print("  FAIL: 缺少 YAML frontmatter")
+    sys.exit(1)
+
+frontmatter = parts[1]
+m = re.search(r"description:\s*>\s*(.*?)\n\s*$", frontmatter, re.S)
+if not m:
+    m = re.search(r'description:\s*"([^"]+)"', frontmatter, re.S)
+if not m:
+    print("  FAIL: 缺少 description 字段")
+    sys.exit(1)
+
+description = " ".join(m.group(1).split())
 checks = {
-    "正向触发词（先分析/先写 spec）": "先分析" in content and "先写 spec" in content,
-    "正向触发词（新功能/规则变更）":   "新功能" in content and "规则变更" in content,
-    "职责说明（桥接/映射）":           "桥接" in content and "映射" in content,
-    "阻止过早实现门禁":                "阻止" in content and "实现" in content,
-    "排除条件（bug 修复）":            "bug" in content.lower() and "不适用" in content,
-    "排除条件（纯文案/样式）":         "文案" in content and "样式" in content,
-    "停止条件节存在":                  "## 停止条件" in content,
+    "description 以 适用于 开头": description.startswith("适用于"),
+    "description 包含触发条件": any(k in description for k in ["新功能", "规则变更", "接口", "交互", "数据模型", "状态", "角色流转", "OpenSpec 规范阶段"]),
+    "description 不混入命令流程": "/opsx:" not in description and "职责" not in description and "桥接" not in description,
+    "正文保留停止条件节": "## 停止条件" in content,
 }
 
 fail = False
@@ -198,14 +212,120 @@ EOF
 if [ $? -ne 0 ]; then FAIL=$((FAIL + 1)); else PASS=$((PASS + 1)); fi
 
 # ─────────────────────────────────────────────
-# [8] .abtest questions.json 新模型关键词检查
+# [8] 图示策略存在性检查
 # ─────────────────────────────────────────────
-section "[8] .abtest questions.json alignment"
+section "[8] Diagram guidance presence"
+python3 - <<'EOF'
+import sys
+
+with open("SKILL.md") as f:
+    skill = f.read()
+with open("references/spec-template.md") as f:
+    tmpl = f.read()
+
+checks = {
+    "SKILL.md 包含补图原因": "为什么有时必须补图" in skill,
+    "SKILL.md 包含 Mermaid 优先策略": "优先 Mermaid" in skill,
+    "SKILL.md 包含 ASCII 文本布局图": "ASCII" in skill and "布局图" in skill,
+    "SKILL.md 包含架构图/流程图/时序图": all(x in skill for x in ["架构图", "流程图", "时序图"]),
+    "spec-template 含图示补充原则": "图示补充原则" in tmpl,
+}
+
+fail = False
+for desc, result in checks.items():
+    if result:
+        print(f"  PASS: {desc}")
+    else:
+        print(f"  FAIL: {desc}")
+        fail = True
+
+sys.exit(1 if fail else 0)
+EOF
+if [ $? -ne 0 ]; then FAIL=$((FAIL + 1)); else PASS=$((PASS + 1)); fi
+
+# ─────────────────────────────────────────────
+# [9] 防返工完整性检查
+# ─────────────────────────────────────────────
+section "[9] Anti-rework guidance presence"
+python3 - <<'EOF'
+import sys
+
+with open("SKILL.md") as f:
+    skill = f.read()
+with open("references/spec-template.md") as f:
+    tmpl = f.read()
+with open("references/spec-checklist.md") as f:
+    checklist = f.read()
+
+checks = {
+    "SKILL.md 含减少返工完整性要求": "减少返工的完整性要求" in skill,
+    "SKILL.md 含假设/待确认/依赖/验收": all(x in skill for x in ["假设", "待确认", "依赖", "验收"]),
+    "spec-template 含减少返工统一检查维度": "减少返工的统一检查维度" in tmpl,
+    "spec-checklist 含防返工检查项": all(x in checklist for x in ["关键假设", "待确认问题", "外部依赖", "兼容性", "验收标准"]),
+}
+
+fail = False
+for desc, result in checks.items():
+    if result:
+        print(f"  PASS: {desc}")
+    else:
+        print(f"  FAIL: {desc}")
+        fail = True
+
+sys.exit(1 if fail else 0)
+EOF
+if [ $? -ne 0 ]; then FAIL=$((FAIL + 1)); else PASS=$((PASS + 1)); fi
+
+# ─────────────────────────────────────────────
+# [10] 中文与相对路径检查
+# ─────────────────────────────────────────────
+section "[10] Chinese-first and relative-path checks"
+python3 - <<'EOF'
+import pathlib, sys
+
+root = pathlib.Path(".")
+files = [
+    root / "SKILL.md",
+    root / "README.md",
+    root / ".abtest/with_skill/questions.json",
+]
+
+skill = (root / "SKILL.md").read_text()
+checks = {
+    "SKILL.md 含语言要求节": "## 语言要求" in skill,
+    "SKILL.md 强调必须中文": "必须中文" in skill and "只有当用户明确要求其他语言时" in skill,
+}
+
+fail = False
+for desc, result in checks.items():
+    if result:
+        print(f"  PASS: {desc}")
+    else:
+        print(f"  FAIL: {desc}")
+        fail = True
+
+needle = "/Users/tielei/workspace/skills/superpowers-openspec"
+for path in files:
+    content = path.read_text()
+    if needle in content:
+        print(f"  FAIL: [{path}] 含项目绝对路径")
+        fail = True
+    else:
+        print(f"  PASS: [{path}] 无项目绝对路径")
+
+sys.exit(1 if fail else 0)
+EOF
+if [ $? -ne 0 ]; then FAIL=$((FAIL + 1)); else PASS=$((PASS + 1)); fi
+
+# ─────────────────────────────────────────────
+# [11] .abtest questions.json 新模型关键词检查
+# ─────────────────────────────────────────────
+section "[11] .abtest questions.json alignment"
 if [ -f ".abtest/with_skill/questions.json" ]; then
   python3 - <<'EOF'
 import json, sys
 
-keywords = ["/opsx:explore", "/opsx:propose", "/opsx:ff", "openspec/changes/"]
+keywords = ["/opsx:explore", "/opsx:propose", "/opsx:ff", "openspec/changes/", "Mermaid", "ASCII", "待确认", "验收"]
 fail = False
 
 for path in [".abtest/with_skill/questions.json", ".abtest/without_skill/questions.json"]:
@@ -225,7 +345,7 @@ for path in [".abtest/with_skill/questions.json", ".abtest/without_skill/questio
 with open(".abtest/with_skill/questions.json") as f:
     wc = f.read()
 hits = [kw for kw in keywords if kw in wc]
-if hits:
+if len(hits) >= 7:
     print(f"  PASS: with_skill/questions.json 含新模型关键词 {hits}")
 else:
     print("  FAIL: with_skill/questions.json 缺少新模型关键词")

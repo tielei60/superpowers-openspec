@@ -82,6 +82,19 @@ openspec/
 - 当前应生成或更新的 OpenSpec 产物
 - 当前是否仍应停留在规范阶段，而不是直接实现
 
+当方案中的架构边界、流程分支、时序关系或页面布局仅靠文字难以完整表达时，这个 skill 还应明确提醒：
+
+- 在后续 OpenSpec 产物中补充图示
+- 默认优先 Mermaid
+- 页面文本布局优先使用 ASCII 文本布局图
+- 图示属于 `design.md` 或相关设计说明的一部分，而不是本仓库重新定义的独立官方 artifact
+
+当方案看起来“差不多能做”，但仍存在关键假设、待确认问题、外部依赖、兼容性影响、历史数据迁移或验收方式未定时，这个 skill 也应明确提醒：
+
+- 先把这些未决项列出来
+- 不要把未决方案包装成“已经完整可执行”
+- 必要时优先使用 `/opsx:explore` 或 `/opsx:new` + `/opsx:continue` 分步补齐
+
 如果用户明确要求保留原始输入、会议纪要原文或对话过程，也可以在当前 change 目录下可选补充：
 
 - `source-notes.md`
@@ -97,7 +110,7 @@ openspec/
 - 由 `brainstorming` 先澄清目标和边界
 - 由 `superpowers-openspec` 把意图桥接到官方 OpenSpec / OPSX
 
-真正给 agent 的触发边界、默认映射和执行规则，以 [SKILL.md](/Users/tielei/workspace/skills/superpowers-openspec/SKILL.md) 为准。
+真正给 agent 的触发边界、默认映射和执行规则，以 `SKILL.md` 为准。
 
 ## 参考文档
 
