@@ -90,6 +90,7 @@
 使用原则：
 
 - 图示应作为 `design.md` 或相关设计说明的一部分
+- 如果输出 Mermaid 图，最后应做一次自检，确认图类型、节点/参与者标识、括号与连线、代码块 fence 等没有明显语法错误
 - 不要把 `architecture.mermaid`、`flowchart.mermaid`、`sequence.mermaid` 重新定义为官方强制独立文件
 - 不要在复杂结构明明需要图示时只保留纯文字说明
 

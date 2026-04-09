@@ -195,8 +195,11 @@ description = " ".join(m.group(1).split())
 checks = {
     "description 以 适用于 开头": description.startswith("适用于"),
     "description 包含触发条件": any(k in description for k in ["新功能", "规则变更", "接口", "交互", "数据模型", "状态", "角色流转", "OpenSpec 规范阶段"]),
+    "description 包含混合意图触发": any(k in description for k in ["方案", "计划", "设计/方案/计划", "实现/开发/落地"]),
     "description 不混入命令流程": "/opsx:" not in description and "职责" not in description and "桥接" not in description,
     "正文保留停止条件节": "## 停止条件" in content,
+    "正文包含混合意图处理": any(k in content for k in ["帮我设计并实现短信发送功能", "混合意图优先级", "带实现诉求的规范阶段入口"]),
+    "正文包含调度契约": all(k in content for k in ["与 superpowers 的调度契约", "方案", "计划", "规范"]),
 }
 
 fail = False
@@ -226,9 +229,11 @@ with open("references/spec-template.md") as f:
 checks = {
     "SKILL.md 包含补图原因": "为什么有时必须补图" in skill,
     "SKILL.md 包含 Mermaid 优先策略": "优先 Mermaid" in skill,
+    "SKILL.md 包含 Mermaid 自检要求": "如果输出 Mermaid 图，最后必须做一次自检" in skill,
     "SKILL.md 包含 ASCII 文本布局图": "ASCII" in skill and "布局图" in skill,
     "SKILL.md 包含架构图/流程图/时序图": all(x in skill for x in ["架构图", "流程图", "时序图"]),
     "spec-template 含图示补充原则": "图示补充原则" in tmpl,
+    "spec-template 含 Mermaid 自检要求": "如果输出 Mermaid 图，最后应做一次自检" in tmpl,
 }
 
 fail = False
@@ -277,9 +282,38 @@ EOF
 if [ $? -ne 0 ]; then FAIL=$((FAIL + 1)); else PASS=$((PASS + 1)); fi
 
 # ─────────────────────────────────────────────
-# [10] 中文与相对路径检查
+# [10] 中文意图映射存在性检查
 # ─────────────────────────────────────────────
-section "[10] Chinese-first and relative-path checks"
+section "[10] Intent mapping presence"
+python3 - <<'EOF'
+import sys
+
+with open("references/intent-to-openspec-mapping.md") as f:
+    mapping = f.read()
+
+checks = {
+    "意图映射文档存在方案映射": "proposal.md" in mapping and "design.md" in mapping,
+    "意图映射文档存在计划映射": "tasks.md" in mapping and "开发计划" in mapping,
+    "意图映射文档存在规范映射": "spec.md" in mapping and "规范" in mapping,
+    "意图映射文档存在路由优先级": "路由优先级" in mapping and "superpowers-openspec" in mapping,
+}
+
+fail = False
+for desc, result in checks.items():
+    if result:
+        print(f"  PASS: {desc}")
+    else:
+        print(f"  FAIL: {desc}")
+        fail = True
+
+sys.exit(1 if fail else 0)
+EOF
+if [ $? -ne 0 ]; then FAIL=$((FAIL + 1)); else PASS=$((PASS + 1)); fi
+
+# ─────────────────────────────────────────────
+# [11] 中文与相对路径检查
+# ─────────────────────────────────────────────
+section "[11] Chinese-first and relative-path checks"
 python3 - <<'EOF'
 import pathlib, sys
 
@@ -294,6 +328,7 @@ skill = (root / "SKILL.md").read_text()
 checks = {
     "SKILL.md 含语言要求节": "## 语言要求" in skill,
     "SKILL.md 强调必须中文": "必须中文" in skill and "只有当用户明确要求其他语言时" in skill,
+    "SKILL.md 强调文档正文必须中文": "文档内容本身也必须使用中文" in skill and "proposal.md" in skill and "design.md" in skill,
 }
 
 fail = False
@@ -304,7 +339,7 @@ for desc, result in checks.items():
         print(f"  FAIL: {desc}")
         fail = True
 
-needle = "/Users/tielei/workspace/skills/superpowers-openspec"
+needle = str(pathlib.Path(".").resolve())
 for path in files:
     content = path.read_text()
     if needle in content:
@@ -318,14 +353,14 @@ EOF
 if [ $? -ne 0 ]; then FAIL=$((FAIL + 1)); else PASS=$((PASS + 1)); fi
 
 # ─────────────────────────────────────────────
-# [11] .abtest questions.json 新模型关键词检查
+# [12] .abtest questions.json 新模型关键词检查
 # ─────────────────────────────────────────────
-section "[11] .abtest questions.json alignment"
+section "[12] .abtest questions.json alignment"
 if [ -f ".abtest/with_skill/questions.json" ]; then
   python3 - <<'EOF'
 import json, sys
 
-keywords = ["/opsx:explore", "/opsx:propose", "/opsx:ff", "openspec/changes/", "Mermaid", "ASCII", "待确认", "验收"]
+keywords = ["/opsx:explore", "/opsx:propose", "/opsx:ff", "openspec/changes/", "Mermaid", "ASCII", "待确认", "验收", "方案", "计划", "规范"]
 fail = False
 
 for path in [".abtest/with_skill/questions.json", ".abtest/without_skill/questions.json"]:

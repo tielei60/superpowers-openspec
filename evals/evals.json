@@ -21,8 +21,8 @@
       "id": 3,
       "tags": ["命令映射类"],
       "prompt": "这个需求已经很完整了，直接告诉我该怎么按 OpenSpec 做。",
-      "expected_output": "应优先映射到 /opsx:propose；输出中使用 openspec/specs 与 openspec/changes 语义；说明应生成 proposal.md 及相关变更产物。",
-      "not_expected": "不应映射到 /opsx:explore（输入已完整）；不应输出 docs/specs/ 结构；不应把 Mermaid 图定义为强制独立产物。",
+      "expected_output": "应优先映射到 /opsx:propose；输出中使用 openspec/specs 与 openspec/changes 语义；说明应生成 proposal.md 及相关变更产物。除非用户明确要求其他语言，否则应明确这些文档内容本身也使用中文。",
+      "not_expected": "不应映射到 /opsx:explore（输入已完整）；不应输出 docs/specs/ 结构；不应把 Mermaid 图定义为强制独立产物；不应默认把文档正文写成英文。",
       "files": []
     },
     {
@@ -69,8 +69,8 @@
       "id": 9,
       "tags": ["图示策略类"],
       "prompt": "这个方案涉及多个模块、审批分支和异步通知，单靠文字不太容易讲清楚。先按 OpenSpec 规范推进时，要不要补图？",
-      "expected_output": "应继续桥接到官方 OpenSpec / OPSX，并明确说明后续产物中应补图；对架构关系、流程分支、异步交互优先建议 Mermaid 图；说明图示应进入 design.md 或相关设计说明，而不是独立官方强制文件。",
-      "not_expected": "不应说图完全可有可无；不应在复杂关系下只建议纯文字说明；不应把 architecture.mermaid、flowchart.mermaid、sequence.mermaid 重新定义为官方强制独立产物。",
+      "expected_output": "应继续桥接到官方 OpenSpec / OPSX，并明确说明后续产物中应补图；对架构关系、流程分支、异步交互优先建议 Mermaid 图；说明图示应进入 design.md 或相关设计说明，而不是独立官方强制文件。如果输出 Mermaid 图，最后应做一次自检，确认没有明显语法错误。",
+      "not_expected": "不应说图完全可有可无；不应在复杂关系下只建议纯文字说明；不应把 architecture.mermaid、flowchart.mermaid、sequence.mermaid 重新定义为官方强制独立产物；不应输出 Mermaid 后完全不提自检。",
       "files": []
     },
     {
@@ -95,6 +95,38 @@
       "prompt": "这次会改订单状态流和旧接口返回结构，不过兼容期多长、回滚怎么做还没想好。你先把方案按 OpenSpec 定下来。",
       "expected_output": "应继续桥接到官方 OpenSpec / OPSX，并明确指出兼容性、状态延续、回滚或降级方案属于当前需要补齐的关键内容；可建议在 proposal.md、spec.md 或 design.md 中显式写出这些约束，而不是直接假设开发阶段再补。",
       "not_expected": "不应把兼容性和回滚问题留到实现时再说；不应省略这些约束仍声称方案已完整；不应直接给实现建议。",
+      "files": []
+    },
+    {
+      "id": 13,
+      "tags": ["混合意图类", "优先级类"],
+      "prompt": "帮我设计并实现短信发送的功能。",
+      "expected_output": "应优先触发 superpowers-openspec，而不是因为用户提到“实现”就直接进入编码；应将该请求识别为新功能的规范阶段入口。若需求边界清晰，优先建议 /opsx:propose；若仍有未决项，则优先建议 /opsx:explore，并说明在 proposal.md、spec.md、design.md、tasks.md 确认前不应直接进入实现。",
+      "not_expected": "不应直接跳过规范阶段开始实现；不应把这类混合表达交还给通用 superpowers 执行而忽略 OpenSpec；不应在未形成规范产物前就给出实现方案或编码步骤。",
+      "files": []
+    },
+    {
+      "id": 14,
+      "tags": ["术语映射类", "路由冲突类"],
+      "prompt": "先把这个功能的方案和开发计划定下来，后面再落地。",
+      "expected_output": "应识别“方案”默认对应 proposal.md 与 design.md，“开发计划”默认对应 tasks.md；应优先进入 superpowers-openspec，而不是直接给实现步骤。若输入较完整，可建议 /opsx:new + /opsx:continue 或 /opsx:ff；若信息不足，则先建议 /opsx:explore。",
+      "not_expected": "不应把“开发计划”直接等同于编码步骤；不应跳过 proposal.md、design.md 与 tasks.md 的规划产物；不应因为句子里隐含落地诉求就直接进入实现。",
+      "files": []
+    },
+    {
+      "id": 15,
+      "tags": ["术语映射类", "路由冲突类"],
+      "prompt": "先沟通需求，再把短信发送功能做出来。",
+      "expected_output": "应先把“沟通需求”识别为问题收敛阶段，优先建议 /opsx:explore；在需求边界、假设、依赖和验收方式未明确前，不应直接进入实现。应说明这是先收敛再规划、最后实现的路径。",
+      "not_expected": "不应把“做出来”理解为立刻编码；不应跳过需求收敛直接给技术实现方案；不应忽略 explore -> propose/apply 的阶段顺序。",
+      "files": []
+    },
+    {
+      "id": 16,
+      "tags": ["术语映射类"],
+      "prompt": "先把短信发送的规范和计划写出来，不要代码。",
+      "expected_output": "应识别“规范”默认对应 spec.md，“计划”默认对应 tasks.md；可根据完整度建议 /opsx:propose、/opsx:new + /opsx:continue 或 /opsx:ff，并明确当前仍处于规范阶段，不进入实现。",
+      "not_expected": "不应只给通用文档建议而不映射到 spec.md 与 tasks.md；不应直接开始实现；不应忽略用户已经明确拒绝代码。",
       "files": []
     }
   ]

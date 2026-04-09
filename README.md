@@ -1,8 +1,12 @@
 # superpowers-openspec
 
-`superpowers-openspec` 是一个桥接 skill，用于把 `superpowers` 体系里的“先分析、先写 spec、先整理需求、先做详细设计”意图，映射到官方 OpenSpec / OPSX 工作流。
+`superpowers-openspec` 是一个桥接 skill，用于把 `superpowers` 体系里的“先分析、先写 spec、先整理需求、先做详细设计、先写方案或计划”意图，映射到官方 OpenSpec / OPSX 工作流。
+
+它也处理一种很常见的混合表达：用户把“设计 / 方案 / 计划”和“实现 / 开发 / 落地”写在同一句里，例如“帮我设计并实现短信发送功能”。只要任务本质上涉及新功能、规则、接口、交互、数据结构、状态或角色流转变化，就应先命中本 skill，再进入后续实现阶段。
 
 本仓库不重新定义 OpenSpec。本仓库的职责，是让 superpowers 的调度能力和 OpenSpec 的规范能力协同工作。
+
+更具体地说，这个项目希望借用 `superpowers` 的“识别与分流”能力，把“需求沟通、方案管理、计划拆解、规范沉淀”统一落到 OpenSpec 的官方产物和命令体系里。
 
 ## 角色定位
 
@@ -110,12 +114,26 @@ openspec/
 - 由 `brainstorming` 先澄清目标和边界
 - 由 `superpowers-openspec` 把意图桥接到官方 OpenSpec / OPSX
 
+如果用户同时说了“设计”和“实现”，不要仅因为出现了“实现”就跳过本 skill。对于新功能或规则/接口/状态变化，这类表达应优先被理解为“先进入规范阶段，再继续实现”。
+
+同样地，如果用户说的是“先写方案”“先写计划”“先把规范定下来”“先沟通需求”，也应优先把这些中文意图映射到 OpenSpec 的官方产物：
+
+- `方案` → `proposal.md` + `design.md`
+- `计划` → `tasks.md`
+- `规范 / 规则` → `spec.md`
+- `需求沟通 / 先分析 / 先梳理` → 先收敛问题空间，再决定进入 `/opsx:explore`、`/opsx:propose` 或分步流程
+
+这部分映射规则详见 `references/intent-to-openspec-mapping.md`。
+
+除非用户明确要求其他语言，否则这些产物的文档内容本身也应使用中文，而不只是桥接说明使用中文。
+
 真正给 agent 的触发边界、默认映射和执行规则，以 `SKILL.md` 为准。
 
 ## 参考文档
 
 - `references/openspec-directory-structure.md`
 - `references/openspec-command-examples.md`
+- `references/intent-to-openspec-mapping.md`
 - `references/skill-usage-sequence.md`
 - `references/spec-template.md`
 - `references/spec-checklist.md`
