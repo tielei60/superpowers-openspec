@@ -129,6 +129,156 @@ openspec/
 
 真正给 agent 的触发边界、默认映射和执行规则，以 `SKILL.md` 为准。
 
+## 命令方式使用
+
+如果当前环境支持 skill 命令方式，优先通过本项目 skill 入口使用：
+
+```text
+/superpowers-openspec
+```
+
+这个命令的作用不是直接替代 `/opsx:*`，而是先进入本桥接 skill，由它根据你的中文意图给出下一步应该使用的官方 OpenSpec / OPSX 命令。
+
+推荐用法：
+
+- 先输入你的真实需求
+- 再通过 `/superpowers-openspec` 进入桥接层
+- 由桥接层判断下一步应走 `/opsx:explore`、`/opsx:propose`、`/opsx:new`、`/opsx:ff`、`/opsx:apply` 或 `/opsx:archive`
+
+例如：
+
+```text
+帮我设计并实现短信发送功能
+/superpowers-openspec
+```
+
+```text
+先把这个功能的方案和开发计划定下来
+/superpowers-openspec
+```
+
+```text
+先沟通需求，再决定怎么规范
+/superpowers-openspec
+```
+
+进入 `/superpowers-openspec` 之后，后续通常会得到如下官方命令建议：
+
+### 1. 先探索需求
+
+适用场景：
+
+- 需求零散
+- 来自会议纪要、聊天记录或口语描述
+- 还有很多假设、依赖、验收口径没定
+
+建议命令：
+
+```text
+/opsx:explore
+```
+
+典型说法：
+
+- `先帮我整理需求，再决定怎么规范`
+- `先沟通一下需求`
+- `先把问题空间摸清楚`
+
+### 2. 直接进入规划
+
+适用场景：
+
+- 需求边界清晰
+- 已明确要先写方案、规范或设计
+
+建议命令：
+
+```text
+/opsx:propose
+```
+
+典型说法：
+
+- `先写 spec`
+- `先做详细设计`
+- `先把方案定下来`
+
+### 3. 分步生成 proposal / spec / design / tasks
+
+适用场景：
+
+- 想先建 change
+- 希望边生成边确认
+
+建议命令：
+
+```text
+/opsx:new
+/opsx:continue
+```
+
+典型说法：
+
+- `我想一步一步来`
+- `先建 change，再逐步补 proposal 和 design`
+
+### 4. 一次性生成完整规划产物
+
+适用场景：
+
+- 需求已经清楚
+- 不想分步确认
+
+建议命令：
+
+```text
+/opsx:ff
+```
+
+典型说法：
+
+- `直接把 proposal、spec、design、tasks 一次搞出来`
+- `不想一步一步来，直接全出`
+
+### 5. 开始实现
+
+前提：
+
+- `proposal.md`
+- `spec.md`
+- `design.md`
+- `tasks.md`
+
+已经确认完成。
+
+建议命令：
+
+```text
+/opsx:apply
+```
+
+### 6. 归档
+
+适用场景：
+
+- 本次变更已经完成
+- 不再作为活跃 change 继续推进
+
+建议命令：
+
+```text
+/opsx:archive
+```
+
+### 命令方式的使用原则
+
+- 优先用 `/superpowers-openspec` 作为本项目 skill 的命令入口
+- `/superpowers-openspec` 负责桥接，真正落地执行时再进入官方 `/opsx:*`
+- 如果一句话里同时出现“设计 / 方案 / 计划”和“实现 / 落地”，不要直接跳到实现命令，先用 `/superpowers-openspec`
+- 如果输出 Mermaid 图，最后必须做一次自检，确认没有明显语法错误
+- 除非用户明确要求其他语言，否则命令生成的文档内容本身也必须使用中文
+- 如果不确定该用哪个命令，优先从 `/opsx:explore` 开始
+
 ## 参考文档
 
 - `references/openspec-directory-structure.md`

@@ -6,6 +6,52 @@
 
 ---
 
+## 命令方式速查
+
+如果环境支持 skill 命令方式，优先这样使用本项目：
+
+```text
+/superpowers-openspec
+```
+
+它是桥接入口，不是 `/opsx:*` 的别名。正确理解是：
+
+- 先通过 `/superpowers-openspec` 进入本 skill
+- 再由本 skill 给出推荐的官方 `/opsx:*` 命令
+
+常见用法：
+
+```text
+帮我设计并实现短信发送功能
+/superpowers-openspec
+```
+
+```text
+先把方案和开发计划定下来
+/superpowers-openspec
+```
+
+进入 skill 后，通常会落到下面这些官方命令之一：
+
+| 目标 | 命令 |
+|---|---|
+| 先收敛问题空间 | `/opsx:explore` |
+| 直接进入规划 | `/opsx:propose` |
+| 分步生成产物 | `/opsx:new` + `/opsx:continue` |
+| 一次性生成全部规划产物 | `/opsx:ff` |
+| 进入实现 | `/opsx:apply` |
+| 归档当前变更 | `/opsx:archive` |
+
+使用原则：
+
+- 如果需求还散，先 `/opsx:explore`
+- 如果需求已清晰，直接 `/opsx:propose`
+- 如果同时提到“方案 / 计划 / 设计”和“实现”，不要直接 `/opsx:apply`
+- 如果输出 Mermaid 图，最后做一次自检
+- 除非用户明确要求其他语言，否则文档内容本身必须使用中文
+
+---
+
 ## 示例一：输入零散，走 `/opsx:explore` 路径
 
 ### 用户输入
