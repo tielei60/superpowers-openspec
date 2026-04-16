@@ -3,6 +3,16 @@
 本文件不再定义自定义 `openspec.md` 模板。
 它只说明官方 OpenSpec / OPSX 常见产物各自应该承载什么内容。
 
+如果用户要求先确认完整方案文档，应先使用 `docs/solutions/*.md`。该方案文档不是 OpenSpec 官方 artifact，而是面向用户评审的上游方案来源。用户确认后，再进入 OpenSpec change。
+
+`docs/solutions/*.md` 与 OpenSpec 产物的默认关系：
+
+- `docs/solutions/*.md`：完整中文方案、背景、取舍、风险、验收口径
+- `proposal.md`：引用来源方案文档，并说明为什么改、改什么、影响什么
+- `design.md`：承接设计细节、模块边界、图示和技术取舍
+- `spec.md`：承接行为规范、规则和场景
+- `tasks.md`：承接实现计划和验证任务
+
 ## `proposal.md`
 
 用途：
@@ -18,6 +28,16 @@
 3. 变更范围
 4. 影响面
 5. 风险或注意事项
+
+如果该 change 来源于已确认方案文档，`proposal.md` 应靠前包含：
+
+```md
+## 来源方案文档
+
+本变更基于以下已确认方案文档生成：
+
+- `docs/solutions/<topic>.md`
+```
 
 为减少返工，`proposal.md` 还建议明确：
 
@@ -172,4 +192,6 @@
 - 不要再把 OpenSpec 理解成单个 `openspec.md`
 - 不要再把 Mermaid 三图写成固定强制目录要求
 - 以官方 `proposal.md`、`spec.md`、`design.md`、`tasks.md` 语义为准
+- 如果先生成了 `docs/solutions/*.md`，必须先确认方案文档，再创建或更新 OpenSpec change
+- 如果 OpenSpec 产物实质变化，必须检查是否需要同步回 `docs/solutions/*.md`
 - 原始输入记录属于可选补充，不属于官方默认 artifact

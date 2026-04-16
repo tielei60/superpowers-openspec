@@ -20,6 +20,14 @@
 
 ## 产物检查
 
+- 如果用户要求完整方案文档，是否先生成并确认 `docs/solutions/*.md`
+- 在请求用户确认方案文档前，是否询问用户是否需要方案文档自我闭环验证
+- 是否避免把方案文档自我闭环验证写成强制步骤
+- 是否明确 `docs/solutions/*.md` 不是 OpenSpec 官方 artifact
+- 如果 OpenSpec change 来源于方案文档，`proposal.md` 是否包含“来源方案文档”章节
+- 如果来源是多个方案文档，`proposal.md` 是否列出全部来源
+- 是否避免新增 `sources.md` 或 `source-docs.md` 作为来源关系文件
+- 如果方案文档或 OpenSpec 产物发生实质变化，是否检查并同步另一侧
 - 是否以 `proposal.md`、`spec.md`、`design.md`、`tasks.md` 为主
 - 是否把 Mermaid 图当作设计补充，而不是重新定义为官方强制产物
 - 当架构边界、流程分支、时序关系或页面布局仅靠文字难以说清时，是否明确要求补充图示
@@ -37,11 +45,11 @@
 
 - 是否清楚说明 `superpowers` 负责调度
 - 是否清楚说明 OpenSpec / OPSX 负责规范
-- 是否清楚说明 `superpowers-openspec` 负责桥接
+- 是否清楚说明 `superpowers-openspec` 负责组织方案、规范与计划
 - 是否避免把本 skill 写成独立规范体系
 
 ## 误触发检查
 
 - 纯 bug 修复时，是否避免强制进入 OpenSpec
 - 纯文案、纯样式、纯配置修改时，是否避免强制进入 OpenSpec
-- 只有在规则、流程、接口、状态或数据结构变化时，才进入规范桥接
+- 只有在规则、流程、接口、状态或数据结构变化时，才进入规范阶段

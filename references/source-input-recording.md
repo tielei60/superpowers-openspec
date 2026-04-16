@@ -5,9 +5,16 @@
 ## 定位
 
 这不是 OpenSpec 官方默认 artifact。
-这是本仓库在桥接 superpowers 与 OpenSpec / OPSX 时提供的可选补充约定。
+这是本仓库在面向 OpenSpec 的方案、规范与计划工作流中提供的可选补充约定。
 
 只有在用户明确要求保留原始输入时，才建议使用。
+
+它和 `docs/solutions/*.md` 的职责不同：
+
+- `source-notes.md` / `transcript.md` 记录原始输入、会议纪要或对话过程
+- `docs/solutions/*.md` 记录讨论后形成、便于用户评审的已确认方案
+
+默认不保存完整对话过程。真正用于生成 OpenSpec change 的上游方案，应优先沉淀到 `docs/solutions/*.md`。
 
 ## 推荐文件
 
@@ -46,6 +53,7 @@
 
 - 这两个文件都是可选补充
 - 不替代 `proposal.md`、`spec.md`、`design.md`、`tasks.md`
+- 不替代 `docs/solutions/*.md`
 - 不应被描述成 OpenSpec 官方强制产物
 - 仅在用户明确要求保留原始输入时添加
 

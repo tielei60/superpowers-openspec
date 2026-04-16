@@ -63,6 +63,7 @@ keywords = [
     "/opsx:ff", "/opsx:apply", "/opsx:archive",
     "openspec/specs/", "openspec/changes/",
     "proposal.md", "design.md", "tasks.md",
+    "docs/solutions/", "来源方案文档",
 ]
 with open("SKILL.md") as f:
     content = f.read()
@@ -195,11 +196,14 @@ description = " ".join(m.group(1).split())
 checks = {
     "description 以 适用于 开头": description.startswith("适用于"),
     "description 包含触发条件": any(k in description for k in ["新功能", "规则变更", "接口", "交互", "数据模型", "状态", "角色流转", "OpenSpec 规范阶段"]),
+    "description 包含功能改造优化触发": any(k in description for k in ["功能改造", "功能优化", "流程优化", "模块重构", "能力升级"]),
+    "description 包含方案文档触发": any(k in description for k in ["完整 markdown 方案", "完整方案文档", "方案文档", "docs/solutions"]),
     "description 包含混合意图触发": any(k in description for k in ["方案", "计划", "设计/方案/计划", "实现/开发/落地"]),
-    "description 不混入命令流程": "/opsx:" not in description and "职责" not in description and "桥接" not in description,
+    "description 不混入命令流程或旧定位": "/opsx:" not in description and "职责" not in description and "桥接" not in description,
     "正文保留停止条件节": "## 停止条件" in content,
     "正文包含混合意图处理": any(k in content for k in ["帮我设计并实现短信发送功能", "混合意图优先级", "带实现诉求的规范阶段入口"]),
-    "正文包含调度契约": all(k in content for k in ["与 superpowers 的调度契约", "方案", "计划", "规范"]),
+    "正文包含方案规范计划定位": all(k in content for k in ["面向 OpenSpec 的方案、规范与计划工作流", "方案", "计划", "规范"]),
+    "正文包含功能改造优化边界": all(k in content for k in ["功能改造", "功能优化", "局部性能优化"]),
 }
 
 fail = False
@@ -311,9 +315,58 @@ EOF
 if [ $? -ne 0 ]; then FAIL=$((FAIL + 1)); else PASS=$((PASS + 1)); fi
 
 # ─────────────────────────────────────────────
-# [11] 中文与相对路径检查
+# [11] 方案先行工作流检查
 # ─────────────────────────────────────────────
-section "[11] Chinese-first and relative-path checks"
+section "[11] Planning workflow checks"
+python3 - <<'EOF'
+import sys, pathlib
+
+root = pathlib.Path(".")
+skill = (root / "SKILL.md").read_text()
+readme = (root / "README.md").read_text()
+template = (root / "references/spec-template.md").read_text()
+checklist = (root / "references/spec-checklist.md").read_text()
+source = (root / "references/source-input-recording.md").read_text()
+commands = (root / "references/openspec-command-examples.md").read_text()
+output = (root / "references/output-example.md").read_text()
+workflow_path = root / "references/planning-workflow.md"
+workflow = workflow_path.read_text() if workflow_path.exists() else ""
+
+checks = {
+    "planning-workflow reference 存在": workflow_path.exists(),
+    "SKILL.md 含工作流中文定位": "面向 OpenSpec 的方案、规范与计划工作流" in skill,
+    "SKILL.md 含 docs/solutions 门禁": "docs/solutions/" in skill and "用户确认" in skill and "不应创建或更新 OpenSpec change" in skill,
+    "SKILL.md 含 proposal 来源引用": "来源方案文档" in skill and "proposal.md" in skill,
+    "SKILL.md 含可选自检询问": "自我闭环验证" in skill and "询问用户" in skill and "不是强制门禁" in skill,
+    "README.md 含使用说明": "docs/solutions/" in readme and "来源方案文档" in readme and "单方案" in readme and "多方案" in readme,
+    "README.md 含可选自检说明": "自我闭环验证由用户决定" in readme and "不是强制步骤" in readme,
+    "reference 含中文模板": "# 方案：<标题>" in workflow and "必须使用中文" in workflow,
+    "reference 含可选自检说明": "自我闭环验证不是强制门禁" in workflow and "由用户决定" in workflow,
+    "命令示例含可选自检说明": "询问是否需要先做方案文档自我闭环验证" in commands and "不是强制步骤" in commands,
+    "输出示例含可选自检说明": "询问是否需要方案文档自我闭环验证" in output and "不是强制步骤" in output,
+    "reference 禁止 sources.md": "不新增 `sources.md`" in workflow and "source-docs.md" in workflow,
+    "spec-template 含来源引用": "来源方案文档" in template and "docs/solutions/<topic>.md" in template,
+    "spec-checklist 含同步检查": "是否检查并同步另一侧" in checklist,
+    "spec-checklist 含可选自检检查": "是否询问用户是否需要方案文档自我闭环验证" in checklist and "强制步骤" in checklist,
+    "source-input 区分 transcript 与方案文档": "docs/solutions/*.md" in source and "默认不保存完整对话过程" in source,
+}
+
+fail = False
+for desc, result in checks.items():
+    if result:
+        print(f"  PASS: {desc}")
+    else:
+        print(f"  FAIL: {desc}")
+        fail = True
+
+sys.exit(1 if fail else 0)
+EOF
+if [ $? -ne 0 ]; then FAIL=$((FAIL + 1)); else PASS=$((PASS + 1)); fi
+
+# ─────────────────────────────────────────────
+# [12] 中文与相对路径检查
+# ─────────────────────────────────────────────
+section "[12] Chinese-first and relative-path checks"
 python3 - <<'EOF'
 import pathlib, sys
 
@@ -353,9 +406,9 @@ EOF
 if [ $? -ne 0 ]; then FAIL=$((FAIL + 1)); else PASS=$((PASS + 1)); fi
 
 # ─────────────────────────────────────────────
-# [12] .abtest questions.json 新模型关键词检查
+# [13] .abtest questions.json 新模型关键词检查
 # ─────────────────────────────────────────────
-section "[12] .abtest questions.json alignment"
+section "[13] .abtest questions.json alignment"
 if [ -f ".abtest/with_skill/questions.json" ]; then
   python3 - <<'EOF'
 import json, sys

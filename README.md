@@ -1,25 +1,145 @@
 # superpowers-openspec
 
-`superpowers-openspec` 是一个桥接 skill，用于把 `superpowers` 体系里的“先分析、先写 spec、先整理需求、先做详细设计、先写方案或计划”意图，映射到官方 OpenSpec / OPSX 工作流。
+`superpowers-openspec` 是一个**面向 OpenSpec 的方案、规范与计划工作流**。
 
-它也处理一种很常见的混合表达：用户把“设计 / 方案 / 计划”和“实现 / 开发 / 落地”写在同一句里，例如“帮我设计并实现短信发送功能”。只要任务本质上涉及新功能、规则、接口、交互、数据结构、状态或角色流转变化，就应先命中本 skill，再进入后续实现阶段。
+它解决的问题是：用户经常会先说“帮我分析、写方案、写规范、写计划”，但 OpenSpec 的产物会分散在 `proposal.md`、`spec.md`、`design.md`、`tasks.md` 中。这个 skill 负责先判断当前应该沉淀方案、定义规范、拆解计划，还是进入官方 `/opsx:*` 流程。
 
-本仓库不重新定义 OpenSpec。本仓库的职责，是让 superpowers 的调度能力和 OpenSpec 的规范能力协同工作。
+一句话概括：
 
-更具体地说，这个项目希望借用 `superpowers` 的“识别与分流”能力，把“需求沟通、方案管理、计划拆解、规范沉淀”统一落到 OpenSpec 的官方产物和命令体系里。
+```text
+方案先确认，规范再承接，计划再落地。
+```
 
-## 角色定位
+## 适合什么时候用
 
-- `superpowers`
-  - 负责技能选择、阶段门禁和后续调度
+使用本 skill：
 
-- OpenSpec / OPSX
-  - 负责规范产物、变更目录和命令工作流
+- 用户要求先分析、先整理需求、先写 spec、先做详细设计
+- 用户要求先写完整 markdown 方案，再生成 OpenSpec 任务
+- 用户要求先定方案、规范或开发计划，再进入实现
+- 用户提出功能改造、功能优化、流程优化、模块重构或能力升级，并且会影响规则、流程、接口、状态、数据结构或模块边界
+- 用户把“设计 / 方案 / 计划”和“实现 / 开发 / 落地”写在同一句里
+- 任务涉及新功能、业务规则、接口、交互、数据结构、状态流转或角色流程变化
 
-- `superpowers-openspec`
-  - 负责把 superpowers 侧的规范意图桥接到官方 OpenSpec / OPSX
+不强制使用本 skill：
 
-## 官方目录模型
+- 纯 bug 修复，且不涉及新规则、流程、接口或状态
+- 纯文案、纯样式、纯配置值调整
+- 单点技术修复或局部性能优化，影响范围明确且无需新增规范
+- 用户只要求快速定位问题或直接给出修复建议
+
+## 核心工作流
+
+```text
+用户意图
+  -> 判断是否需要完整方案文档
+  -> 判断应进入哪个 OpenSpec / OPSX 阶段
+  -> 生成或更新 proposal / spec / design / tasks
+  -> 规范确认后再进入实现
+```
+
+如果用户要求先确认完整方案文档，则多一步：
+
+```text
+用户意图
+  -> docs/solutions/<topic>.md
+  -> 询问是否需要方案文档自我闭环验证
+  -> 用户确认方案文档
+  -> openspec/changes/<change-name>/
+  -> proposal.md 引用来源方案文档
+  -> spec.md / design.md / tasks.md
+```
+
+## 方案文档先行
+
+当用户希望先完整确认方案，再进入 OpenSpec 规范和计划拆解时，先生成：
+
+```text
+docs/solutions/<topic>.md
+```
+
+要求：
+
+- 方案文档必须使用中文
+- 内容应便于用户完整评审
+- 请求用户确认前，应询问是否需要先做方案文档自我闭环验证
+- 自我闭环验证由用户决定，不是强制步骤
+- 用户确认前，不创建或更新 OpenSpec change
+- 用户确认后，再进入 `/opsx:*`
+- `docs/solutions/*.md` 不是 OpenSpec 官方 artifact，而是本 skill 约定的上游方案来源
+
+方案文档应覆盖：
+
+- 背景
+- 目标
+- 非目标
+- 已确认决策
+- 关键取舍
+- 方案设计
+- 风险与兼容性影响
+- 待确认问题
+- 验收标准
+
+如果方案涉及复杂架构、流程、状态、时序或页面结构，应补 Mermaid 或 ASCII 图示。
+
+### 可选的自我闭环验证
+
+在把方案文档交给用户确认前，agent 应先询问：
+
+```text
+是否需要我先对这份方案文档做一次自我闭环验证，再交给你确认？
+```
+
+如果用户选择需要，验证重点包括：
+
+- 目标和非目标是否清楚
+- 已确认决策是否完整
+- 关键取舍是否说明原因
+- 方案设计是否可落地
+- 待确认问题是否显式列出
+- 风险、兼容性和迁移影响是否覆盖
+- 验收标准是否可验证
+- Mermaid 或 ASCII 图示是否必要且完整
+- OpenSpec 拆分建议是否能承接到 `proposal.md`、`spec.md`、`design.md`、`tasks.md`
+
+如果用户选择不需要，直接进入用户确认环节。
+
+## 来源关系
+
+OpenSpec change 来源于方案文档时，不新增 `sources.md` 或 `source-docs.md`。
+
+来源关系写在 `proposal.md` 中：
+
+```md
+## 来源方案文档
+
+本变更基于以下已确认方案文档生成：
+
+- `docs/solutions/example-solution.md`
+```
+
+多个方案文档生成一个 change 时：
+
+```md
+## 来源方案文档
+
+本变更基于以下已确认方案文档生成：
+
+- `docs/solutions/1.md`
+- `docs/solutions/2.md`
+```
+
+## 方案、规范、计划的对应关系
+
+| 用户说法 | 默认含义 | 主要产物 |
+| --- | --- | --- |
+| 完整方案文档 | 先形成便于用户评审的上游方案 | `docs/solutions/*.md` |
+| 方案 | 为什么做、做什么、怎么设计 | `proposal.md`、`design.md` |
+| 规范 / 规则 / 行为定义 | 行为约束、场景和边界 | `spec.md` |
+| 计划 / 开发计划 | 可执行任务拆解 | `tasks.md` |
+| 需求沟通 / 先分析 / 先梳理 | 先收敛问题空间 | `/opsx:explore` |
+
+## OpenSpec 官方目录
 
 OpenSpec 的官方目录语义以 `openspec/` 为准：
 
@@ -42,245 +162,106 @@ openspec/
 
 - `openspec/specs/` 表示当前事实规范
 - `openspec/changes/` 表示单次变更工作区
+- `docs/solutions/*.md` 是本 skill 的方案来源文档，不是 OpenSpec 官方 artifact
 
-## 官方命令模型
+## OPSX 命令选择
 
-仓库说明与示例统一对齐以下常用命令：
+| 场景 | 建议入口 |
+| --- | --- |
+| 需求零散，需要先探索 | `/opsx:explore` |
+| 需求清晰，直接进入规划 | `/opsx:propose` |
+| 希望分步生成产物 | `/opsx:new` + `/opsx:continue` |
+| 希望一次生成全部规划产物 | `/opsx:ff` |
+| 规范已确认，开始实现 | `/opsx:apply` |
+| 变更完成，准备归档 | `/opsx:archive` |
 
-- `openspec init`
-- `openspec update`
-- `/opsx:explore`
-- `/opsx:propose`
-- `/opsx:new`
-- `/opsx:continue`
-- `/opsx:ff`
-- `/opsx:apply`
-- `/opsx:archive`
+如所选 profile 支持，还可以使用：
 
-如所选 profile 支持，高级命令还包括：
+- `/opsx:verify`：验证实现是否符合规范
+- `/opsx:sync`：把变更 spec 同步回主规范
 
-- `/opsx:verify`：验证实现是否符合规范，需当前 profile 明确支持此命令
-- `/opsx:sync`：把变更 spec 同步回主规范，需当前 profile 明确支持此命令
+## 使用示例
 
-若所选 profile 不支持，不要主动引导用户使用上述两个命令。
+单方案：先写完整方案文档
 
-默认理解如下：
+```text
+先帮我写一个完整方案文档，确认后再生成 OpenSpec change。
+/superpowers-openspec
+```
 
-- 需求零散，先探索：`/opsx:explore`
-- 需求完整，直接进入规划：`/opsx:propose`
-- 需要按步骤生成产物：`/opsx:new` + `/opsx:continue`
-- 需要一次生成规划产物：`/opsx:ff`
-- 进入实现：`/opsx:apply`
-- 完成归档：`/opsx:archive`
+多方案：基于多个方案文档生成 OpenSpec change
 
-## 这个 skill 解决什么问题
+```text
+请基于 `docs/solutions/1.md` 和 `docs/solutions/2.md` 创建一个 OpenSpec change。
+/superpowers-openspec
+```
 
-它主要解决两个问题：
+先定方案和计划：
 
-1. 避免在 superpowers 里把“先写规范”直接做成自定义格式，偏离 OpenSpec 官方结构
-2. 让 superpowers 的调度层可以稳定地把用户意图导入官方 `/opsx:*` 工作流
+```text
+先把这个功能的方案和开发计划定下来，后面再落地。
+/superpowers-openspec
+```
 
-更落地地说，这个桥接层最终会输出三类结果：
+设计并实现，但先进入规范阶段：
 
-- 当前最合适的 `/opsx:*` 命令
-- 当前应生成或更新的 OpenSpec 产物
-- 当前是否仍应停留在规范阶段，而不是直接实现
+```text
+帮我设计并实现短信发送功能。
+/superpowers-openspec
+```
 
-当方案中的架构边界、流程分支、时序关系或页面布局仅靠文字难以完整表达时，这个 skill 还应明确提醒：
+输入零散，先探索：
 
-- 在后续 OpenSpec 产物中补充图示
-- 默认优先 Mermaid
-- 页面文本布局优先使用 ASCII 文本布局图
-- 图示属于 `design.md` 或相关设计说明的一部分，而不是本仓库重新定义的独立官方 artifact
+```text
+这是会议纪要，你先帮我整理需求，再决定怎么规范。
+/superpowers-openspec
+```
 
-当方案看起来“差不多能做”，但仍存在关键假设、待确认问题、外部依赖、兼容性影响、历史数据迁移或验收方式未定时，这个 skill 也应明确提醒：
+## 同步规则
 
-- 先把这些未决项列出来
-- 不要把未决方案包装成“已经完整可执行”
-- 必要时优先使用 `/opsx:explore` 或 `/opsx:new` + `/opsx:continue` 分步补齐
+方案文档和 OpenSpec 产物允许表达形式不同，但不应语义漂移。
 
-如果用户明确要求保留原始输入、会议纪要原文或对话过程，也可以在当前 change 目录下可选补充：
+- 如果方案文档发生实质变化，需要检查并更新对应 OpenSpec change 的 `proposal.md`、`spec.md`、`design.md` 和 `tasks.md`
+- 如果 OpenSpec 产物发生实质变化，需要回写或更新对应方案文档
+- 如果变化只影响执行拆分，不改变已确认方案，可以只更新 `tasks.md`，但仍需确认 `proposal.md` 与方案文档一致
+- 如果两者暂时不同步，必须明确告知用户，不能假装已经一致
+
+## 图示要求
+
+如果仅靠文字不足以完整表达方案，应补图：
+
+- 架构关系、模块边界、数据流：优先 Mermaid
+- 业务流程、审批路径、状态流转：优先 Mermaid `flowchart` 或 `stateDiagram`
+- 多角色、多服务、异步交互：优先 Mermaid `sequenceDiagram`
+- 页面、表单、列表、弹窗结构：优先 ASCII 文本布局图
+
+图示是 `docs/solutions/*.md`、`design.md` 或相关设计说明的一部分，不是 OpenSpec 官方新增 artifact。
+
+如果输出 Mermaid 图，最后必须自检：代码块 fence、图类型、节点标识、括号与连线是否正确。
+
+## 原始输入记录
+
+如果用户明确要求保留原始输入、会议纪要原文或对话过程，可以在当前 change 目录下可选补充：
 
 - `source-notes.md`
 - `transcript.md`
 
-这两个文件是本仓库约定的可选补充，不是官方默认强制 artifact。
+这两个文件只是可选补充，不是 OpenSpec 官方默认 artifact，也不替代 `docs/solutions/*.md`、`proposal.md`、`spec.md`、`design.md` 或 `tasks.md`。
 
-## 使用入口
+## 语言要求
 
-如果你是在 superpowers 体系里使用这个仓库：
+除非用户明确要求其他语言，否则所有说明和文档正文都必须使用中文，包括：
 
-- 由 `using-superpowers` 判断是否可能需要进入规范阶段
-- 由 `brainstorming` 先澄清目标和边界
-- 由 `superpowers-openspec` 把意图桥接到官方 OpenSpec / OPSX
-
-如果用户同时说了“设计”和“实现”，不要仅因为出现了“实现”就跳过本 skill。对于新功能或规则/接口/状态变化，这类表达应优先被理解为“先进入规范阶段，再继续实现”。
-
-同样地，如果用户说的是“先写方案”“先写计划”“先把规范定下来”“先沟通需求”，也应优先把这些中文意图映射到 OpenSpec 的官方产物：
-
-- `方案` → `proposal.md` + `design.md`
-- `计划` → `tasks.md`
-- `规范 / 规则` → `spec.md`
-- `需求沟通 / 先分析 / 先梳理` → 先收敛问题空间，再决定进入 `/opsx:explore`、`/opsx:propose` 或分步流程
-
-这部分映射规则详见 `references/intent-to-openspec-mapping.md`。
-
-除非用户明确要求其他语言，否则这些产物的文档内容本身也应使用中文，而不只是桥接说明使用中文。
-
-真正给 agent 的触发边界、默认映射和执行规则，以 `SKILL.md` 为准。
-
-## 命令方式使用
-
-如果当前环境支持 skill 命令方式，优先通过本项目 skill 入口使用：
-
-```text
-/superpowers-openspec
-```
-
-这个命令的作用不是直接替代 `/opsx:*`，而是先进入本桥接 skill，由它根据你的中文意图给出下一步应该使用的官方 OpenSpec / OPSX 命令。
-
-推荐用法：
-
-- 先输入你的真实需求
-- 再通过 `/superpowers-openspec` 进入桥接层
-- 由桥接层判断下一步应走 `/opsx:explore`、`/opsx:propose`、`/opsx:new`、`/opsx:ff`、`/opsx:apply` 或 `/opsx:archive`
-
-例如：
-
-```text
-帮我设计并实现短信发送功能
-/superpowers-openspec
-```
-
-```text
-先把这个功能的方案和开发计划定下来
-/superpowers-openspec
-```
-
-```text
-先沟通需求，再决定怎么规范
-/superpowers-openspec
-```
-
-进入 `/superpowers-openspec` 之后，后续通常会得到如下官方命令建议：
-
-### 1. 先探索需求
-
-适用场景：
-
-- 需求零散
-- 来自会议纪要、聊天记录或口语描述
-- 还有很多假设、依赖、验收口径没定
-
-建议命令：
-
-```text
-/opsx:explore
-```
-
-典型说法：
-
-- `先帮我整理需求，再决定怎么规范`
-- `先沟通一下需求`
-- `先把问题空间摸清楚`
-
-### 2. 直接进入规划
-
-适用场景：
-
-- 需求边界清晰
-- 已明确要先写方案、规范或设计
-
-建议命令：
-
-```text
-/opsx:propose
-```
-
-典型说法：
-
-- `先写 spec`
-- `先做详细设计`
-- `先把方案定下来`
-
-### 3. 分步生成 proposal / spec / design / tasks
-
-适用场景：
-
-- 想先建 change
-- 希望边生成边确认
-
-建议命令：
-
-```text
-/opsx:new
-/opsx:continue
-```
-
-典型说法：
-
-- `我想一步一步来`
-- `先建 change，再逐步补 proposal 和 design`
-
-### 4. 一次性生成完整规划产物
-
-适用场景：
-
-- 需求已经清楚
-- 不想分步确认
-
-建议命令：
-
-```text
-/opsx:ff
-```
-
-典型说法：
-
-- `直接把 proposal、spec、design、tasks 一次搞出来`
-- `不想一步一步来，直接全出`
-
-### 5. 开始实现
-
-前提：
-
+- `docs/solutions/*.md`
 - `proposal.md`
 - `spec.md`
 - `design.md`
 - `tasks.md`
-
-已经确认完成。
-
-建议命令：
-
-```text
-/opsx:apply
-```
-
-### 6. 归档
-
-适用场景：
-
-- 本次变更已经完成
-- 不再作为活跃 change 继续推进
-
-建议命令：
-
-```text
-/opsx:archive
-```
-
-### 命令方式的使用原则
-
-- 优先用 `/superpowers-openspec` 作为本项目 skill 的命令入口
-- `/superpowers-openspec` 负责桥接，真正落地执行时再进入官方 `/opsx:*`
-- 如果一句话里同时出现“设计 / 方案 / 计划”和“实现 / 落地”，不要直接跳到实现命令，先用 `/superpowers-openspec`
-- 如果输出 Mermaid 图，最后必须做一次自检，确认没有明显语法错误
-- 除非用户明确要求其他语言，否则命令生成的文档内容本身也必须使用中文
-- 如果不确定该用哪个命令，优先从 `/opsx:explore` 开始
+- 相关补充说明
 
 ## 参考文档
 
+- `references/planning-workflow.md`
 - `references/openspec-directory-structure.md`
 - `references/openspec-command-examples.md`
 - `references/intent-to-openspec-mapping.md`
