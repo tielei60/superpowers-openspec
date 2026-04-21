@@ -133,15 +133,15 @@
       "id": 17,
       "tags": ["方案先行类", "门禁类"],
       "prompt": "先帮我落地一个完整 markdown 方案文档，确认没问题后再生成 OpenSpec 任务。",
-      "expected_output": "应进入面向 OpenSpec 的方案、规范与计划工作流；先生成 docs/solutions/<topic>.md，且文档必须为中文；在用户确认方案文档前，不应创建或更新 OpenSpec change，也不应直接进入 /opsx:*。",
+      "expected_output": "应进入面向 OpenSpec 的方案、规范与计划工作流；先生成 docs/solutions/<主题>.md，且文档正文和文件名都必须为中文；在用户确认方案文档前，不应创建或更新 OpenSpec change，也不应直接进入 /opsx:*。",
       "not_expected": "不应跳过 docs/solutions/*.md 直接生成 proposal.md、spec.md、design.md 或 tasks.md；不应把方案文档写成英文；不应在用户确认前创建 OpenSpec change。",
       "files": []
     },
     {
       "id": 18,
       "tags": ["多方案来源类", "来源引用类"],
-      "prompt": "请基于 docs/solutions/1.md 和 docs/solutions/2.md 创建一个 OpenSpec change。",
-      "expected_output": "应支持一个 OpenSpec change 来源于多个已确认方案文档；proposal.md 中应包含“来源方案文档”章节，并列出 docs/solutions/1.md 与 docs/solutions/2.md；后续再生成或更新 spec.md、design.md 和 tasks.md。",
+      "prompt": "请基于 docs/solutions/方案一.md 和 docs/solutions/方案二.md 创建一个 OpenSpec change。",
+      "expected_output": "应支持一个 OpenSpec change 来源于多个已确认方案文档；proposal.md 中应包含“来源方案文档”章节，并列出 docs/solutions/方案一.md 与 docs/solutions/方案二.md；后续再生成或更新 spec.md、design.md 和 tasks.md。",
       "not_expected": "不应新增 sources.md 或 source-docs.md；不应把 docs/solutions/*.md 描述为 OpenSpec 官方 artifact；不应丢失任一来源文档。",
       "files": []
     },

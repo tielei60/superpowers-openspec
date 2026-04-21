@@ -136,7 +136,7 @@ description: >
 
 执行规则：
 
-1. 先生成 `docs/solutions/<topic>.md`，正文必须使用中文。
+1. 先生成 `docs/solutions/<主题>.md`，正文和文件名都必须使用中文，不使用英文文件名或纯数字文件名。
 2. 方案文档必须便于用户完整评审，至少覆盖背景、目标、非目标、已确认决策、关键取舍、方案设计、风险、待确认问题和验收标准。
 3. 如果架构、流程、状态、时序或页面结构仅靠文字难以表达，应在方案文档中补充 Mermaid 或 ASCII 图示。
 4. 在请求用户确认方案文档前，询问用户是否需要先做一次“方案文档自我闭环验证”。
@@ -153,7 +153,7 @@ description: >
 
 本变更基于以下已确认方案文档生成：
 
-- `docs/solutions/example-solution.md`
+- `docs/solutions/示例方案.md`
 ```
 
 如果来源是多个方案文档，应全部列出。不要新增 `sources.md` 或 `source-docs.md`。
@@ -242,7 +242,7 @@ description: >
   - 收敛后进入 `/opsx:propose`
 
 - 用户明确要先写方案
-  - 如果用户要求完整 markdown 方案或先确认可完整评审的方案，先生成 `docs/solutions/<topic>.md`
+  - 如果用户要求完整 markdown 方案或先确认可完整评审的方案，先生成 `docs/solutions/<主题>.md`
   - 用户确认方案文档前，不进入 OpenSpec change
   - 用户确认后，`proposal.md` 需引用来源方案文档
   - 关注 `proposal.md` 与 `design.md`
@@ -298,7 +298,7 @@ description: >
 
 输出至少应包含以下结果：
 
-- 如果进入完整方案文档先行流程，说明应先生成 `docs/solutions/<topic>.md` 并等待用户确认
+- 如果进入完整方案文档先行流程，说明应先生成 `docs/solutions/<主题>.md` 并等待用户确认
 - 在请求用户确认方案文档前，询问是否需要先做方案文档自我闭环验证
 - 如果已经进入 OpenSpec 阶段，选择当前应执行的 `/opsx:*` 命令
 - 说明当前应生成或更新的 OpenSpec 产物，例如 `proposal.md`、`spec.md`、`design.md`、`tasks.md`
@@ -312,7 +312,7 @@ description: >
 
 本 skill 在完成以下事项后即停止，不再继续展开：
 
-1. 如果进入完整方案文档先行流程，已生成或说明应生成 `docs/solutions/<topic>.md`，并询问用户是否需要先做自我闭环验证
+1. 如果进入完整方案文档先行流程，已生成或说明应生成 `docs/solutions/<主题>.md`，并询问用户是否需要先做自我闭环验证
 2. 如果进入 OpenSpec 阶段，已明确给出当前应执行的 `/opsx:*` 命令
 3. 已说明当前阶段应生成或更新哪些 OpenSpec 产物
 4. 已声明当前仍处于规范阶段，不应直接进入实现

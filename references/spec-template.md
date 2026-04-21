@@ -36,7 +36,7 @@
 
 本变更基于以下已确认方案文档生成：
 
-- `docs/solutions/<topic>.md`
+- `docs/solutions/<主题>.md`
 ```
 
 为减少返工，`proposal.md` 还建议明确：

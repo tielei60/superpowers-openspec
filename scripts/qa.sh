@@ -345,7 +345,7 @@ checks = {
     "命令示例含可选自检说明": "询问是否需要先做方案文档自我闭环验证" in commands and "不是强制步骤" in commands,
     "输出示例含可选自检说明": "询问是否需要方案文档自我闭环验证" in output and "不是强制步骤" in output,
     "reference 禁止 sources.md": "不新增 `sources.md`" in workflow and "source-docs.md" in workflow,
-    "spec-template 含来源引用": "来源方案文档" in template and "docs/solutions/<topic>.md" in template,
+    "spec-template 含来源引用": "来源方案文档" in template and "docs/solutions/<主题>.md" in template,
     "spec-checklist 含同步检查": "是否检查并同步另一侧" in checklist,
     "spec-checklist 含可选自检检查": "是否询问用户是否需要方案文档自我闭环验证" in checklist and "强制步骤" in checklist,
     "source-input 区分 transcript 与方案文档": "docs/solutions/*.md" in source and "默认不保存完整对话过程" in source,

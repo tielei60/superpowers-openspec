@@ -31,7 +31,7 @@ OpenSpec 仍然以官方产物为准：
 
 ```text
 讨论需求与约束
-  -> 生成 docs/solutions/<topic>.md
+  -> 生成 docs/solutions/<主题>.md
   -> 询问用户是否需要方案文档自我闭环验证
   -> 用户确认方案文档
   -> 创建或更新 OpenSpec change
@@ -48,7 +48,7 @@ OpenSpec 仍然以官方产物为准：
 
 ## 方案文档模板
 
-`docs/solutions/*.md` 必须使用中文。建议结构：
+`docs/solutions/*.md` 必须使用中文，文件名本身也必须使用中文，不使用英文文件名或纯数字文件名。建议结构：
 
 ```md
 # 方案：<标题>
@@ -128,7 +128,7 @@ OpenSpec change 不新增 `sources.md` 或 `source-docs.md`。来源关系写入
 
 本变更基于以下已确认方案文档生成：
 
-- `docs/solutions/example-solution.md`
+- `docs/solutions/示例方案.md`
 ```
 
 多文档来源：
@@ -138,8 +138,8 @@ OpenSpec change 不新增 `sources.md` 或 `source-docs.md`。来源关系写入
 
 本变更基于以下已确认方案文档生成：
 
-- `docs/solutions/1.md`
-- `docs/solutions/2.md`
+- `docs/solutions/方案一.md`
+- `docs/solutions/方案二.md`
 ```
 
 该章节应靠近 `proposal.md` 顶部，保证用户和 agent 都能先看到变更来源。
@@ -162,7 +162,7 @@ OpenSpec change 不新增 `sources.md` 或 `source-docs.md`。来源关系写入
 预期先生成：
 
 ```text
-docs/solutions/<topic>.md
+docs/solutions/<主题>.md
 ```
 
 用户确认后再生成或更新：
@@ -177,7 +177,7 @@ openspec/changes/<change-name>/specs/<capability>/spec.md
 多方案：
 
 ```text
-请基于 `docs/solutions/1.md` 和 `docs/solutions/2.md` 创建一个 OpenSpec change。
+请基于 `docs/solutions/方案一.md` 和 `docs/solutions/方案二.md` 创建一个 OpenSpec change。
 ```
 
 预期：

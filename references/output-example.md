@@ -151,14 +151,14 @@
 - 用户明确要求完整方案文档
 - 需要先形成便于用户评审的中文方案来源
 - 判断：进入面向 OpenSpec 的方案、规范与计划工作流
-- 阶段：先生成 `docs/solutions/<topic>.md`，暂不进入 `/opsx:*`
+- 阶段：先生成 `docs/solutions/<主题>.md`，暂不进入 `/opsx:*`
 
 ### 输出
 
 **当前建议的第一步：**
 
 ```text
-生成 docs/solutions/<topic>.md
+生成 docs/solutions/<主题>.md
 ```
 
 方案文档必须使用中文，并覆盖背景、目标、非目标、已确认决策、关键取舍、方案设计、风险、待确认问题和验收标准。若涉及复杂架构、流程、状态、时序或页面结构，应补充 Mermaid 或 ASCII 图示。
@@ -176,14 +176,14 @@
 
 本变更基于以下已确认方案文档生成：
 
-- `docs/solutions/<topic>.md`
+- `docs/solutions/<主题>.md`
 ```
 
 ## 示例四：多方案文档生成同一个 change
 
 ### 用户输入
 
-> 请基于 `docs/solutions/1.md` 和 `docs/solutions/2.md` 创建一个 OpenSpec change。
+> 请基于 `docs/solutions/方案一.md` 和 `docs/solutions/方案二.md` 创建一个 OpenSpec change。
 
 ### 输出
 
@@ -194,8 +194,8 @@
 
 本变更基于以下已确认方案文档生成：
 
-- `docs/solutions/1.md`
-- `docs/solutions/2.md`
+- `docs/solutions/方案一.md`
+- `docs/solutions/方案二.md`
 ```
 
 不要新增 `sources.md` 或 `source-docs.md`。来源关系放在 OpenSpec 官方产物 `proposal.md` 中。

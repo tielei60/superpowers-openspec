@@ -42,7 +42,7 @@
 
 ```text
 用户意图
-  -> docs/solutions/<topic>.md
+  -> docs/solutions/<主题>.md
   -> 询问是否需要方案文档自我闭环验证
   -> 用户确认方案文档
   -> openspec/changes/<change-name>/
@@ -55,12 +55,13 @@
 当用户希望先完整确认方案，再进入 OpenSpec 规范和计划拆解时，先生成：
 
 ```text
-docs/solutions/<topic>.md
+docs/solutions/<主题>.md
 ```
 
 要求：
 
 - 方案文档必须使用中文
+- 方案文档文件名也必须使用中文，不使用英文文件名或纯数字文件名
 - 内容应便于用户完整评审
 - 请求用户确认前，应询问是否需要先做方案文档自我闭环验证
 - 自我闭环验证由用户决定，不是强制步骤
@@ -115,7 +116,7 @@ OpenSpec change 来源于方案文档时，不新增 `sources.md` 或 `source-do
 
 本变更基于以下已确认方案文档生成：
 
-- `docs/solutions/example-solution.md`
+- `docs/solutions/示例方案.md`
 ```
 
 多个方案文档生成一个 change 时：
@@ -125,8 +126,8 @@ OpenSpec change 来源于方案文档时，不新增 `sources.md` 或 `source-do
 
 本变更基于以下已确认方案文档生成：
 
-- `docs/solutions/1.md`
-- `docs/solutions/2.md`
+- `docs/solutions/方案一.md`
+- `docs/solutions/方案二.md`
 ```
 
 ## 方案、规范、计划的对应关系
@@ -192,7 +193,7 @@ openspec/
 多方案：基于多个方案文档生成 OpenSpec change
 
 ```text
-请基于 `docs/solutions/1.md` 和 `docs/solutions/2.md` 创建一个 OpenSpec change。
+请基于 `docs/solutions/方案一.md` 和 `docs/solutions/方案二.md` 创建一个 OpenSpec change。
 /superpowers-openspec
 ```
 

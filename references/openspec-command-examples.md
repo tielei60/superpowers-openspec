@@ -172,7 +172,7 @@
 
 推荐处理：
 
-- 先生成 `docs/solutions/<topic>.md`
+- 先生成 `docs/solutions/<主题>.md`
 - 方案文档必须使用中文
 - 请求用户确认方案文档前，询问是否需要先做方案文档自我闭环验证
 - 自我闭环验证由用户决定，不是强制步骤
@@ -190,7 +190,7 @@
 
 用户表达：
 
-- `基于 docs/solutions/1.md 和 docs/solutions/2.md 创建 OpenSpec change`
+- `基于 docs/solutions/方案一.md 和 docs/solutions/方案二.md 创建 OpenSpec change`
 - `把这两个方案合成一个 OpenSpec 计划`
 
 推荐处理：
@@ -206,8 +206,8 @@
 
 本变更基于以下已确认方案文档生成：
 
-- `docs/solutions/1.md`
-- `docs/solutions/2.md`
+- `docs/solutions/方案一.md`
+- `docs/solutions/方案二.md`
 ```
 
 ### 12. 用户明确表示复杂关系单靠文字讲不清，或主动要求补图
@@ -288,7 +288,7 @@
 - `如果需求还比较散，先用 /opsx:explore；如果需求已经清晰，直接用 /opsx:propose。`
 - `如果你想按步骤生成 proposal / spec / design / tasks，可以使用 /opsx:new + /opsx:continue。`
 - `如果你想一次生成规划产物，可以使用 /opsx:ff。`
-- `如果你想先确认完整方案文档，我会先生成 docs/solutions/<topic>.md；确认后再进入 OpenSpec change。`
+- `如果你想先确认完整方案文档，我会先生成 docs/solutions/<主题>.md；确认后再进入 OpenSpec change。`
 - `如果 change 来源于一个或多个方案文档，我会在 proposal.md 中写明来源方案文档。`
 - `如果你还想保留原始输入或对话过程，可以在 change 目录下可选增加 source-notes.md 或 transcript.md。`
 - `如果这个方案仅靠文字不够完整，我会建议在 design.md 中补 Mermaid 图；涉及页面结构时优先补 ASCII 文本布局图。`
