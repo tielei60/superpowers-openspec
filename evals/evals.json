@@ -176,6 +176,46 @@
       "expected_output": "不应强制进入 superpowers-openspec；应说明这是局部性能优化，影响范围明确且不涉及规则、流程、接口、状态、数据结构或模块边界变化，可按普通任务处理。",
       "not_expected": "不应要求生成 docs/solutions/*.md；不应要求创建 OpenSpec change；不应建议 /opsx:propose 或 /opsx:explore。",
       "files": []
+    },
+    {
+      "id": 23,
+      "tags": ["阶段切换类", "校验类"],
+      "prompt": "检查这次实现有没有偏离之前确认的 spec。",
+      "expected_output": "应在 profile 支持时映射到 /opsx:verify；说明这是验证实现与规范一致性的入口，而不是重新进入规划或实现。",
+      "not_expected": "不应重新建议 /opsx:propose 或 /opsx:apply；不应把验证实现一致性误解为重新生成 proposal.md、design.md 或 tasks.md。",
+      "files": []
+    },
+    {
+      "id": 24,
+      "tags": ["阶段切换类", "同步类"],
+      "prompt": "把 changes 里的变更规范同步回主 specs。",
+      "expected_output": "应在 profile 支持时映射到 /opsx:sync；说明这是把变更 spec 同步回主规范的入口，而不是重新规划当前 change。",
+      "not_expected": "不应重新建议 /opsx:propose；不应把同步主规范误解为归档或直接进入实现；不应要求重新生成整套规划产物。",
+      "files": []
+    },
+    {
+      "id": 25,
+      "tags": ["误触发类", "边界类", "性能类"],
+      "prompt": "这个慢查询只是查得太慢了，先帮我分析原因，必要的话给我一个修复计划，但不改规则、不改接口。",
+      "expected_output": "不应强制进入 superpowers-openspec；应识别这是局部性能排查/修复任务，可按普通调试或优化任务处理。可以分析原因，也可以给修复计划，但不应拉进 OpenSpec 规范阶段。",
+      "not_expected": "不应因为用户提到“计划”就建议 /opsx:explore、/opsx:propose 或创建 OpenSpec change；不应要求生成 proposal.md、spec.md、design.md 或 tasks.md。",
+      "files": []
+    },
+    {
+      "id": 26,
+      "tags": ["误触发类", "边界类", "重构类"],
+      "prompt": "把这个模块内部重构一下，保持对外接口和行为不变，顺手给个实施计划。",
+      "expected_output": "不应强制进入 superpowers-openspec；应识别这是保持外部行为不变的内部重构任务，可按普通重构任务处理。即使用户提到“实施计划”，也不应默认进入 OpenSpec 规范阶段。",
+      "not_expected": "不应把这类内部重构直接映射到 /opsx:explore、/opsx:propose 或 /opsx:ff；不应要求创建 OpenSpec change；不应把“实施计划”误解为必须产出 tasks.md。",
+      "files": []
+    },
+    {
+      "id": 27,
+      "tags": ["误触发类", "边界类", "样式类"],
+      "prompt": "先分析一下这个页面的样式错位，修掉就行，不需要方案。",
+      "expected_output": "不应强制进入 superpowers-openspec；应识别这是局部样式修复任务，可按普通问题定位和修复处理，且应尊重用户“不需要方案”的明确要求。",
+      "not_expected": "不应建议 /opsx:explore、/opsx:propose 或 docs/solutions/*.md；不应把样式错位问题升级到 OpenSpec 规范阶段；不应忽略用户已经明确拒绝方案。",
+      "files": []
     }
   ]
 }

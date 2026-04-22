@@ -1,14 +1,18 @@
 # superpowers-openspec
 
-`superpowers-openspec` 是一个**面向 OpenSpec 的方案、规范与计划工作流**。
-
-它解决的问题是：用户经常会先说“帮我分析、写方案、写规范、写计划”，但 OpenSpec 的产物会分散在 `proposal.md`、`spec.md`、`design.md`、`tasks.md` 中。这个 skill 负责先判断当前应该沉淀方案、定义规范、拆解计划，还是进入官方 `/opsx:*` 流程。
+`superpowers-openspec` 是一个面向 OpenSpec 的方案、规范与计划工作流 skill。
 
 一句话概括：
 
 ```text
 方案先确认，规范再承接，计划再落地。
 ```
+
+## 定位
+
+- 负责把中文的需求沟通、方案、规范、计划意图，稳定路由到官方 OpenSpec / OPSX 工作流
+- 不重定义 OpenSpec 官方目录、命令或产物
+- 详细规则以 `SKILL.md` 为准；`README.md` 只保留快速使用说明
 
 ## 适合什么时候用
 
@@ -28,144 +32,15 @@
 - 单点技术修复或局部性能优化，影响范围明确且无需新增规范
 - 用户只要求快速定位问题或直接给出修复建议
 
-## 核心工作流
+## 快速使用
+
+如果环境支持 skill 命令方式，先进入：
 
 ```text
-用户意图
-  -> 判断是否需要完整方案文档
-  -> 判断应进入哪个 OpenSpec / OPSX 阶段
-  -> 生成或更新 proposal / spec / design / tasks
-  -> 规范确认后再进入实现
+/superpowers-openspec
 ```
 
-如果用户要求先确认完整方案文档，则多一步：
-
-```text
-用户意图
-  -> docs/solutions/<主题>.md
-  -> 询问是否需要方案文档自我闭环验证
-  -> 用户确认方案文档
-  -> openspec/changes/<change-name>/
-  -> proposal.md 引用来源方案文档
-  -> spec.md / design.md / tasks.md
-```
-
-## 方案文档先行
-
-当用户希望先完整确认方案，再进入 OpenSpec 规范和计划拆解时，先生成：
-
-```text
-docs/solutions/<主题>.md
-```
-
-要求：
-
-- 方案文档必须使用中文
-- 方案文档文件名也必须使用中文，不使用英文文件名或纯数字文件名
-- 内容应便于用户完整评审
-- 请求用户确认前，应询问是否需要先做方案文档自我闭环验证
-- 自我闭环验证由用户决定，不是强制步骤
-- 用户确认前，不创建或更新 OpenSpec change
-- 用户确认后，再进入 `/opsx:*`
-- `docs/solutions/*.md` 不是 OpenSpec 官方 artifact，而是本 skill 约定的上游方案来源
-
-方案文档应覆盖：
-
-- 背景
-- 目标
-- 非目标
-- 已确认决策
-- 关键取舍
-- 方案设计
-- 风险与兼容性影响
-- 待确认问题
-- 验收标准
-
-如果方案涉及复杂架构、流程、状态、时序或页面结构，应补 Mermaid 或 ASCII 图示。
-
-### 可选的自我闭环验证
-
-在把方案文档交给用户确认前，agent 应先询问：
-
-```text
-是否需要我先对这份方案文档做一次自我闭环验证，再交给你确认？
-```
-
-如果用户选择需要，验证重点包括：
-
-- 目标和非目标是否清楚
-- 已确认决策是否完整
-- 关键取舍是否说明原因
-- 方案设计是否可落地
-- 待确认问题是否显式列出
-- 风险、兼容性和迁移影响是否覆盖
-- 验收标准是否可验证
-- Mermaid 或 ASCII 图示是否必要且完整
-- OpenSpec 拆分建议是否能承接到 `proposal.md`、`spec.md`、`design.md`、`tasks.md`
-
-如果用户选择不需要，直接进入用户确认环节。
-
-## 来源关系
-
-OpenSpec change 来源于方案文档时，不新增 `sources.md` 或 `source-docs.md`。
-
-来源关系写在 `proposal.md` 中：
-
-```md
-## 来源方案文档
-
-本变更基于以下已确认方案文档生成：
-
-- `docs/solutions/示例方案.md`
-```
-
-多个方案文档生成一个 change 时：
-
-```md
-## 来源方案文档
-
-本变更基于以下已确认方案文档生成：
-
-- `docs/solutions/方案一.md`
-- `docs/solutions/方案二.md`
-```
-
-## 方案、规范、计划的对应关系
-
-| 用户说法 | 默认含义 | 主要产物 |
-| --- | --- | --- |
-| 完整方案文档 | 先形成便于用户评审的上游方案 | `docs/solutions/*.md` |
-| 方案 | 为什么做、做什么、怎么设计 | `proposal.md`、`design.md` |
-| 规范 / 规则 / 行为定义 | 行为约束、场景和边界 | `spec.md` |
-| 计划 / 开发计划 | 可执行任务拆解 | `tasks.md` |
-| 需求沟通 / 先分析 / 先梳理 | 先收敛问题空间 | `/opsx:explore` |
-
-## OpenSpec 官方目录
-
-OpenSpec 的官方目录语义以 `openspec/` 为准：
-
-```text
-openspec/
-├── specs/
-│   └── <capability>/
-│       └── spec.md
-└── changes/
-    └── <change-name>/
-        ├── proposal.md
-        ├── design.md
-        ├── tasks.md
-        └── specs/
-            └── <capability>/
-                └── spec.md
-```
-
-其中：
-
-- `openspec/specs/` 表示当前事实规范
-- `openspec/changes/` 表示单次变更工作区
-- `docs/solutions/*.md` 是本 skill 的方案来源文档，不是 OpenSpec 官方 artifact
-
-## OPSX 命令选择
+然后根据场景选择后续入口：
 
 | 场景 | 建议入口 |
 | --- | --- |
@@ -174,91 +49,102 @@ openspec/
 | 希望分步生成产物 | `/opsx:new` + `/opsx:continue` |
 | 希望一次生成全部规划产物 | `/opsx:ff` |
 | 规范已确认，开始实现 | `/opsx:apply` |
+| 校验实现是否符合规范 | `/opsx:verify`（profile 支持时） |
+| 把变更规范同步回主规范 | `/opsx:sync`（profile 支持时） |
 | 变更完成，准备归档 | `/opsx:archive` |
 
-如所选 profile 支持，还可以使用：
+## 关键门禁
 
-- `/opsx:verify`：验证实现是否符合规范
-- `/opsx:sync`：把变更 spec 同步回主规范
+### 完整方案文档先行
 
-## 使用示例
-
-单方案：先写完整方案文档
+当用户要求先确认完整方案文档时，第一步是生成：
 
 ```text
-先帮我写一个完整方案文档，确认后再生成 OpenSpec change。
-/superpowers-openspec
+docs/solutions/<主题>.md
 ```
 
-多方案：基于多个方案文档生成 OpenSpec change
+最小要求：
 
-```text
-请基于 `docs/solutions/方案一.md` 和 `docs/solutions/方案二.md` 创建一个 OpenSpec change。
-/superpowers-openspec
+- 正文和文件名都必须使用中文，不使用英文文件名或纯数字文件名
+- 请求用户确认前，先询问是否需要方案文档自我闭环验证
+- 自我闭环验证由用户决定，不是强制步骤
+- 用户确认前，不创建或更新 OpenSpec change，也不直接进入 `/opsx:*`
+- 如果 OpenSpec change 来源于方案文档，`proposal.md` 必须包含“来源方案文档”章节
+
+完整流程、模板和同步规则见 `references/planning-workflow.md`。
+
+### 规范阶段门禁
+
+- 还处于方案、规范、计划阶段时，不应直接进入 `/opsx:apply`
+- 如果假设、依赖、迁移、兼容性或验收口径仍未明确，优先 `/opsx:explore`，或使用 `/opsx:new` + `/opsx:continue` 分步补齐
+- 如果 change 来源于一个或多个方案文档，来源关系写入 `proposal.md`，不要新增 `sources.md` 或 `source-docs.md`
+
+### 表达完整性门禁
+
+- 架构、流程、状态、时序等复杂关系，优先 Mermaid
+- 页面、表单、列表、弹窗等结构说明，优先 ASCII 文本布局图
+- 如果输出 Mermaid 图，交付前必须自检
+- 除非用户明确要求其他语言，否则文档内容本身必须使用中文
+
+图示和产物分工见 `references/spec-template.md`，输出形态见 `references/output-example.md`。
+
+## 最小映射
+
+| 用户表达 | 默认处理 |
+| --- | --- |
+| `先沟通需求，再把功能做出来` | 先 `/opsx:explore` |
+| `先把方案和开发计划定下来` | 优先进入规范阶段，再决定 `/opsx:propose`、`/opsx:new` + `/opsx:continue` 或 `/opsx:ff` |
+| `先帮我写完整方案文档，确认后再生成 change` | 先 `docs/solutions/*.md`，确认后再进入 `/opsx:*` |
+| `规划好了，开始实现` | `/opsx:apply` |
+| `检查实现有没有偏离 spec` | `/opsx:verify`（profile 支持时） |
+
+更细的中文意图映射见 `references/intent-to-openspec-mapping.md`，命令判断示例见 `references/openspec-command-examples.md`。
+
+## 文档分工
+
+- `SKILL.md`
+  - 权威规则来源，保留触发条件、门禁、停止条件和默认映射
+- `references/planning-workflow.md`
+  - 完整方案文档先行流程、模板、自检和同步规则
+- `references/openspec-command-examples.md`
+  - 从用户表达映射到 `/opsx:*` 的命令选择示例
+- `references/output-example.md`
+  - 标准输出形态和端到端响应示例
+- `references/spec-template.md`
+  - `proposal.md`、`spec.md`、`design.md`、`tasks.md` 的承载建议
+- `references/spec-checklist.md`
+  - 对齐检查清单
+- `references/source-input-recording.md`
+  - `source-notes.md` 与 `transcript.md` 的可选补充约定
+
+## 本地 A/B 回归
+
+仓库提供了一个本地可执行的 A/B benchmark 辅助脚本：
+
+```bash
+python3 scripts/abtest_regression.py check
+python3 scripts/abtest_regression.py check --report .abtest/generated/check-report.json
+python3 scripts/abtest_regression.py sync --report .abtest/generated/sync-report.json
+python3 scripts/abtest_regression.py sync
+python3 scripts/abtest_regression.py score --mode with_skill
+python3 scripts/abtest_regression.py score --abtest-dir tests/fixtures/abtest --mode both --only q1,q6 --require-complete
+python3 scripts/abtest_regression.py score --mode both --only q1,q6 --report .abtest/generated/score-report.json
 ```
 
-先定方案和计划：
+- `check`
+  - 校验跟踪配置与 `evals/evals.json` 及本地 `.abtest` 提示集是否一致
+  - 可通过 `--report <path>` 输出 JSON 报告，便于后续接 CI 或批量比对
+- `sync`
+  - 从跟踪配置生成本地 `.abtest/with_skill/questions.json` 和 `.abtest/without_skill/questions.json`
+  - 可通过 `--report <path>` 输出 JSON 报告；也可通过 `--abtest-dir <dir>` 指定目标目录
+- `score`
+  - 对 `.abtest/generated/` 下的本地生成输出做机器评分
+  - 可通过 `--report <path>` 输出 JSON 报告，便于后续接 CI 或批量比对
+  - 可通过 `--abtest-dir <dir>` 指向任意 benchmark 目录，例如仓库内的 `tests/fixtures/abtest`
 
-```text
-先把这个功能的方案和开发计划定下来，后面再落地。
-/superpowers-openspec
-```
+脚本也支持 `--evals-path` 和 `--cases-path`，便于在测试或临时实验中替换输入配置，而不影响仓库默认文件。
 
-设计并实现，但先进入规范阶段：
-
-```text
-帮我设计并实现短信发送功能。
-/superpowers-openspec
-```
-
-输入零散，先探索：
-
-```text
-这是会议纪要，你先帮我整理需求，再决定怎么规范。
-/superpowers-openspec
-```
-
-## 同步规则
-
-方案文档和 OpenSpec 产物允许表达形式不同，但不应语义漂移。
-
-- 如果方案文档发生实质变化，需要检查并更新对应 OpenSpec change 的 `proposal.md`、`spec.md`、`design.md` 和 `tasks.md`
-- 如果 OpenSpec 产物发生实质变化，需要回写或更新对应方案文档
-- 如果变化只影响执行拆分，不改变已确认方案，可以只更新 `tasks.md`，但仍需确认 `proposal.md` 与方案文档一致
-- 如果两者暂时不同步，必须明确告知用户，不能假装已经一致
-
-## 图示要求
-
-如果仅靠文字不足以完整表达方案，应补图：
-
-- 架构关系、模块边界、数据流：优先 Mermaid
-- 业务流程、审批路径、状态流转：优先 Mermaid `flowchart` 或 `stateDiagram`
-- 多角色、多服务、异步交互：优先 Mermaid `sequenceDiagram`
-- 页面、表单、列表、弹窗结构：优先 ASCII 文本布局图
-
-图示是 `docs/solutions/*.md`、`design.md` 或相关设计说明的一部分，不是 OpenSpec 官方新增 artifact。
-
-如果输出 Mermaid 图，最后必须自检：代码块 fence、图类型、节点标识、括号与连线是否正确。
-
-## 原始输入记录
-
-如果用户明确要求保留原始输入、会议纪要原文或对话过程，可以在当前 change 目录下可选补充：
-
-- `source-notes.md`
-- `transcript.md`
-
-这两个文件只是可选补充，不是 OpenSpec 官方默认 artifact，也不替代 `docs/solutions/*.md`、`proposal.md`、`spec.md`、`design.md` 或 `tasks.md`。
-
-## 语言要求
-
-除非用户明确要求其他语言，否则所有说明和文档正文都必须使用中文，包括：
-
-- `docs/solutions/*.md`
-- `proposal.md`
-- `spec.md`
-- `design.md`
-- `tasks.md`
-- 相关补充说明
+`.abtest/` 是本地工作目录，不属于默认提交内容。
 
 ## 参考文档
 

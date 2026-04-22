@@ -148,7 +148,7 @@ with open("evals/evals.json") as f:
 
 required_cmds = [
     "/opsx:explore", "/opsx:propose", "/opsx:ff",
-    "/opsx:apply", "/opsx:archive",
+    "/opsx:apply", "/opsx:verify", "/opsx:sync", "/opsx:archive",
 ]
 covered = set()
 for ev in data["evals"]:
@@ -338,8 +338,10 @@ checks = {
     "SKILL.md 含 docs/solutions 门禁": "docs/solutions/" in skill and "用户确认" in skill and "不应创建或更新 OpenSpec change" in skill,
     "SKILL.md 含 proposal 来源引用": "来源方案文档" in skill and "proposal.md" in skill,
     "SKILL.md 含可选自检询问": "自我闭环验证" in skill and "询问用户" in skill and "不是强制门禁" in skill,
-    "README.md 含使用说明": "docs/solutions/" in readme and "来源方案文档" in readme and "单方案" in readme and "多方案" in readme,
+    "README.md 标明 quickstart 定位": "README.md` 只保留快速使用说明" in readme or "README 只保留快速使用说明" in readme,
+    "README.md 含使用说明": "docs/solutions/" in readme and "来源方案文档" in readme and "快速使用" in readme,
     "README.md 含可选自检说明": "自我闭环验证由用户决定" in readme and "不是强制步骤" in readme,
+    "README.md 含参考分工": "文档分工" in readme and "references/planning-workflow.md" in readme and "references/output-example.md" in readme,
     "reference 含中文模板": "# 方案：<标题>" in workflow and "必须使用中文" in workflow,
     "reference 含可选自检说明": "自我闭环验证不是强制门禁" in workflow and "由用户决定" in workflow,
     "命令示例含可选自检说明": "询问是否需要先做方案文档自我闭环验证" in commands and "不是强制步骤" in commands,
@@ -406,14 +408,44 @@ EOF
 if [ $? -ne 0 ]; then FAIL=$((FAIL + 1)); else PASS=$((PASS + 1)); fi
 
 # ─────────────────────────────────────────────
-# [13] .abtest questions.json 新模型关键词检查
+# [13] A/B benchmark config checks
 # ─────────────────────────────────────────────
-section "[13] .abtest questions.json alignment"
+section "[13] A/B benchmark config checks"
+if python3 scripts/abtest_regression.py check; then
+  PASS=$((PASS + 1))
+else
+  FAIL=$((FAIL + 1))
+fi
+
+# ─────────────────────────────────────────────
+# [14] Python unit tests
+# ─────────────────────────────────────────────
+section "[14] Reproducible A/B score smoke"
+if python3 scripts/abtest_regression.py score --abtest-dir tests/fixtures/abtest --mode both --only q1,q6 --require-complete; then
+  PASS=$((PASS + 1))
+else
+  FAIL=$((FAIL + 1))
+fi
+
+# ─────────────────────────────────────────────
+# [15] Python unit tests
+# ─────────────────────────────────────────────
+section "[15] Python unit tests"
+if python3 -m unittest discover -s tests -v; then
+  PASS=$((PASS + 1))
+else
+  FAIL=$((FAIL + 1))
+fi
+
+# ─────────────────────────────────────────────
+# [16] .abtest questions.json 新模型关键词检查
+# ─────────────────────────────────────────────
+section "[16] .abtest questions.json alignment"
 if [ -f ".abtest/with_skill/questions.json" ]; then
   python3 - <<'EOF'
 import json, sys
 
-keywords = ["/opsx:explore", "/opsx:propose", "/opsx:ff", "openspec/changes/", "Mermaid", "ASCII", "待确认", "验收", "方案", "计划", "规范"]
+keywords = ["/opsx:explore", "/opsx:propose", "/opsx:ff", "/opsx:verify", "/opsx:sync", "openspec/changes/", "Mermaid", "ASCII", "待确认", "验收", "方案", "计划", "规范"]
 fail = False
 
 for path in [".abtest/with_skill/questions.json", ".abtest/without_skill/questions.json"]:

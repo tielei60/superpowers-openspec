@@ -280,16 +280,8 @@
 - 用户要求完整方案文档时，跳过 `docs/solutions/*.md` 直接创建 OpenSpec change
 - 新增 `sources.md` 或 `source-docs.md` 记录来源关系，而不是写入 `proposal.md`
 
-## 对外可用话术
+## 相关文档
 
-必要时可直接给出这种说明：
-
-- `当前任务应先进入官方 OpenSpec / OPSX 规范阶段。`
-- `如果需求还比较散，先用 /opsx:explore；如果需求已经清晰，直接用 /opsx:propose。`
-- `如果你想按步骤生成 proposal / spec / design / tasks，可以使用 /opsx:new + /opsx:continue。`
-- `如果你想一次生成规划产物，可以使用 /opsx:ff。`
-- `如果你想先确认完整方案文档，我会先生成 docs/solutions/<主题>.md；确认后再进入 OpenSpec change。`
-- `如果 change 来源于一个或多个方案文档，我会在 proposal.md 中写明来源方案文档。`
-- `如果你还想保留原始输入或对话过程，可以在 change 目录下可选增加 source-notes.md 或 transcript.md。`
-- `如果这个方案仅靠文字不够完整，我会建议在 design.md 中补 Mermaid 图；涉及页面结构时优先补 ASCII 文本布局图。`
-- `如果关键假设、依赖、迁移或验收口径还没定，我会先把这些未决项列出来，再判断是先 explore，还是分步继续生成产物。`
+- 响应应该如何组织，见 `references/output-example.md`
+- 完整方案文档先行流程，见 `references/planning-workflow.md`
+- OpenSpec 产物各自承载什么内容，见 `references/spec-template.md`

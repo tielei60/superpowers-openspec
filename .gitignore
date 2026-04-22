@@ -1,2 +1,8 @@
 docs/
 CHANGELOG.md
+.abtest/
+__pycache__/
+*.pyc
+.pytest_cache/
+.mypy_cache/
+.coverage
