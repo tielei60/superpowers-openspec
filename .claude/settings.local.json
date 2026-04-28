@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(bash scripts/qa.sh)",
+      "Bash(python3 -c \"f=open\\('evals/evals.json','rb'\\); c=f.read\\(\\); f.close\\(\\); c=c.replace\\(b'\\\\xe2\\\\x80\\\\x9c',b'\\\\\"'\\).replace\\(b'\\\\xe2\\\\x80\\\\x9d',b'\\\\\"'\\).replace\\(b'\\\\xe2\\\\x80\\\\x98',b\\\\\"'\\\\\"\\).replace\\(b'\\\\xe2\\\\x80\\\\x99',b\\\\\"'\\\\\"\\); f=open\\('evals/evals.json','wb'\\); f.write\\(c\\); f.close\\(\\); print\\('done'\\)\")",
+      "Bash(python3 -m json.tool evals/evals.json)",
+      "Bash(python3)",
+      "Bash(python3 -c ' *)",
+      "Bash(git checkout *)"
+    ]
+  }
+}

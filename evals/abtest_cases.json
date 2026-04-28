@@ -5,494 +5,1030 @@
     {
       "id": "q1",
       "eval_id": 1,
-      "tags": ["触发类", "核心路由"],
+      "tags": [
+        "触发类",
+        "核心路由"
+      ],
       "prompt": "我要做一个审批模块，先别写代码，先帮我进入 OpenSpec 规范阶段。",
       "with_skill": {
         "expected": "应触发 superpowers-openspec，并优先给出当前最合适的 /opsx:* 命令、对应产物与阶段门禁。",
         "not_expected": "不应直接进入实现；不应输出旧的 docs/specs 结构。",
-        "required_commands": ["/opsx:propose"],
-        "required_artifacts": ["proposal.md"],
-        "required_mentions": ["规范阶段|不应直接进入实现|不进入实现"],
-        "forbidden_mentions": ["docs/specs/<feature>/openspec\\.md"],
-        "must_include": ["/opsx:propose", "openspec/changes/", "proposal\\.md", "规范阶段|不应直接进入实现|不进入实现"],
-        "must_exclude": ["docs/specs/<feature>/openspec\\.md"]
+        "required_commands": [
+          "/opsx:propose"
+        ],
+        "required_artifacts": [
+          "proposal.md"
+        ],
+        "required_mentions": [
+          "规范阶段|不应直接进入实现|不进入实现"
+        ],
+        "forbidden_mentions": [
+          "docs/specs/<feature>/openspec\\.md"
+        ],
+        "must_include": [
+          "/opsx:propose",
+          "openspec/changes/",
+          "proposal\\.md",
+          "规范阶段|不应直接进入实现|不进入实现"
+        ],
+        "must_exclude": [
+          "docs/specs/<feature>/openspec\\.md"
+        ]
       },
       "without_skill": {
         "expected": "更可能直接给功能分析或设计建议，而不会稳定路由到 OpenSpec / OPSX。",
-        "forbidden_commands": ["/opsx:propose"],
-        "forbidden_mentions": ["openspec/changes/"],
-        "must_exclude": ["/opsx:propose", "openspec/changes/"]
+        "forbidden_commands": [
+          "/opsx:propose"
+        ],
+        "forbidden_mentions": [
+          "openspec/changes/"
+        ],
+        "must_exclude": [
+          "/opsx:propose",
+          "openspec/changes/"
+        ]
       }
     },
     {
       "id": "q2",
       "eval_id": 2,
-      "tags": ["命令映射类", "探索类"],
+      "tags": [
+        "命令映射类",
+        "探索类"
+      ],
       "prompt": "这里是一段零散会议纪要，你先帮我整理，再决定如何进入规范。",
       "with_skill": {
         "expected": "应优先映射到 /opsx:explore，并说明后续收敛后再进入规划。",
         "not_expected": "不应跳过探索阶段直接进入实现或直接固定到 /opsx:propose。",
-        "required_commands": ["/opsx:explore"],
-        "required_mentions": ["/opsx:propose|/opsx:new", "待确认|问题空间|收敛"],
-        "forbidden_mentions": ["直接开始编码"],
-        "must_include": ["/opsx:explore", "/opsx:propose|/opsx:new", "待确认|问题空间|收敛"],
-        "must_exclude": ["直接开始编码"]
+        "required_commands": [
+          "/opsx:explore"
+        ],
+        "required_mentions": [
+          "/opsx:propose|/opsx:new",
+          "待确认|问题空间|收敛"
+        ],
+        "forbidden_mentions": [
+          "直接开始编码"
+        ],
+        "must_include": [
+          "/opsx:explore",
+          "/opsx:propose|/opsx:new",
+          "待确认|问题空间|收敛"
+        ],
+        "must_exclude": [
+          "直接开始编码"
+        ]
       },
       "without_skill": {
         "expected": "更可能直接整理需求摘要，不会稳定映射到 /opsx:explore。",
-        "forbidden_commands": ["/opsx:explore"],
-        "forbidden_mentions": ["openspec/changes/"],
-        "must_exclude": ["/opsx:explore", "openspec/changes/"]
+        "forbidden_commands": [
+          "/opsx:explore"
+        ],
+        "forbidden_mentions": [
+          "openspec/changes/"
+        ],
+        "must_exclude": [
+          "/opsx:explore",
+          "openspec/changes/"
+        ]
       }
     },
     {
       "id": "q3",
       "eval_id": 3,
-      "tags": ["命令映射类", "直接规划类"],
+      "tags": [
+        "命令映射类",
+        "直接规划类"
+      ],
       "prompt": "这个需求已经很完整了，直接告诉我该怎么按 OpenSpec 做。",
       "with_skill": {
         "expected": "应优先映射到 /opsx:propose，并明确使用 openspec/specs 与 openspec/changes 语义。",
         "not_expected": "不应把完整需求错误路由到 explore。",
-        "required_commands": ["/opsx:propose"],
-        "required_artifacts": ["proposal.md"],
-        "required_mentions": ["openspec/changes/", "中文"],
-        "forbidden_commands": ["/opsx:explore"],
-        "forbidden_mentions": ["docs/specs/<feature>/openspec\\.md"],
-        "must_include": ["/opsx:propose", "openspec/changes/", "proposal\\.md", "中文"],
-        "must_exclude": ["/opsx:explore", "docs/specs/<feature>/openspec\\.md"]
+        "required_commands": [
+          "/opsx:propose"
+        ],
+        "required_artifacts": [
+          "proposal.md"
+        ],
+        "required_mentions": [
+          "openspec/changes/",
+          "中文"
+        ],
+        "forbidden_commands": [
+          "/opsx:explore"
+        ],
+        "forbidden_mentions": [
+          "docs/specs/<feature>/openspec\\.md"
+        ],
+        "must_include": [
+          "/opsx:propose",
+          "openspec/changes/",
+          "proposal\\.md",
+          "中文"
+        ],
+        "must_exclude": [
+          "/opsx:explore",
+          "docs/specs/<feature>/openspec\\.md"
+        ]
       },
       "without_skill": {
         "expected": "更可能给出通用建议，不会稳定映射到 /opsx:propose。",
-        "forbidden_commands": ["/opsx:propose"],
-        "forbidden_mentions": ["openspec/changes/"],
-        "must_exclude": ["/opsx:propose", "openspec/changes/"]
+        "forbidden_commands": [
+          "/opsx:propose"
+        ],
+        "forbidden_mentions": [
+          "openspec/changes/"
+        ],
+        "must_exclude": [
+          "/opsx:propose",
+          "openspec/changes/"
+        ]
       }
     },
     {
       "id": "q4",
       "eval_id": 4,
-      "tags": ["误触发类", "普通修复类"],
+      "tags": [
+        "误触发类",
+        "普通修复类"
+      ],
       "prompt": "这里只是一个纯 bug 修复，不涉及规则、流程、接口或状态变化。",
       "with_skill": {
         "expected": "不应强制进入 superpowers-openspec；应按普通修复任务处理。",
         "not_expected": "不应把普通 bug 修复升级到 OpenSpec 规范阶段。",
-        "required_mentions": ["普通修复|普通任务|直接处理|交还上层"],
-        "forbidden_commands": ["/opsx:explore", "/opsx:propose"],
-        "forbidden_artifacts": ["proposal.md", "design.md", "tasks.md"],
-        "must_include": ["普通修复|普通任务|直接处理|交还上层"],
-        "must_exclude": ["/opsx:explore", "/opsx:propose", "proposal\\.md", "design\\.md", "tasks\\.md"]
+        "required_mentions": [
+          "普通修复|普通任务|直接处理|交还上层"
+        ],
+        "forbidden_commands": [
+          "/opsx:explore",
+          "/opsx:propose"
+        ],
+        "forbidden_artifacts": [
+          "proposal.md",
+          "design.md",
+          "tasks.md"
+        ],
+        "must_include": [
+          "普通修复|普通任务|直接处理|交还上层"
+        ],
+        "must_exclude": [
+          "/opsx:explore",
+          "/opsx:propose",
+          "proposal\\.md",
+          "design\\.md",
+          "tasks\\.md"
+        ]
       },
       "without_skill": {
         "expected": "普通修复建议即可。",
-        "forbidden_commands": ["/opsx:explore", "/opsx:propose"],
-        "must_exclude": ["/opsx:explore", "/opsx:propose"]
+        "forbidden_commands": [
+          "/opsx:explore",
+          "/opsx:propose"
+        ],
+        "must_exclude": [
+          "/opsx:explore",
+          "/opsx:propose"
+        ]
       }
     },
     {
       "id": "q5",
       "eval_id": 5,
-      "tags": ["原始输入类", "补充记录类"],
+      "tags": [
+        "原始输入类",
+        "补充记录类"
+      ],
       "prompt": "先按 OpenSpec 规范推进，并把我原始需求和这段对话过程也记录下来。",
       "with_skill": {
         "expected": "应继续进入 OpenSpec 规范流程，并说明可选增加 source-notes.md 或 transcript.md。",
         "not_expected": "不应把原始输入记录描述为官方强制 artifact。",
-        "must_include": ["source-notes\\.md|transcript\\.md", "可选", "OpenSpec|/opsx:"],
-        "must_exclude": ["替代 proposal\\.md"]
+        "must_include": [
+          "source-notes\\.md|transcript\\.md",
+          "可选",
+          "OpenSpec|/opsx:"
+        ],
+        "must_exclude": [
+          "替代 proposal\\.md"
+        ]
       },
       "without_skill": {
         "expected": "更可能只建议写进文档，不会稳定区分 source-notes/transcript。",
-        "must_exclude": ["source-notes\\.md", "transcript\\.md"]
+        "must_exclude": [
+          "source-notes\\.md",
+          "transcript\\.md"
+        ]
       }
     },
     {
       "id": "q6",
       "eval_id": 6,
-      "tags": ["命令映射类", "全量生成类"],
+      "tags": [
+        "命令映射类",
+        "全量生成类"
+      ],
       "prompt": "需求我已经想清楚了，不想一步一步来，直接把 proposal、spec、design、tasks 一次性都生成出来。",
       "with_skill": {
         "expected": "应映射到 /opsx:ff，并说明一次性生成全部规划产物。",
         "not_expected": "不应拆回 /opsx:new + /opsx:continue；不应直接进入实现。",
-        "required_commands": ["/opsx:ff"],
-        "required_artifacts": ["proposal.md", "design.md", "tasks.md"],
-        "required_mentions": ["不进入实现|规范阶段"],
-        "forbidden_mentions": ["/opsx:new \\+ /opsx:continue"],
-        "must_include": ["/opsx:ff", "proposal\\.md", "design\\.md", "tasks\\.md", "不进入实现|规范阶段"],
-        "must_exclude": ["/opsx:new \\+ /opsx:continue"]
+        "required_commands": [
+          "/opsx:ff"
+        ],
+        "required_artifacts": [
+          "proposal.md",
+          "design.md",
+          "tasks.md"
+        ],
+        "required_mentions": [
+          "不进入实现|规范阶段"
+        ],
+        "forbidden_mentions": [
+          "/opsx:new \\+ /opsx:continue"
+        ],
+        "must_include": [
+          "/opsx:ff",
+          "proposal\\.md",
+          "design\\.md",
+          "tasks\\.md",
+          "不进入实现|规范阶段"
+        ],
+        "must_exclude": [
+          "/opsx:new \\+ /opsx:continue"
+        ]
       },
       "without_skill": {
         "expected": "更可能直接开始写文档正文，而不是给出 /opsx:ff 路由。",
-        "forbidden_commands": ["/opsx:ff"],
-        "forbidden_mentions": ["openspec/changes/"],
-        "must_exclude": ["/opsx:ff", "openspec/changes/"]
+        "forbidden_commands": [
+          "/opsx:ff"
+        ],
+        "forbidden_mentions": [
+          "openspec/changes/"
+        ],
+        "must_exclude": [
+          "/opsx:ff",
+          "openspec/changes/"
+        ]
       }
     },
     {
       "id": "q7",
       "eval_id": 7,
-      "tags": ["阶段切换类", "实现类"],
+      "tags": [
+        "阶段切换类",
+        "实现类"
+      ],
       "prompt": "规范已经做完了，proposal、spec、design、tasks 都确认了，现在开始进入实现。",
       "with_skill": {
         "expected": "应映射到 /opsx:apply，并说明规范阶段已完成。",
         "not_expected": "不应重新回到 propose/explore。",
-        "required_commands": ["/opsx:apply"],
-        "required_mentions": ["规范阶段已完成|开始进入实现|进入实现"],
-        "forbidden_commands": ["/opsx:propose", "/opsx:explore"],
-        "must_include": ["/opsx:apply", "规范阶段已完成|开始进入实现|进入实现"],
-        "must_exclude": ["/opsx:propose", "/opsx:explore"]
+        "required_commands": [
+          "/opsx:apply"
+        ],
+        "required_mentions": [
+          "规范阶段已完成|开始进入实现|进入实现"
+        ],
+        "forbidden_commands": [
+          "/opsx:propose",
+          "/opsx:explore"
+        ],
+        "must_include": [
+          "/opsx:apply",
+          "规范阶段已完成|开始进入实现|进入实现"
+        ],
+        "must_exclude": [
+          "/opsx:propose",
+          "/opsx:explore"
+        ]
       },
       "without_skill": {
         "expected": "更可能直接给实现步骤，不会稳定提到 /opsx:apply。",
-        "forbidden_commands": ["/opsx:apply"],
-        "must_exclude": ["/opsx:apply"]
+        "forbidden_commands": [
+          "/opsx:apply"
+        ],
+        "must_exclude": [
+          "/opsx:apply"
+        ]
       }
     },
     {
       "id": "q8",
       "eval_id": 8,
-      "tags": ["阶段切换类", "归档类"],
+      "tags": [
+        "阶段切换类",
+        "归档类"
+      ],
       "prompt": "这次变更已经实现完了，想把它归档，不再作为活跃变更。",
       "with_skill": {
         "expected": "应映射到 /opsx:archive，并说明这是归档当前 change 的入口。",
         "not_expected": "不应重新回到规划或实现阶段。",
-        "required_commands": ["/opsx:archive"],
-        "required_mentions": ["归档|不再作为活跃变更|活跃工作区"],
-        "forbidden_commands": ["/opsx:propose", "/opsx:apply"],
-        "must_include": ["/opsx:archive", "归档|不再作为活跃变更|活跃工作区"],
-        "must_exclude": ["/opsx:propose", "/opsx:apply"]
+        "required_commands": [
+          "/opsx:archive"
+        ],
+        "required_mentions": [
+          "归档|不再作为活跃变更|活跃工作区"
+        ],
+        "forbidden_commands": [
+          "/opsx:propose",
+          "/opsx:apply"
+        ],
+        "must_include": [
+          "/opsx:archive",
+          "归档|不再作为活跃变更|活跃工作区"
+        ],
+        "must_exclude": [
+          "/opsx:propose",
+          "/opsx:apply"
+        ]
       },
       "without_skill": {
         "expected": "更可能给泛化归档建议，不会稳定提到 /opsx:archive。",
-        "forbidden_commands": ["/opsx:archive"],
-        "must_exclude": ["/opsx:archive"]
+        "forbidden_commands": [
+          "/opsx:archive"
+        ],
+        "must_exclude": [
+          "/opsx:archive"
+        ]
       }
     },
     {
       "id": "q9",
       "eval_id": 9,
-      "tags": ["图示策略类", "复杂关系类"],
+      "tags": [
+        "图示策略类",
+        "复杂关系类"
+      ],
       "prompt": "这个方案涉及多个模块、审批分支和异步通知，单靠文字不太容易讲清楚。先按 OpenSpec 规范推进时，要不要补图？",
       "with_skill": {
         "expected": "应明确建议补图，且优先 Mermaid，并说明落在 design.md 或相关设计说明。",
         "not_expected": "不应说图完全可有可无；不应把 Mermaid 文件重新定义成独立官方产物。",
-        "must_include": ["Mermaid", "design\\.md|设计说明", "流程|时序|架构"],
-        "must_exclude": ["完全可有可无", "architecture\\.mermaid"]
+        "must_include": [
+          "Mermaid",
+          "design\\.md|设计说明",
+          "流程|时序|架构"
+        ],
+        "must_exclude": [
+          "完全可有可无",
+          "architecture\\.mermaid"
+        ]
       },
       "without_skill": {
         "expected": "更可能泛泛建议画图，而不会稳定给出 Mermaid 与落点约束。",
-        "must_exclude": ["design\\.md"]
+        "must_exclude": [
+          "design\\.md"
+        ]
       }
     },
     {
       "id": "q10",
       "eval_id": 10,
-      "tags": ["图示策略类", "页面结构类"],
+      "tags": [
+        "图示策略类",
+        "页面结构类"
+      ],
       "prompt": "这个变更会涉及列表页、详情页和编辑弹窗，方案里页面结构怎么表达更合适？",
       "with_skill": {
         "expected": "应说明页面结构仅靠文字不够时应补图，且页面布局优先 ASCII 文本布局图。",
         "not_expected": "不应只建议继续写段落描述。",
-        "must_include": ["ASCII", "文本布局图|布局图", "design\\.md|设计说明"],
-        "must_exclude": ["强制独立 Mermaid 文件", "只写段落描述"]
+        "must_include": [
+          "ASCII",
+          "文本布局图|布局图",
+          "design\\.md|设计说明"
+        ],
+        "must_exclude": [
+          "强制独立 Mermaid 文件",
+          "只写段落描述"
+        ]
       },
       "without_skill": {
         "expected": "更可能泛泛建议画页面原型，不会稳定给出 ASCII 与 design.md 落点。",
-        "must_exclude": ["ASCII", "design\\.md"]
+        "must_exclude": [
+          "ASCII",
+          "design\\.md"
+        ]
       }
     },
     {
       "id": "q11",
       "eval_id": 11,
-      "tags": ["防返工类", "未决项类"],
+      "tags": [
+        "防返工类",
+        "未决项类"
+      ],
       "prompt": "需求方向基本确定，但第三方回调字段、历史数据迁移方式和验收口径还没定。先按 OpenSpec 推进时，能不能直接给我完整 tasks？",
       "with_skill": {
         "expected": "应指出当前仍有关键未决项，不应直接包装成完整可执行 tasks。",
         "not_expected": "不应忽略未决项直接进入实现或给最终任务清单。",
-        "must_include": ["假设|待确认|依赖|迁移|验收", "/opsx:explore|/opsx:new", "不应直接|不能直接|当前仍有关键未决项"],
-        "must_exclude": ["直接进入实现", "已完整可执行"]
+        "must_include": [
+          "假设|待确认|依赖|迁移|验收",
+          "/opsx:explore|/opsx:new",
+          "不应直接|不能直接|当前仍有关键未决项"
+        ],
+        "must_exclude": [
+          "直接进入实现",
+          "已完整可执行"
+        ]
       },
       "without_skill": {
         "expected": "更可能直接拆任务或泛泛提醒后续补细节。",
-        "must_exclude": ["/opsx:explore", "/opsx:new", "假设", "待确认"]
+        "must_exclude": [
+          "/opsx:explore",
+          "/opsx:new",
+          "假设",
+          "待确认"
+        ]
       }
     },
     {
       "id": "q12",
       "eval_id": 12,
-      "tags": ["防返工类", "兼容回滚类"],
+      "tags": [
+        "防返工类",
+        "兼容回滚类"
+      ],
       "prompt": "这次会改订单状态流和旧接口返回结构，不过兼容期多长、回滚怎么做还没想好。你先把方案按 OpenSpec 定下来。",
       "with_skill": {
         "expected": "应明确指出兼容性、状态延续和回滚属于当前需要补齐的关键内容。",
         "not_expected": "不应把这些约束留到实现时再说。",
-        "must_include": ["兼容|回滚|降级|状态延续", "proposal\\.md|spec\\.md|design\\.md", "关键内容|需要补齐"],
-        "must_exclude": ["留到实现时再说", "方案已完整"]
+        "must_include": [
+          "兼容|回滚|降级|状态延续",
+          "proposal\\.md|spec\\.md|design\\.md",
+          "关键内容|需要补齐"
+        ],
+        "must_exclude": [
+          "留到实现时再说",
+          "方案已完整"
+        ]
       },
       "without_skill": {
         "expected": "更可能只给常规方案建议，不会稳定强调兼容和回滚。",
-        "must_exclude": ["回滚", "状态延续", "降级"]
+        "must_exclude": [
+          "回滚",
+          "状态延续",
+          "降级"
+        ]
       }
     },
     {
       "id": "q13",
       "eval_id": 13,
-      "tags": ["混合意图类", "优先级类"],
+      "tags": [
+        "混合意图类",
+        "优先级类"
+      ],
       "prompt": "帮我设计并实现短信发送的功能。",
       "with_skill": {
         "expected": "应把请求识别为规范阶段入口，而不是直接编码。",
         "not_expected": "不应因为出现“实现”就跳过 OpenSpec 阶段。",
-        "required_mentions": ["superpowers-openspec|OpenSpec", "/opsx:propose|/opsx:explore", "不应直接进入实现|不直接进入实现|规范阶段"],
-        "forbidden_mentions": ["直接开始编码"],
-        "must_include": ["superpowers-openspec|OpenSpec", "/opsx:propose|/opsx:explore", "不应直接进入实现|不直接进入实现|规范阶段"],
-        "must_exclude": ["直接开始编码"]
+        "required_mentions": [
+          "superpowers-openspec|OpenSpec",
+          "/opsx:propose|/opsx:explore",
+          "不应直接进入实现|不直接进入实现|规范阶段"
+        ],
+        "forbidden_mentions": [
+          "直接开始编码"
+        ],
+        "must_include": [
+          "superpowers-openspec|OpenSpec",
+          "/opsx:propose|/opsx:explore",
+          "不应直接进入实现|不直接进入实现|规范阶段"
+        ],
+        "must_exclude": [
+          "直接开始编码"
+        ]
       },
       "without_skill": {
         "expected": "更可能直接给技术方案或实现步骤。",
-        "forbidden_commands": ["/opsx:propose", "/opsx:explore"],
-        "must_exclude": ["/opsx:propose", "/opsx:explore"]
+        "forbidden_commands": [
+          "/opsx:propose",
+          "/opsx:explore"
+        ],
+        "must_exclude": [
+          "/opsx:propose",
+          "/opsx:explore"
+        ]
       }
     },
     {
       "id": "q14",
       "eval_id": 14,
-      "tags": ["术语映射类", "路由冲突类"],
+      "tags": [
+        "术语映射类",
+        "路由冲突类"
+      ],
       "prompt": "先把这个功能的方案和开发计划定下来，后面再落地。",
       "with_skill": {
         "expected": "应把“方案”映射到 proposal/design，把“开发计划”映射到 tasks，并继续停留在规范阶段。",
         "not_expected": "不应把开发计划直接等同于编码步骤。",
-        "required_artifacts": ["tasks.md"],
-        "required_mentions": ["proposal\\.md|design\\.md", "/opsx:new|/opsx:ff|/opsx:explore", "规范阶段"],
-        "forbidden_mentions": ["直接开始编码", "开发计划就是编码步骤"],
-        "must_include": ["proposal\\.md|design\\.md", "tasks\\.md", "/opsx:new|/opsx:ff|/opsx:explore", "规范阶段"],
-        "must_exclude": ["直接开始编码", "开发计划就是编码步骤"]
+        "required_artifacts": [
+          "tasks.md"
+        ],
+        "required_mentions": [
+          "proposal\\.md|design\\.md",
+          "/opsx:new|/opsx:ff|/opsx:explore",
+          "规范阶段"
+        ],
+        "forbidden_mentions": [
+          "直接开始编码",
+          "开发计划就是编码步骤"
+        ],
+        "must_include": [
+          "proposal\\.md|design\\.md",
+          "tasks\\.md",
+          "/opsx:new|/opsx:ff|/opsx:explore",
+          "规范阶段"
+        ],
+        "must_exclude": [
+          "直接开始编码",
+          "开发计划就是编码步骤"
+        ]
       },
       "without_skill": {
         "expected": "更可能把开发计划理解成实现步骤。",
-        "forbidden_artifacts": ["tasks.md"],
-        "forbidden_commands": ["/opsx:new", "/opsx:ff"],
-        "must_exclude": ["tasks\\.md", "/opsx:new", "/opsx:ff"]
+        "forbidden_artifacts": [
+          "tasks.md"
+        ],
+        "forbidden_commands": [
+          "/opsx:new",
+          "/opsx:ff"
+        ],
+        "must_exclude": [
+          "tasks\\.md",
+          "/opsx:new",
+          "/opsx:ff"
+        ]
       }
     },
     {
       "id": "q15",
       "eval_id": 15,
-      "tags": ["术语映射类", "路由冲突类"],
+      "tags": [
+        "术语映射类",
+        "路由冲突类"
+      ],
       "prompt": "先沟通需求，再把短信发送功能做出来。",
       "with_skill": {
         "expected": "应先把“沟通需求”识别为收敛阶段，并优先建议 /opsx:explore。",
         "not_expected": "不应因为后半句有“做出来”就直接进入编码。",
-        "required_commands": ["/opsx:explore"],
-        "required_mentions": ["先收敛再规划|收敛阶段|沟通需求", "最后实现|再实现"],
-        "forbidden_mentions": ["直接开始编码", "立刻实现"],
-        "must_include": ["/opsx:explore", "先收敛再规划|收敛阶段|沟通需求", "最后实现|再实现"],
-        "must_exclude": ["直接开始编码", "立刻实现"]
+        "required_commands": [
+          "/opsx:explore"
+        ],
+        "required_mentions": [
+          "先收敛再规划|收敛阶段|沟通需求",
+          "最后实现|再实现"
+        ],
+        "forbidden_mentions": [
+          "直接开始编码",
+          "立刻实现"
+        ],
+        "must_include": [
+          "/opsx:explore",
+          "先收敛再规划|收敛阶段|沟通需求",
+          "最后实现|再实现"
+        ],
+        "must_exclude": [
+          "直接开始编码",
+          "立刻实现"
+        ]
       },
       "without_skill": {
         "expected": "更可能直接给实现思路或一般性分析。",
-        "forbidden_commands": ["/opsx:explore"],
-        "must_exclude": ["/opsx:explore"]
+        "forbidden_commands": [
+          "/opsx:explore"
+        ],
+        "must_exclude": [
+          "/opsx:explore"
+        ]
       }
     },
     {
       "id": "q16",
       "eval_id": 16,
-      "tags": ["术语映射类", "规范计划类"],
+      "tags": [
+        "术语映射类",
+        "规范计划类"
+      ],
       "prompt": "先把短信发送的规范和计划写出来，不要代码。",
       "with_skill": {
         "expected": "应把“规范”映射到 spec.md，把“计划”映射到 tasks.md，并明确不进入实现。",
         "not_expected": "不应只给泛化文档建议。",
-        "required_artifacts": ["spec.md", "tasks.md"],
-        "required_mentions": ["/opsx:propose|/opsx:new|/opsx:ff", "不进入实现|规范阶段"],
-        "forbidden_mentions": ["直接开始编码"],
-        "must_include": ["spec\\.md", "tasks\\.md", "/opsx:propose|/opsx:new|/opsx:ff", "不进入实现|规范阶段"],
-        "must_exclude": ["直接开始编码"]
+        "required_artifacts": [
+          "spec.md",
+          "tasks.md"
+        ],
+        "required_mentions": [
+          "/opsx:propose|/opsx:new|/opsx:ff",
+          "不进入实现|规范阶段"
+        ],
+        "forbidden_mentions": [
+          "直接开始编码"
+        ],
+        "must_include": [
+          "spec\\.md",
+          "tasks\\.md",
+          "/opsx:propose|/opsx:new|/opsx:ff",
+          "不进入实现|规范阶段"
+        ],
+        "must_exclude": [
+          "直接开始编码"
+        ]
       },
       "without_skill": {
         "expected": "更可能只给通用文档建议。",
-        "forbidden_artifacts": ["spec.md", "tasks.md"],
-        "forbidden_commands": ["/opsx:propose", "/opsx:new", "/opsx:ff"],
-        "must_exclude": ["spec\\.md", "tasks\\.md", "/opsx:propose", "/opsx:new", "/opsx:ff"]
+        "forbidden_artifacts": [
+          "spec.md",
+          "tasks.md"
+        ],
+        "forbidden_commands": [
+          "/opsx:propose",
+          "/opsx:new",
+          "/opsx:ff"
+        ],
+        "must_exclude": [
+          "spec\\.md",
+          "tasks\\.md",
+          "/opsx:propose",
+          "/opsx:new",
+          "/opsx:ff"
+        ]
       }
     },
     {
       "id": "q17",
       "eval_id": 17,
-      "tags": ["方案先行类", "门禁类"],
+      "tags": [
+        "方案先行类",
+        "门禁类"
+      ],
       "prompt": "先帮我落地一个完整 markdown 方案文档，确认没问题后再生成 OpenSpec 任务。",
       "with_skill": {
         "expected": "应先生成 docs/solutions/*.md，并在用户确认前阻止创建 OpenSpec change。",
         "not_expected": "不应直接进入 /opsx:* 或创建 proposal/spec/design/tasks。",
-        "must_include": ["docs/solutions/<主题>\\.md|docs/solutions/\\*\\.md|docs/solutions/", "自我闭环验证", "不应创建或更新 OpenSpec change|用户确认前"],
-        "must_exclude": ["/opsx:propose", "/opsx:apply"]
+        "must_include": [
+          "docs/solutions/<主题>\\.md|docs/solutions/\\*\\.md|docs/solutions/",
+          "自我闭环验证",
+          "不应创建或更新 OpenSpec change|用户确认前"
+        ],
+        "must_exclude": [
+          "/opsx:propose",
+          "/opsx:apply"
+        ]
       },
       "without_skill": {
         "expected": "更可能直接开始写 proposal/spec/design/tasks 或给通用文档建议。",
-        "must_exclude": ["docs/solutions/"]
+        "must_exclude": [
+          "docs/solutions/"
+        ]
       }
     },
     {
       "id": "q18",
       "eval_id": 18,
-      "tags": ["多方案来源类", "来源引用类"],
+      "tags": [
+        "多方案来源类",
+        "来源引用类"
+      ],
       "prompt": "请基于 docs/solutions/方案一.md 和 docs/solutions/方案二.md 创建一个 OpenSpec change。",
       "with_skill": {
         "expected": "应支持多方案来源，并在 proposal.md 中列出全部来源方案文档。",
         "not_expected": "不应新增 sources.md 或 source-docs.md。",
-        "must_include": ["proposal\\.md", "来源方案文档", "docs/solutions/方案一\\.md", "docs/solutions/方案二\\.md"],
-        "must_exclude": ["sources\\.md", "source-docs\\.md"]
+        "must_include": [
+          "proposal\\.md",
+          "来源方案文档",
+          "docs/solutions/方案一\\.md",
+          "docs/solutions/方案二\\.md"
+        ],
+        "must_exclude": [
+          "sources\\.md",
+          "source-docs\\.md"
+        ]
       },
       "without_skill": {
         "expected": "更可能笼统合并方案，不会稳定写出 proposal 来源章节。",
-        "must_exclude": ["来源方案文档", "proposal\\.md"]
+        "must_exclude": [
+          "来源方案文档",
+          "proposal\\.md"
+        ]
       }
     },
     {
       "id": "q19",
       "eval_id": 19,
-      "tags": ["同步类", "语义漂移类"],
+      "tags": [
+        "同步类",
+        "语义漂移类"
+      ],
       "prompt": "OpenSpec 的 tasks 后面改了，和之前确认的方案有点不一样，应该怎么处理？",
       "with_skill": {
         "expected": "应提醒检查方案文档与 OpenSpec 产物是否语义漂移，并根据变化决定回写方案或仅调整 tasks。",
         "not_expected": "不应默认认为 tasks 可以单独变化且无需同步。",
-        "must_include": ["语义漂移|不同步", "docs/solutions/", "proposal\\.md", "只影响执行拆分|只更新 tasks\\.md"],
-        "must_exclude": ["无需同步", "默认可以单独变化"]
+        "must_include": [
+          "语义漂移|不同步",
+          "docs/solutions/",
+          "proposal\\.md",
+          "只影响执行拆分|只更新 tasks\\.md"
+        ],
+        "must_exclude": [
+          "无需同步",
+          "默认可以单独变化"
+        ]
       },
       "without_skill": {
         "expected": "更可能只给一般性的同步建议。",
-        "must_exclude": ["语义漂移", "docs/solutions/", "proposal\\.md"]
+        "must_exclude": [
+          "语义漂移",
+          "docs/solutions/",
+          "proposal\\.md"
+        ]
       }
     },
     {
       "id": "q20",
       "eval_id": 20,
-      "tags": ["方案先行类", "自检类"],
+      "tags": [
+        "方案先行类",
+        "自检类"
+      ],
       "prompt": "方案文档写完后，在我确认之前，能不能先做一次自我闭环验证？但这个是否执行应该由我决定。",
       "with_skill": {
         "expected": "应说明自我闭环验证需要先询问用户，由用户决定，不是强制门禁。",
         "not_expected": "不应跳过询问直接自检，也不应把该步骤写成必须执行。",
-        "must_include": ["自我闭环验证", "由用户决定|先询问用户", "不是强制门禁|不是强制步骤"],
-        "must_exclude": ["必须执行", "直接自检"]
+        "must_include": [
+          "自我闭环验证",
+          "由用户决定|先询问用户",
+          "不是强制门禁|不是强制步骤"
+        ],
+        "must_exclude": [
+          "必须执行",
+          "直接自检"
+        ]
       },
       "without_skill": {
         "expected": "更可能给泛化自检建议，不会稳定强调用户决定与非强制性。",
-        "must_exclude": ["不是强制", "由用户决定"]
+        "must_exclude": [
+          "不是强制",
+          "由用户决定"
+        ]
       }
     },
     {
       "id": "q21",
       "eval_id": 21,
-      "tags": ["功能优化类", "触发类"],
+      "tags": [
+        "功能优化类",
+        "触发类"
+      ],
       "prompt": "我想优化现有审批功能，调整审批规则和状态流转，先帮我规划一下。",
       "with_skill": {
         "expected": "应识别这是涉及规则和状态流转变化的功能优化，需要进入 OpenSpec 规范阶段。",
         "not_expected": "不应把这类功能优化直接当作普通编码任务。",
-        "must_include": ["功能优化|功能改造", "规则|状态流转", "/opsx:explore|/opsx:propose", "OpenSpec|规范阶段"],
-        "must_exclude": ["直接开始编码"]
+        "must_include": [
+          "功能优化|功能改造",
+          "规则|状态流转",
+          "/opsx:explore|/opsx:propose",
+          "OpenSpec|规范阶段"
+        ],
+        "must_exclude": [
+          "直接开始编码"
+        ]
       },
       "without_skill": {
         "expected": "更可能直接给实现建议，不会稳定识别 OpenSpec 阶段。",
-        "must_exclude": ["/opsx:explore", "/opsx:propose", "规范阶段"]
+        "must_exclude": [
+          "/opsx:explore",
+          "/opsx:propose",
+          "规范阶段"
+        ]
       }
     },
     {
       "id": "q22",
       "eval_id": 22,
-      "tags": ["功能优化类", "误触发类"],
+      "tags": [
+        "功能优化类",
+        "误触发类"
+      ],
       "prompt": "这里只是优化一个局部查询性能，不改接口、不改规则、不改状态，也不需要方案。",
       "with_skill": {
         "expected": "不应强制进入 superpowers-openspec；应按普通局部性能优化任务处理。",
         "not_expected": "不应要求生成 docs/solutions 或创建 OpenSpec change。",
-        "must_include": ["局部性能优化|普通任务|不需要方案"],
-        "must_exclude": ["docs/solutions/", "/opsx:explore", "/opsx:propose", "OpenSpec change"]
+        "must_include": [
+          "局部性能优化|普通任务|不需要方案"
+        ],
+        "must_exclude": [
+          "docs/solutions/",
+          "/opsx:explore",
+          "/opsx:propose",
+          "OpenSpec change"
+        ]
       },
       "without_skill": {
         "expected": "普通性能优化建议即可。",
-        "must_exclude": ["/opsx:explore", "/opsx:propose", "docs/solutions/"]
+        "must_exclude": [
+          "/opsx:explore",
+          "/opsx:propose",
+          "docs/solutions/"
+        ]
       }
     },
     {
       "id": "q23",
       "eval_id": 23,
-      "tags": ["阶段切换类", "校验类"],
+      "tags": [
+        "阶段切换类",
+        "校验类"
+      ],
       "prompt": "检查这次实现有没有偏离之前确认的 spec。",
       "with_skill": {
         "expected": "应在 profile 支持时映射到 /opsx:verify。",
         "not_expected": "不应重新回到 propose/apply 或重新生成规划产物。",
-        "required_commands": ["/opsx:verify"],
-        "required_mentions": ["验证实现与规范一致|校验实现与规范一致|检查实现有没有偏离"],
-        "forbidden_commands": ["/opsx:propose", "/opsx:apply"],
-        "must_include": ["/opsx:verify", "验证实现与规范一致|校验实现与规范一致|检查实现有没有偏离"],
-        "must_exclude": ["/opsx:propose", "/opsx:apply"]
+        "required_commands": [
+          "/opsx:verify"
+        ],
+        "required_mentions": [
+          "验证实现与规范一致|校验实现与规范一致|检查实现有没有偏离"
+        ],
+        "forbidden_commands": [
+          "/opsx:propose",
+          "/opsx:apply"
+        ],
+        "must_include": [
+          "/opsx:verify",
+          "验证实现与规范一致|校验实现与规范一致|检查实现有没有偏离"
+        ],
+        "must_exclude": [
+          "/opsx:propose",
+          "/opsx:apply"
+        ]
       },
       "without_skill": {
         "expected": "更可能给一般性的核对建议，不会稳定路由到 /opsx:verify。",
-        "forbidden_commands": ["/opsx:verify"],
-        "must_exclude": ["/opsx:verify"]
+        "forbidden_commands": [
+          "/opsx:verify"
+        ],
+        "must_exclude": [
+          "/opsx:verify"
+        ]
       }
     },
     {
       "id": "q24",
       "eval_id": 24,
-      "tags": ["阶段切换类", "同步类"],
+      "tags": [
+        "阶段切换类",
+        "同步类"
+      ],
       "prompt": "把 changes 里的变更规范同步回主 specs。",
       "with_skill": {
         "expected": "应在 profile 支持时映射到 /opsx:sync。",
         "not_expected": "不应把同步主规范误解为重新规划或直接归档。",
-        "required_commands": ["/opsx:sync"],
-        "required_mentions": ["同步回主规范|同步回主 specs|主规范"],
-        "forbidden_commands": ["/opsx:propose"],
-        "must_include": ["/opsx:sync", "同步回主规范|同步回主 specs|主规范"],
-        "must_exclude": ["/opsx:propose"]
+        "required_commands": [
+          "/opsx:sync"
+        ],
+        "required_mentions": [
+          "同步回主规范|同步回主 specs|主规范"
+        ],
+        "forbidden_commands": [
+          "/opsx:propose"
+        ],
+        "must_include": [
+          "/opsx:sync",
+          "同步回主规范|同步回主 specs|主规范"
+        ],
+        "must_exclude": [
+          "/opsx:propose"
+        ]
       },
       "without_skill": {
         "expected": "更可能给出一般性的同步建议，不会稳定路由到 /opsx:sync。",
-        "forbidden_commands": ["/opsx:sync"],
-        "must_exclude": ["/opsx:sync"]
+        "forbidden_commands": [
+          "/opsx:sync"
+        ],
+        "must_exclude": [
+          "/opsx:sync"
+        ]
       }
     },
     {
       "id": "q25",
       "eval_id": 25,
-      "tags": ["误触发类", "边界类", "性能类"],
+      "tags": [
+        "误触发类",
+        "边界类",
+        "性能类"
+      ],
       "prompt": "这个慢查询只是查得太慢了，先帮我分析原因，必要的话给我一个修复计划，但不改规则、不改接口。",
       "with_skill": {
         "expected": "不应强制进入 superpowers-openspec；应按普通性能排查/优化任务处理。",
         "not_expected": "不应因为出现“计划”就把任务拉进 OpenSpec 阶段。",
-        "must_include": ["普通任务|普通调试|局部性能|性能排查|修复计划"],
-        "must_exclude": ["/opsx:explore", "/opsx:propose", "OpenSpec change", "proposal\\.md"]
+        "must_include": [
+          "普通任务|普通调试|局部性能|性能排查|修复计划"
+        ],
+        "must_exclude": [
+          "/opsx:explore",
+          "/opsx:propose",
+          "OpenSpec change",
+          "proposal\\.md"
+        ]
       },
       "without_skill": {
         "expected": "普通优化建议即可。",
-        "must_exclude": ["/opsx:explore", "/opsx:propose"]
+        "must_exclude": [
+          "/opsx:explore",
+          "/opsx:propose"
+        ]
       }
     },
     {
       "id": "q26",
       "eval_id": 26,
-      "tags": ["误触发类", "边界类", "重构类"],
+      "tags": [
+        "误触发类",
+        "边界类",
+        "重构类"
+      ],
       "prompt": "把这个模块内部重构一下，保持对外接口和行为不变，顺手给个实施计划。",
       "with_skill": {
         "expected": "不应强制进入 superpowers-openspec；应按普通内部重构任务处理。",
         "not_expected": "不应把“实施计划”误解为必须进入 OpenSpec 规范阶段。",
-        "must_include": ["普通任务|普通重构|内部重构|保持对外接口和行为不变"],
-        "must_exclude": ["/opsx:explore", "/opsx:propose", "/opsx:ff", "OpenSpec change", "tasks\\.md"]
+        "must_include": [
+          "普通任务|普通重构|内部重构|保持对外接口和行为不变"
+        ],
+        "must_exclude": [
+          "/opsx:explore",
+          "/opsx:propose",
+          "/opsx:ff",
+          "OpenSpec change",
+          "tasks\\.md"
+        ]
       },
       "without_skill": {
         "expected": "普通重构建议即可。",
-        "must_exclude": ["/opsx:explore", "/opsx:propose", "/opsx:ff"]
+        "must_exclude": [
+          "/opsx:explore",
+          "/opsx:propose",
+          "/opsx:ff"
+        ]
       }
     },
     {
       "id": "q27",
       "eval_id": 27,
-      "tags": ["误触发类", "边界类", "样式类"],
+      "tags": [
+        "误触发类",
+        "边界类",
+        "样式类"
+      ],
       "prompt": "先分析一下这个页面的样式错位，修掉就行，不需要方案。",
       "with_skill": {
         "expected": "不应强制进入 superpowers-openspec；应按普通样式修复任务处理，并尊重用户明确拒绝方案。",
         "not_expected": "不应升级到 OpenSpec 规范阶段。",
-        "must_include": ["普通任务|样式修复|问题定位|不需要方案"],
-        "must_exclude": ["/opsx:explore", "/opsx:propose", "docs/solutions/", "OpenSpec change"]
+        "must_include": [
+          "普通任务|样式修复|问题定位|不需要方案"
+        ],
+        "must_exclude": [
+          "/opsx:explore",
+          "/opsx:propose",
+          "docs/solutions/",
+          "OpenSpec change"
+        ]
       },
       "without_skill": {
         "expected": "普通样式修复建议即可。",
-        "must_exclude": ["/opsx:explore", "/opsx:propose", "docs/solutions/"]
+        "must_exclude": [
+          "/opsx:explore",
+          "/opsx:propose",
+          "docs/solutions/"
+        ]
+      }
+    },
+    {
+      "id": "q28",
+      "eval_id": 28,
+      "tags": [
+        "可读性类"
+      ],
+      "prompt": "帮我写一个权限管理模块的完整方案文档，需要给产品和运营团队评审。",
+      "with_skill": {
+        "expected": "应进入方案文档先行流程，文档需使用人类易读语义：术语需解释、先说结论、角色权限对比优先用表格、避免 AI 式套话。",
+        "not_expected": "不应写成 AI 式堆叠清单或生硬技术笔记。",
+        "must_include": [
+          "人类易读|人类阅读|更易阅读",
+          "语义自然|自然表达|语义清晰",
+          "术语解释|术语需解释|技术术语首次出现需解释",
+          "先说结论|每节先说结论",
+          "表格"
+        ],
+        "must_exclude": [
+          "堆砌术语",
+          "纯技术笔记",
+          "AI 式堆叠清单"
+        ]
+      },
+      "without_skill": {
+        "expected": "应给出方案文档建议。",
+        "must_exclude": [
+          "/opsx:explore",
+          "/opsx:propose"
+        ]
       }
     }
   ]

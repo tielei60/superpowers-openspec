@@ -381,9 +381,10 @@ files = [
 
 skill = (root / "SKILL.md").read_text()
 checks = {
-    "SKILL.md 含语言要求节": "## 语言要求" in skill,
+    "SKILL.md 含语言要求节": "## 语言要求" in skill and "## 文档可读性要求" in skill,
     "SKILL.md 强调必须中文": "必须中文" in skill and "只有当用户明确要求其他语言时" in skill,
     "SKILL.md 强调文档正文必须中文": "文档内容本身也必须使用中文" in skill and "proposal.md" in skill and "design.md" in skill,
+    "SKILL.md 含可读性要求": "人类易读语义" in skill and "术语首次出现需解释" in skill,
 }
 
 fail = False
@@ -408,9 +409,38 @@ EOF
 if [ $? -ne 0 ]; then FAIL=$((FAIL + 1)); else PASS=$((PASS + 1)); fi
 
 # ─────────────────────────────────────────────
-# [13] A/B benchmark config checks
+# [13] 文档可读性跨文件一致性检查
 # ─────────────────────────────────────────────
-section "[13] A/B benchmark config checks"
+section "[13] Readability guidance cross-file check"
+python3 - <<'EOF'
+import sys
+
+checks = {
+    "SKILL.md 含文档可读性要求": "## 文档可读性要求" in open("SKILL.md").read(),
+    "spec-template.md 含可读性原则": "文档可读性原则" in open("references/spec-template.md").read(),
+    "spec-checklist.md 含可读性检查": "## 可读性检查" in open("references/spec-checklist.md").read(),
+    "planning-workflow.md 含可读性要求": "可读性要求" in open("references/planning-workflow.md").read(),
+    "openspec-command-examples.md 含可读性要求": "## 文档可读性要求" in open("references/openspec-command-examples.md").read(),
+    "output-example.md 含可读性说明": "人类易读语义" in open("references/output-example.md").read(),
+    "README.md 含可读性门禁": "## 文档可读性门禁" in open("README.md").read(),
+}
+
+fail = False
+for desc, result in checks.items():
+    if result:
+        print(f"  PASS: {desc}")
+    else:
+        print(f"  FAIL: {desc}")
+        fail = True
+
+sys.exit(1 if fail else 0)
+EOF
+if [ $? -ne 0 ]; then FAIL=$((FAIL + 1)); else PASS=$((PASS + 1)); fi
+
+# ─────────────────────────────────────────────
+# [14] A/B benchmark config checks
+# ─────────────────────────────────────────────
+section "[14] A/B benchmark config checks"
 if python3 scripts/abtest_regression.py check; then
   PASS=$((PASS + 1))
 else
@@ -420,7 +450,7 @@ fi
 # ─────────────────────────────────────────────
 # [14] Python unit tests
 # ─────────────────────────────────────────────
-section "[14] Reproducible A/B score smoke"
+section "[15] Reproducible A/B score smoke"
 if python3 scripts/abtest_regression.py score --abtest-dir tests/fixtures/abtest --mode both --only q1,q6 --require-complete; then
   PASS=$((PASS + 1))
 else
@@ -430,7 +460,7 @@ fi
 # ─────────────────────────────────────────────
 # [15] Python unit tests
 # ─────────────────────────────────────────────
-section "[15] Python unit tests"
+section "[16] Python unit tests"
 if python3 -m unittest discover -s tests -v; then
   PASS=$((PASS + 1))
 else
@@ -438,9 +468,9 @@ else
 fi
 
 # ─────────────────────────────────────────────
-# [16] .abtest questions.json 新模型关键词检查
+# [17] .abtest questions.json 新模型关键词检查
 # ─────────────────────────────────────────────
-section "[16] .abtest questions.json alignment"
+section "[17] .abtest questions.json alignment"
 if [ -f ".abtest/with_skill/questions.json" ]; then
   python3 - <<'EOF'
 import json, sys

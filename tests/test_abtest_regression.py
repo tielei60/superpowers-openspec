@@ -35,7 +35,7 @@ class AbtestRegressionCliTests(unittest.TestCase):
             payload = json.loads(report_path.read_text(encoding="utf-8"))
             self.assertEqual(payload["command"], "check")
             self.assertEqual(payload["summary"]["failures"], 0)
-            self.assertEqual(payload["summary"]["cases"], 27)
+            self.assertEqual(payload["summary"]["cases"], 28)
             self.assertTrue(any(item["scope"] == "coverage" for item in payload["results"]))
 
     def test_check_report_detects_prompt_drift_from_custom_cases_path(self) -> None:
@@ -133,7 +133,7 @@ class AbtestRegressionCliTests(unittest.TestCase):
             payload = json.loads(report_path.read_text(encoding="utf-8"))
             self.assertEqual(payload["command"], "sync")
             self.assertEqual(payload["summary"]["bundles_written"], 2)
-            self.assertEqual(payload["summary"]["cases"], 27)
+            self.assertEqual(payload["summary"]["cases"], 28)
 
     def test_score_report_writes_summary_for_tracked_fixture_dir(self) -> None:
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -274,6 +274,40 @@ class AbtestRegressionCliTests(unittest.TestCase):
                 any("proposal.md" in error for error in payload["results"][0]["errors"]),
                 payload,
             )
+
+    def test_q28_requires_each_readability_requirement(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmp = Path(tmpdir)
+            abtest_dir = tmp / "abtest"
+            report_path = tmp / "score-report.json"
+            generated_path = abtest_dir / "generated" / "with_skill" / "q28.md"
+            generated_path.parent.mkdir(parents=True, exist_ok=True)
+            generated_path.write_text(
+                "文档需要更易阅读。\n",
+                encoding="utf-8",
+            )
+
+            proc = run_script(
+                "score",
+                "--abtest-dir",
+                str(abtest_dir),
+                "--mode",
+                "with_skill",
+                "--only",
+                "q28",
+                "--require-complete",
+                "--report",
+                str(report_path),
+            )
+
+            self.assertNotEqual(proc.returncode, 0)
+            self.assertTrue(report_path.exists(), proc.stdout + proc.stderr)
+
+            payload = json.loads(report_path.read_text(encoding="utf-8"))
+            errors = payload["results"][0]["errors"]
+            self.assertTrue(any("术语解释" in error for error in errors), payload)
+            self.assertTrue(any("先说结论" in error for error in errors), payload)
+            self.assertTrue(any("表格" in error for error in errors), payload)
 
 
 if __name__ == "__main__":

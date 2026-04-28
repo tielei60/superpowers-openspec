@@ -1,102 +1,29 @@
-# AGENTS.md
+# 仓库指南
 
-本文件面向在本仓库中工作的 AI agent，帮助快速理解仓库定位、关键约束和最短工作路径。
+## 项目结构与模块组织
 
-## 仓库定位
+本仓库提供 `superpowers-openspec` skill。`SKILL.md` 是权威行为说明，`README.md` 是对外快速使用说明。工作流参考文档放在 `references/`，回归评测配置放在 `evals/`，可执行检查脚本放在 `scripts/`，Python 单元测试和夹具放在 `tests/`。`docs/superpowers/` 用于内部方案和计划产物。`.abtest/` 是本地生成工作区，不应当作源文件维护。
 
-本仓库提供 `superpowers-openspec` skill。
+## 构建、测试与开发命令
 
-目标不是重新定义 OpenSpec，而是把用户用中文表达的“方案、规范、计划、需求沟通”稳定路由到合适的 OpenSpec / OPSX 阶段，并补足方案先行、来源引用、图示建议和同步门禁。
+- `./scripts/qa.sh`：运行完整质量门禁，包含 JSON 校验、文档一致性、A/B 配置检查、评分冒烟和单元测试。
+- `python3 -m unittest discover -s tests -v`：只运行 Python 单元测试。
+- `python3 scripts/abtest_regression.py check`：校验 `evals/evals.json`、`evals/abtest_cases.json` 和提示集是否一致。
+- `python3 scripts/abtest_regression.py sync`：重新生成 `.abtest/with_skill/questions.json` 和 `.abtest/without_skill/questions.json`。
+- `python3 scripts/abtest_regression.py score --abtest-dir tests/fixtures/abtest --mode both --only q1,q6 --require-complete`：运行可复现的评分冒烟测试。
 
-核心原则：
+## 代码风格与命名约定
 
-- 方案先确认，规范再承接，计划再落地
-- OpenSpec 官方语义以 `openspec/` 目录和 `/opsx:*` 命令为准
-- `docs/solutions/*.md` 是本 skill 约定的上游方案来源，不是 OpenSpec 官方 artifact
+skill 和参考文档使用 Markdown，脚本和测试使用 Python 3，质量门禁使用 Bash。Python 保持 4 空格缩进，函数名应清楚表达行为，必要时补充类型标注。JSON 使用 2 空格缩进。除非用户明确要求其他语言，面向 skill 的说明和示例应使用中文。方案文档示例必须使用中文文件名，例如 `docs/solutions/示例方案.md`，不要使用纯英文或纯数字文件名。
 
-## 先看哪些文件
+## 测试指南
 
-开始修改前，优先阅读这些文件：
+当路由规则、门禁、示例或评分逻辑变化时，同步新增或更新回归用例。单元测试基于 `unittest`，主要位于 `tests/test_abtest_regression.py`；测试名应描述被保护的行为。任何实质性修改完成前，都应运行 `./scripts/qa.sh`。
 
-- [SKILL.md](/Users/tielei/workspace/skills/superpowers-openspec/SKILL.md)：skill 主说明，包含路由规则、门禁和停止条件
-- [README.md](/Users/tielei/workspace/skills/superpowers-openspec/README.md)：对外使用说明和示例
-- [references/planning-workflow.md](/Users/tielei/workspace/skills/superpowers-openspec/references/planning-workflow.md)：完整方案文档先行流程
-- [references/spec-template.md](/Users/tielei/workspace/skills/superpowers-openspec/references/spec-template.md)：OpenSpec 产物承载建议
-- [scripts/qa.sh](/Users/tielei/workspace/skills/superpowers-openspec/scripts/qa.sh)：仓库自检脚本
+## 提交与 Pull Request 指南
 
-如需检查示例和预期输出，再看：
+近期提交使用简洁的 Conventional Commit 风格前缀，常见为 `docs:` 和 `feat:`。提交标题应使用祈使语气并说明范围，例如 `docs: clarify planning workflow gate`。Pull Request 应说明行为变化、列出受影响的文件或规则区域、注明 eval 或 fixture 更新，并附上验证命令输出，通常是 `./scripts/qa.sh`。
 
-- [references/output-example.md](/Users/tielei/workspace/skills/superpowers-openspec/references/output-example.md)
-- [references/openspec-command-examples.md](/Users/tielei/workspace/skills/superpowers-openspec/references/openspec-command-examples.md)
-- [evals/evals.json](/Users/tielei/workspace/skills/superpowers-openspec/evals/evals.json)
+## Agent 专用说明
 
-## 关键规则
-
-### 语言和命名
-
-- 除非用户明确要求其他语言，否则说明和产物正文都必须使用中文
-- `docs/solutions/*.md` 的文件名也必须使用中文
-- 不使用英文方案文件名，不使用纯数字方案文件名
-- 示例文件名应写成 `docs/solutions/示例方案.md`、`docs/solutions/方案一.md`、`docs/solutions/方案二.md` 这类形式
-
-### 方案先行门禁
-
-- 如果用户要求先落地完整 markdown 方案，先生成 `docs/solutions/<主题>.md`
-- 在用户确认方案文档之前，不创建或更新 OpenSpec change
-- 在请求用户确认前，先询问是否需要“方案文档自我闭环验证”
-- 自我闭环验证由用户决定，不是强制门禁
-
-### OpenSpec 产物约束
-
-- 不要把 `docs/solutions/*.md` 写成 OpenSpec 官方 artifact
-- 不要新增 `sources.md` 或 `source-docs.md`
-- 如果 OpenSpec change 来源于方案文档，`proposal.md` 必须包含“来源方案文档”章节
-- `proposal.md`、`spec.md`、`design.md`、`tasks.md` 仍是官方工作区中的核心产物
-
-### 图示规则
-
-- 架构、流程、状态、时序等复杂关系优先用 Mermaid
-- 页面、表单、列表、弹窗结构优先用 ASCII 文本布局图
-- 如果输出 Mermaid，交付前要自检语法和结构
-- 不要把 Mermaid 图重新定义成独立强制 artifact
-
-### 同步规则
-
-- 如果方案文档发生实质变化，检查并同步 `proposal.md`、`spec.md`、`design.md`、`tasks.md`
-- 如果 OpenSpec 产物发生实质变化，检查是否需要回写方案文档
-- 如果只改任务拆分、未改变已确认方案，可以只更新 `tasks.md`，但仍要确认 `proposal.md` 与方案文档一致
-
-## 推荐工作方式
-
-处理这类修改时，通常按这个顺序：
-
-1. 先改 [SKILL.md](/Users/tielei/workspace/skills/superpowers-openspec/SKILL.md) 或相关 `references/*.md`
-2. 再同步 [README.md](/Users/tielei/workspace/skills/superpowers-openspec/README.md) 中的对外说明
-3. 如规则有变化，更新 [evals/evals.json](/Users/tielei/workspace/skills/superpowers-openspec/evals/evals.json) 和 [scripts/qa.sh](/Users/tielei/workspace/skills/superpowers-openspec/scripts/qa.sh)
-4. 最后全文搜索旧示例、旧占位符和相互矛盾的说法
-
-建议优先搜索这些模式：
-
-- `docs/solutions/<topic>.md`
-- `example-solution.md`
-- `docs/solutions/1.md`
-- `docs/solutions/2.md`
-- `sources.md`
-- `source-docs.md`
-
-## 验证
-
-完成修改后，至少执行：
-
-```bash
-./scripts/qa.sh
-```
-
-如果 QA 失败，先修正规则文案、示例、评测和脚本之间的不一致，再结束本次修改。
-
-## 不要做什么
-
-- 不要重定义 OpenSpec 官方目录和 artifact
-- 不要绕过方案确认门禁，直接进入 OpenSpec change
-- 不要只改一处文档而忽略 README、reference、eval、QA 之间的一致性
-- 不要把“必须中文”退化成“尽量中文”
+不要重定义 OpenSpec 官方 artifact 或目录。如果规则发生变化，需要检查相关文档、reference、eval、QA 脚本和示例是否一致。不要新增 `sources.md` 或 `source-docs.md`；来源方案文档应写入 `proposal.md`。

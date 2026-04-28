@@ -187,6 +187,17 @@
 - 放在 `openspec/changes/<change-name>/` 下
 - 不替代 `proposal.md`、`spec.md`、`design.md`、`tasks.md`
 
+## 文档可读性原则
+
+`docs/solutions/*.md`、`proposal.md`、`spec.md`、`design.md` 和 `tasks.md` 都应使用人类易读语义。
+
+- 避免 AI 式套话和生硬堆叠
+- 术语首次出现需解释
+- 优先短句，先说结论
+- 对比、枚举、角色权限、状态映射优先用表格
+- 避免内部缩写和未解释代号
+- 技术细节应说明其实际含义
+
 ## 使用本文件时的原则
 
 - 不要再把 OpenSpec 理解成单个 `openspec.md`

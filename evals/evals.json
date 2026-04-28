@@ -3,7 +3,9 @@
   "evals": [
     {
       "id": 1,
-      "tags": ["触发类"],
+      "tags": [
+        "触发类"
+      ],
       "prompt": "我要做一个审批模块，先别写代码，先帮我进入 OpenSpec 规范阶段。",
       "expected_output": "应触发 superpowers-openspec，并把用户引向官方 OpenSpec / OPSX；根据需求完整程度建议 /opsx:propose 或 /opsx:explore，并说明应生成 openspec/changes/ 下的变更产物。",
       "not_expected": "不应输出 docs/specs/ 结构；不应把自定义目录描述为 OpenSpec 官方标准；不应直接进入实现建议。",
@@ -11,7 +13,9 @@
     },
     {
       "id": 2,
-      "tags": ["命令映射类"],
+      "tags": [
+        "命令映射类"
+      ],
       "prompt": "这里是一段零散会议纪要，你先帮我整理，再决定如何进入规范。",
       "expected_output": "应优先映射到 /opsx:explore，整理收敛后进入 /opsx:propose；或说明可分步使用 /opsx:new + /opsx:continue。",
       "not_expected": "不应跳过探索阶段直接映射到 /opsx:propose；不应输出 docs/specs/ 结构；不应在规范阶段未完成前建议实现。",
@@ -19,7 +23,9 @@
     },
     {
       "id": 3,
-      "tags": ["命令映射类"],
+      "tags": [
+        "命令映射类"
+      ],
       "prompt": "这个需求已经很完整了，直接告诉我该怎么按 OpenSpec 做。",
       "expected_output": "应优先映射到 /opsx:propose；输出中使用 openspec/specs 与 openspec/changes 语义；说明应生成 proposal.md 及相关变更产物。除非用户明确要求其他语言，否则应明确这些文档内容本身也使用中文。",
       "not_expected": "不应映射到 /opsx:explore（输入已完整）；不应输出 docs/specs/ 结构；不应把 Mermaid 图定义为强制独立产物；不应默认把文档正文写成英文。",
@@ -27,7 +33,9 @@
     },
     {
       "id": 4,
-      "tags": ["误触发类"],
+      "tags": [
+        "误触发类"
+      ],
       "prompt": "这里只是一个纯 bug 修复，不涉及规则、流程、接口或状态变化。",
       "expected_output": "不应强制进入 superpowers-openspec；应说明这是普通修复任务，可直接处理或交还上层 skill。",
       "not_expected": "不应输出完整 OpenSpec 工作流；不应要求生成 proposal.md、design.md、tasks.md；不应建议执行 /opsx:propose 或 /opsx:explore。",
@@ -35,7 +43,9 @@
     },
     {
       "id": 5,
-      "tags": ["原始输入类"],
+      "tags": [
+        "原始输入类"
+      ],
       "prompt": "先按 OpenSpec 规范推进，并把我原始需求和这段对话过程也记录下来。",
       "expected_output": "应正常进入面向 OpenSpec 的方案、规范与计划工作流；额外说明可在当前 change 目录下可选增加 source-notes.md 和/或 transcript.md。",
       "not_expected": "不应把 source-notes.md 或 transcript.md 描述为官方强制 artifact；不应把原始输入记录作为 proposal.md 的替代。",
@@ -43,7 +53,9 @@
     },
     {
       "id": 6,
-      "tags": ["命令映射类"],
+      "tags": [
+        "命令映射类"
+      ],
       "prompt": "需求我已经想清楚了，不想一步一步来，直接把 proposal、spec、design、tasks 一次性都生成出来。",
       "expected_output": "应映射到 /opsx:ff；说明这是一次性生成全部规划产物的路径；产物应落在 openspec/changes/<change-name>/ 下。",
       "not_expected": "不应拆成 /opsx:new + /opsx:continue 分步流程；不应输出 docs/specs/ 结构；不应直接进入实现阶段。",
@@ -51,7 +63,9 @@
     },
     {
       "id": 7,
-      "tags": ["阶段切换类"],
+      "tags": [
+        "阶段切换类"
+      ],
       "prompt": "规范已经做完了，proposal、spec、design、tasks 都确认了，现在开始进入实现。",
       "expected_output": "应映射到 /opsx:apply；说明规范阶段已完成，可以进入实现；不需要再停留在规范阶段。",
       "not_expected": "不应重新进入 /opsx:propose 或 /opsx:explore；不应要求再生成规范产物；不应输出 docs/specs/ 结构。",
@@ -59,7 +73,9 @@
     },
     {
       "id": 8,
-      "tags": ["阶段切换类"],
+      "tags": [
+        "阶段切换类"
+      ],
       "prompt": "这次变更已经实现完了，想把它归档，不再作为活跃变更。",
       "expected_output": "应映射到 /opsx:archive；说明变更已完成，可以执行归档；归档后 openspec/changes/<change-name>/ 不再作为活跃工作区。",
       "not_expected": "不应重新进入规范阶段；不应建议执行 /opsx:propose 或 /opsx:apply；不应要求重新生成产物。",
@@ -67,7 +83,9 @@
     },
     {
       "id": 9,
-      "tags": ["图示策略类"],
+      "tags": [
+        "图示策略类"
+      ],
       "prompt": "这个方案涉及多个模块、审批分支和异步通知，单靠文字不太容易讲清楚。先按 OpenSpec 规范推进时，要不要补图？",
       "expected_output": "应继续进入面向 OpenSpec 的方案、规范与计划工作流，并明确说明后续产物中应补图；对架构关系、流程分支、异步交互优先建议 Mermaid 图；说明图示应进入 design.md 或相关设计说明，而不是独立官方强制文件。如果输出 Mermaid 图，最后应做一次自检，确认没有明显语法错误。",
       "not_expected": "不应说图完全可有可无；不应在复杂关系下只建议纯文字说明；不应把 architecture.mermaid、flowchart.mermaid、sequence.mermaid 重新定义为官方强制独立产物；不应输出 Mermaid 后完全不提自检。",
@@ -75,7 +93,9 @@
     },
     {
       "id": 10,
-      "tags": ["图示策略类"],
+      "tags": [
+        "图示策略类"
+      ],
       "prompt": "这个变更会涉及列表页、详情页和编辑弹窗，方案里页面结构怎么表达更合适？",
       "expected_output": "应说明页面结构仅靠文字不够时，应在后续 OpenSpec 产物中补充图示；默认优先 Mermaid，但页面文本布局优先建议 ASCII 文本布局图，并说明这类内容通常放在 design.md 或相关设计说明中。",
       "not_expected": "不应只建议写段落描述页面结构；不应把 ASCII 布局图说成 OpenSpec 官方强制 artifact；不应强制要求独立 Mermaid 文件。",
@@ -83,7 +103,9 @@
     },
     {
       "id": 11,
-      "tags": ["防返工类"],
+      "tags": [
+        "防返工类"
+      ],
       "prompt": "需求方向基本确定，但第三方回调字段、历史数据迁移方式和验收口径还没定。先按 OpenSpec 推进时，能不能直接给我完整 tasks？",
       "expected_output": "应说明当前仍存在关键未决项，不应把方案包装成已完整可执行；应显式列出假设、待确认问题、依赖、迁移/兼容性影响或验收方式，并优先建议 /opsx:explore 或 /opsx:new + /opsx:continue 分步补齐。",
       "not_expected": "不应忽略这些未决项直接给完整任务清单；不应跳过假设、依赖、迁移或验收信息；不应直接进入实现阶段。",
@@ -91,7 +113,9 @@
     },
     {
       "id": 12,
-      "tags": ["防返工类"],
+      "tags": [
+        "防返工类"
+      ],
       "prompt": "这次会改订单状态流和旧接口返回结构，不过兼容期多长、回滚怎么做还没想好。你先把方案按 OpenSpec 定下来。",
       "expected_output": "应继续进入面向 OpenSpec 的方案、规范与计划工作流，并明确指出兼容性、状态延续、回滚或降级方案属于当前需要补齐的关键内容；可建议在 proposal.md、spec.md 或 design.md 中显式写出这些约束，而不是直接假设开发阶段再补。",
       "not_expected": "不应把兼容性和回滚问题留到实现时再说；不应省略这些约束仍声称方案已完整；不应直接给实现建议。",
@@ -99,7 +123,10 @@
     },
     {
       "id": 13,
-      "tags": ["混合意图类", "优先级类"],
+      "tags": [
+        "混合意图类",
+        "优先级类"
+      ],
       "prompt": "帮我设计并实现短信发送的功能。",
       "expected_output": "应优先触发 superpowers-openspec，而不是因为用户提到“实现”就直接进入编码；应将该请求识别为新功能的规范阶段入口。若需求边界清晰，优先建议 /opsx:propose；若仍有未决项，则优先建议 /opsx:explore，并说明在 proposal.md、spec.md、design.md、tasks.md 确认前不应直接进入实现。",
       "not_expected": "不应直接跳过规范阶段开始实现；不应把这类混合表达交还给通用 superpowers 执行而忽略 OpenSpec；不应在未形成规范产物前就给出实现方案或编码步骤。",
@@ -107,7 +134,10 @@
     },
     {
       "id": 14,
-      "tags": ["术语映射类", "路由冲突类"],
+      "tags": [
+        "术语映射类",
+        "路由冲突类"
+      ],
       "prompt": "先把这个功能的方案和开发计划定下来，后面再落地。",
       "expected_output": "应识别“方案”默认对应 proposal.md 与 design.md，“开发计划”默认对应 tasks.md；应优先进入 superpowers-openspec，而不是直接给实现步骤。若输入较完整，可建议 /opsx:new + /opsx:continue 或 /opsx:ff；若信息不足，则先建议 /opsx:explore。",
       "not_expected": "不应把“开发计划”直接等同于编码步骤；不应跳过 proposal.md、design.md 与 tasks.md 的规划产物；不应因为句子里隐含落地诉求就直接进入实现。",
@@ -115,7 +145,10 @@
     },
     {
       "id": 15,
-      "tags": ["术语映射类", "路由冲突类"],
+      "tags": [
+        "术语映射类",
+        "路由冲突类"
+      ],
       "prompt": "先沟通需求，再把短信发送功能做出来。",
       "expected_output": "应先把“沟通需求”识别为问题收敛阶段，优先建议 /opsx:explore；在需求边界、假设、依赖和验收方式未明确前，不应直接进入实现。应说明这是先收敛再规划、最后实现的路径。",
       "not_expected": "不应把“做出来”理解为立刻编码；不应跳过需求收敛直接给技术实现方案；不应忽略 explore -> propose/apply 的阶段顺序。",
@@ -123,7 +156,9 @@
     },
     {
       "id": 16,
-      "tags": ["术语映射类"],
+      "tags": [
+        "术语映射类"
+      ],
       "prompt": "先把短信发送的规范和计划写出来，不要代码。",
       "expected_output": "应识别“规范”默认对应 spec.md，“计划”默认对应 tasks.md；可根据完整度建议 /opsx:propose、/opsx:new + /opsx:continue 或 /opsx:ff，并明确当前仍处于规范阶段，不进入实现。",
       "not_expected": "不应只给通用文档建议而不映射到 spec.md 与 tasks.md；不应直接开始实现；不应忽略用户已经明确拒绝代码。",
@@ -131,7 +166,10 @@
     },
     {
       "id": 17,
-      "tags": ["方案先行类", "门禁类"],
+      "tags": [
+        "方案先行类",
+        "门禁类"
+      ],
       "prompt": "先帮我落地一个完整 markdown 方案文档，确认没问题后再生成 OpenSpec 任务。",
       "expected_output": "应进入面向 OpenSpec 的方案、规范与计划工作流；先生成 docs/solutions/<主题>.md，且文档正文和文件名都必须为中文；在用户确认方案文档前，不应创建或更新 OpenSpec change，也不应直接进入 /opsx:*。",
       "not_expected": "不应跳过 docs/solutions/*.md 直接生成 proposal.md、spec.md、design.md 或 tasks.md；不应把方案文档写成英文；不应在用户确认前创建 OpenSpec change。",
@@ -139,7 +177,10 @@
     },
     {
       "id": 18,
-      "tags": ["多方案来源类", "来源引用类"],
+      "tags": [
+        "多方案来源类",
+        "来源引用类"
+      ],
       "prompt": "请基于 docs/solutions/方案一.md 和 docs/solutions/方案二.md 创建一个 OpenSpec change。",
       "expected_output": "应支持一个 OpenSpec change 来源于多个已确认方案文档；proposal.md 中应包含“来源方案文档”章节，并列出 docs/solutions/方案一.md 与 docs/solutions/方案二.md；后续再生成或更新 spec.md、design.md 和 tasks.md。",
       "not_expected": "不应新增 sources.md 或 source-docs.md；不应把 docs/solutions/*.md 描述为 OpenSpec 官方 artifact；不应丢失任一来源文档。",
@@ -147,7 +188,9 @@
     },
     {
       "id": 19,
-      "tags": ["同步类"],
+      "tags": [
+        "同步类"
+      ],
       "prompt": "OpenSpec 的 tasks 后面改了，和之前确认的方案有点不一样，应该怎么处理？",
       "expected_output": "应提醒检查方案文档与 OpenSpec 产物是否语义漂移；如果变化影响已确认方案，应回写或更新 docs/solutions/*.md；如果只影响执行拆分，可只更新 tasks.md，但仍需确认 proposal.md 与方案文档一致。",
       "not_expected": "不应默认认为 tasks.md 可以单独变化且无需同步；不应忽略 docs/solutions/*.md；不应假装两者已经一致。",
@@ -155,7 +198,10 @@
     },
     {
       "id": 20,
-      "tags": ["方案先行类", "自检类"],
+      "tags": [
+        "方案先行类",
+        "自检类"
+      ],
       "prompt": "方案文档写完后，在我确认之前，能不能先做一次自我闭环验证？但这个是否执行应该由我决定。",
       "expected_output": "应说明在请求用户确认 docs/solutions/*.md 前，会先询问用户是否需要方案文档自我闭环验证；该验证由用户决定，不是强制门禁。若用户选择需要，再检查目标/非目标、关键取舍、待确认问题、风险、验收标准、图示完整性和 OpenSpec 拆分建议。",
       "not_expected": "不应把自我闭环验证写成必须执行的强制步骤；不应跳过询问直接自检；不应在用户确认方案文档前创建 OpenSpec change。",
@@ -163,7 +209,10 @@
     },
     {
       "id": 21,
-      "tags": ["功能优化类", "触发类"],
+      "tags": [
+        "功能优化类",
+        "触发类"
+      ],
       "prompt": "我想优化现有审批功能，调整审批规则和状态流转，先帮我规划一下。",
       "expected_output": "应触发 superpowers-openspec；应识别这是功能优化/功能改造且涉及规则和状态流转变化，需要进入面向 OpenSpec 的方案、规范与计划工作流。可根据完整度建议 /opsx:explore 或 /opsx:propose。",
       "not_expected": "不应把功能优化直接当作普通编码任务；不应跳过规划阶段；不应在规则和状态变化未明确前直接进入实现。",
@@ -171,7 +220,10 @@
     },
     {
       "id": 22,
-      "tags": ["功能优化类", "误触发类"],
+      "tags": [
+        "功能优化类",
+        "误触发类"
+      ],
       "prompt": "这里只是优化一个局部查询性能，不改接口、不改规则、不改状态，也不需要方案。",
       "expected_output": "不应强制进入 superpowers-openspec；应说明这是局部性能优化，影响范围明确且不涉及规则、流程、接口、状态、数据结构或模块边界变化，可按普通任务处理。",
       "not_expected": "不应要求生成 docs/solutions/*.md；不应要求创建 OpenSpec change；不应建议 /opsx:propose 或 /opsx:explore。",
@@ -179,7 +231,10 @@
     },
     {
       "id": 23,
-      "tags": ["阶段切换类", "校验类"],
+      "tags": [
+        "阶段切换类",
+        "校验类"
+      ],
       "prompt": "检查这次实现有没有偏离之前确认的 spec。",
       "expected_output": "应在 profile 支持时映射到 /opsx:verify；说明这是验证实现与规范一致性的入口，而不是重新进入规划或实现。",
       "not_expected": "不应重新建议 /opsx:propose 或 /opsx:apply；不应把验证实现一致性误解为重新生成 proposal.md、design.md 或 tasks.md。",
@@ -187,7 +242,10 @@
     },
     {
       "id": 24,
-      "tags": ["阶段切换类", "同步类"],
+      "tags": [
+        "阶段切换类",
+        "同步类"
+      ],
       "prompt": "把 changes 里的变更规范同步回主 specs。",
       "expected_output": "应在 profile 支持时映射到 /opsx:sync；说明这是把变更 spec 同步回主规范的入口，而不是重新规划当前 change。",
       "not_expected": "不应重新建议 /opsx:propose；不应把同步主规范误解为归档或直接进入实现；不应要求重新生成整套规划产物。",
@@ -195,7 +253,11 @@
     },
     {
       "id": 25,
-      "tags": ["误触发类", "边界类", "性能类"],
+      "tags": [
+        "误触发类",
+        "边界类",
+        "性能类"
+      ],
       "prompt": "这个慢查询只是查得太慢了，先帮我分析原因，必要的话给我一个修复计划，但不改规则、不改接口。",
       "expected_output": "不应强制进入 superpowers-openspec；应识别这是局部性能排查/修复任务，可按普通调试或优化任务处理。可以分析原因，也可以给修复计划，但不应拉进 OpenSpec 规范阶段。",
       "not_expected": "不应因为用户提到“计划”就建议 /opsx:explore、/opsx:propose 或创建 OpenSpec change；不应要求生成 proposal.md、spec.md、design.md 或 tasks.md。",
@@ -203,7 +265,11 @@
     },
     {
       "id": 26,
-      "tags": ["误触发类", "边界类", "重构类"],
+      "tags": [
+        "误触发类",
+        "边界类",
+        "重构类"
+      ],
       "prompt": "把这个模块内部重构一下，保持对外接口和行为不变，顺手给个实施计划。",
       "expected_output": "不应强制进入 superpowers-openspec；应识别这是保持外部行为不变的内部重构任务，可按普通重构任务处理。即使用户提到“实施计划”，也不应默认进入 OpenSpec 规范阶段。",
       "not_expected": "不应把这类内部重构直接映射到 /opsx:explore、/opsx:propose 或 /opsx:ff；不应要求创建 OpenSpec change；不应把“实施计划”误解为必须产出 tasks.md。",
@@ -211,10 +277,24 @@
     },
     {
       "id": 27,
-      "tags": ["误触发类", "边界类", "样式类"],
+      "tags": [
+        "误触发类",
+        "边界类",
+        "样式类"
+      ],
       "prompt": "先分析一下这个页面的样式错位，修掉就行，不需要方案。",
       "expected_output": "不应强制进入 superpowers-openspec；应识别这是局部样式修复任务，可按普通问题定位和修复处理，且应尊重用户“不需要方案”的明确要求。",
       "not_expected": "不应建议 /opsx:explore、/opsx:propose 或 docs/solutions/*.md；不应把样式错位问题升级到 OpenSpec 规范阶段；不应忽略用户已经明确拒绝方案。",
+      "files": []
+    },
+    {
+      "id": 28,
+      "tags": [
+        "可读性类"
+      ],
+      "prompt": "帮我写一个权限管理模块的完整方案文档，需要给产品和运营团队评审。",
+      "expected_output": "应进入面向 OpenSpec 的方案、规范与计划工作流；先生成 docs/solutions/<主题>.md；文档需使用人类易读语义：术语需解释、先说结论、角色权限对比优先用表格、避免 AI 式套话和内部缩写。",
+      "not_expected": "不应把方案文档写成 AI 式堆叠清单、模板化套话或生硬技术笔记；不应堆砌未经解释的技术术语；不应使用大段连续文字描述角色权限映射而不用表格。",
       "files": []
     }
   ]
