@@ -35,7 +35,7 @@ class AbtestRegressionCliTests(unittest.TestCase):
             payload = json.loads(report_path.read_text(encoding="utf-8"))
             self.assertEqual(payload["command"], "check")
             self.assertEqual(payload["summary"]["failures"], 0)
-            self.assertEqual(payload["summary"]["cases"], 28)
+            self.assertEqual(payload["summary"]["cases"], 30)
             self.assertTrue(any(item["scope"] == "coverage" for item in payload["results"]))
 
     def test_check_report_detects_prompt_drift_from_custom_cases_path(self) -> None:
@@ -133,7 +133,7 @@ class AbtestRegressionCliTests(unittest.TestCase):
             payload = json.loads(report_path.read_text(encoding="utf-8"))
             self.assertEqual(payload["command"], "sync")
             self.assertEqual(payload["summary"]["bundles_written"], 2)
-            self.assertEqual(payload["summary"]["cases"], 28)
+            self.assertEqual(payload["summary"]["cases"], 30)
 
     def test_score_report_writes_summary_for_tracked_fixture_dir(self) -> None:
         with tempfile.TemporaryDirectory() as tmpdir:

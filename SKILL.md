@@ -78,6 +78,17 @@ description: >
 详见 `references/intent-to-openspec-mapping.md`。
 如用户明确要求先确认完整 markdown 方案，详见 `references/planning-workflow.md`。
 
+## 整体流程
+
+```text
+触发判断 → 方案设计 → 用户确认 → OpenSpec 承接 → 实现入口
+
+方案设计阶段：生成 docs/solutions/*.md → 闭环验证（可选） → 拆分设计（可选）
+OpenSpec 承接：选择 OPSX 入口 → 生成 proposal/spec/design/tasks → 对齐检查
+```
+
+核心边界：方案文档确认前不进 OpenSpec，规范完成前不进实现。
+
 ## 核心职责
 
 本 skill 负责方案、规范与计划阶段的判断和门禁：
@@ -101,10 +112,11 @@ description: >
 3. 如果架构、流程、状态、时序或页面结构仅靠文字难以表达，应在方案文档中补充 Mermaid 或 ASCII 图示。
 4. 在请求用户确认方案文档前，询问用户是否需要先做一次“方案文档自我闭环验证”。
 5. 如果用户需要，自检目标包括目标/非目标、关键取舍、待确认问题、风险、验收标准、图示完整性和 OpenSpec 拆分建议；自检后先修正文档，再交给用户确认。
-6. 如果用户不需要，直接进入用户确认环节；该验证由用户决定，不是强制门禁。
-7. 用户确认方案文档之前，不应创建或更新 OpenSpec change，也不应直接进入 `/opsx:*`。
-8. 用户确认后，才基于一个或多个方案文档创建或更新 OpenSpec change。
-9. `proposal.md` 必须靠前包含“来源方案文档”章节，列出所有来源 `docs/solutions/*.md`。
+6. 闭环验证完成后，在请求用户确认方案文档前，询问用户是否需要先创建 `docs/solutions/references/<主题>-OpenSpec-拆分设计.md`。
+7. 如果用户需要，先创建拆分设计，再进入方案文档确认或后续 OpenSpec 承接；如果用户不需要，直接进入用户确认环节。拆分设计由用户决定，不是强制门禁。
+8. 用户确认方案文档之前，不应创建或更新 OpenSpec change，也不应直接进入 `/opsx:*`。
+9. 用户确认后，才基于一个或多个方案文档创建或更新 OpenSpec change。
+10. `proposal.md` 必须靠前包含”来源方案文档”章节，列出所有来源 `docs/solutions/*.md`。
 
 如果来源是多个方案文档，应全部列出。不要新增 `sources.md` 或 `source-docs.md`。
 
@@ -115,6 +127,46 @@ description: >
 - 如果变化只影响执行拆分，不改变已确认方案，可以只更新 `tasks.md`，但应确认 `proposal.md` 与方案文档仍然一致
 
 详细模板和示例见 `references/planning-workflow.md`。
+如需把已确认方案文档稳定转换为 OpenSpec 计划，详见 `references/solution-to-openspec-workflow.md`。
+
+## 基于方案文档生成 OpenSpec 计划
+
+当用户明确要求：
+
+- `基于 docs/solutions/<主题>.md 生成 OpenSpec 计划`
+- `按 docs/solutions/<主题>.md 继续生成 proposal / spec / design / tasks`
+- `把已确认方案文档转换成 OpenSpec 计划`
+
+这里仍然属于规范阶段门禁，不是把方案文档直接改写成 `tasks.md`。
+
+最小流程：
+
+```text
+读取 docs/solutions/<主题>.md
+  -> 输出方案提取摘要
+  -> 判断是否足够生成 OpenSpec 计划
+  -> 生成或更新 proposal.md / spec.md / design.md / tasks.md
+  -> 输出简单对齐检查
+```
+
+硬门禁：
+
+- 只处理“已确认方案文档 -> OpenSpec 计划”的承接；未确认时回到 `references/planning-workflow.md`
+- 生成 OpenSpec 计划前，必须先输出“方案提取摘要”
+- 未输出摘要前，不应直接生成 `proposal.md`、`spec.md`、`design.md` 或 `tasks.md`
+- “方案提取摘要”至少覆盖：来源方案、本次变更目标、范围、非目标、关键规则、设计要点、风险与兼容、验收标准、是否可以生成 OpenSpec 计划
+- 如果存在关键未决项，不要直接生成完整 `tasks.md`；先提示补齐，或进入 `/opsx:explore`
+
+最小产物边界：
+
+- `proposal.md`：为什么做、做什么、范围、非目标，并写入“来源方案文档”
+- `spec.md`：业务规则、功能行为、异常路径、验收场景
+- `design.md`：架构、流程、模块边界、数据流、图示与设计取舍
+- `tasks.md`：只写可执行任务、迁移任务、验证任务；每项必须有“完成判断”
+
+生成后补一个简短对齐检查，至少确认已读取来源方案、`proposal.md` 已写来源方案、`spec.md` 已承接关键规则、`design.md` 已承接设计要点、`tasks.md` 每项有完成判断、未决项已说明。
+
+摘要模板、`tasks.md` 示例和对齐检查表放在 `references/solution-to-openspec-workflow.md`。
 
 ## 为什么有时必须补图
 
@@ -264,6 +316,7 @@ description: >
 - `references/openspec-command-examples.md`
 - `references/intent-to-openspec-mapping.md`
 - `references/planning-workflow.md`
+- `references/solution-to-openspec-workflow.md`
 - `references/skill-usage-sequence.md`
 - `references/spec-template.md`
 - `references/spec-checklist.md`

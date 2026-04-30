@@ -1030,6 +1030,97 @@
           "/opsx:propose"
         ]
       }
+    },
+    {
+      "id": "q29",
+      "eval_id": 29,
+      "tags": [
+        "方案转计划类",
+        "摘要门禁类"
+      ],
+      "prompt": "基于 docs/solutions/菜单权限改造方案.md 生成 OpenSpec 计划。",
+      "with_skill": {
+        "expected": "应先做方案提取摘要，再判断是否足够生成 OpenSpec 计划，最后才进入产物生成。",
+        "not_expected": "不应直接把方案文档改写成 tasks.md；不应跳过摘要门禁。",
+        "required_artifacts": [
+          "proposal.md",
+          "spec.md",
+          "design.md",
+          "tasks.md"
+        ],
+        "required_mentions": [
+          "方案提取摘要",
+          "来源方案",
+          "是否可以生成 OpenSpec 计划",
+          "完成判断",
+          "/opsx:explore|补齐"
+        ],
+        "must_include": [
+          "方案提取摘要",
+          "来源方案",
+          "是否可以生成 OpenSpec 计划",
+          "proposal\\.md",
+          "spec\\.md",
+          "design\\.md",
+          "tasks\\.md",
+          "完成判断",
+          "/opsx:explore|补齐"
+        ],
+        "must_exclude": [
+          "直接把 docs/solutions/.+ 改写成 tasks\\.md",
+          "跳过方案提取摘要"
+        ]
+      },
+      "without_skill": {
+        "expected": "更可能直接开始拆 OpenSpec 产物或任务，而不会稳定先给摘要门禁。",
+        "forbidden_mentions": [
+          "方案提取摘要",
+          "完成判断"
+        ],
+        "must_exclude": [
+          "方案提取摘要",
+          "完成判断"
+        ]
+      }
+    },
+    {
+      "id": "q30",
+      "eval_id": 30,
+      "tags": [
+        "方案先行类",
+        "拆分设计类"
+      ],
+      "prompt": "方案文档刚做完闭环验证，接下来先别直接确认，先问我要不要创建 OpenSpec 拆分设计。",
+      "with_skill": {
+        "expected": "应在闭环验证完成后，先询问是否需要创建 OpenSpec 拆分设计。",
+        "not_expected": "不应跳过询问直接进入方案确认。",
+        "required_mentions": [
+          "OpenSpec 拆分设计",
+          "docs/solutions/references/.+-OpenSpec-拆分设计\\.md",
+          "由用户决定|不是强制步骤"
+        ],
+        "must_include": [
+          "OpenSpec 拆分设计",
+          "docs/solutions/references/.+-OpenSpec-拆分设计\\.md",
+          "由用户决定|不是强制步骤",
+          "先询问|是否需要"
+        ],
+        "must_exclude": [
+          "直接进入方案确认",
+          "必须生成"
+        ]
+      },
+      "without_skill": {
+        "expected": "更可能在闭环验证后直接进入确认，不会稳定补出拆分设计询问。",
+        "forbidden_mentions": [
+          "OpenSpec 拆分设计",
+          "docs/solutions/references/.+-OpenSpec-拆分设计\\.md"
+        ],
+        "must_exclude": [
+          "OpenSpec 拆分设计",
+          "docs/solutions/references/.+-OpenSpec-拆分设计\\.md"
+        ]
+      }
     }
   ]
 }

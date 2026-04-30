@@ -11,10 +11,11 @@ flowchart LR
     C --> D{需要完整方案文档?}
     D -- 是 --> E[docs/solutions/*.md]
     E --> F[询问是否需要自我闭环验证]
-    F --> G[用户确认方案文档]
-    G --> H[OpenSpec / OPSX]
-    D -- 否 --> H[OpenSpec / OPSX]
-    H --> I[后续执行与验证]
+    F --> G[询问是否需要先创建 OpenSpec 拆分设计]
+    G --> H[用户确认方案文档]
+    H --> I[OpenSpec / OPSX]
+    D -- 否 --> I[OpenSpec / OPSX]
+    I --> J[后续执行与验证]
 ```
 
 ## 分工关系
@@ -29,6 +30,7 @@ flowchart LR
   - 负责面向 OpenSpec 组织方案、规范与计划
   - 当用户要求完整方案文档时，先生成并等待用户确认 `docs/solutions/*.md`
   - 在请求用户确认方案文档前，询问是否需要方案文档自我闭环验证；该验证由用户决定，不是强制步骤
+  - 闭环验证完成后，询问是否需要先创建 `docs/solutions/references/<主题>-OpenSpec-拆分设计.md`；该拆分设计由用户决定，不是强制步骤
   - 当方案文档已确认或无需完整方案文档时，选择合适的 `/opsx:*` 入口
 
 - OpenSpec / OPSX

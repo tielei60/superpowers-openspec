@@ -23,6 +23,8 @@
 - 如果用户要求完整方案文档，是否先生成并确认 `docs/solutions/*.md`
 - 在请求用户确认方案文档前，是否询问用户是否需要方案文档自我闭环验证
 - 是否避免把方案文档自我闭环验证写成强制步骤
+- 闭环验证完成后，是否询问用户是否需要先创建 `docs/solutions/references/<主题>-OpenSpec-拆分设计.md`
+- 是否避免把 OpenSpec 拆分设计写成强制步骤
 - 是否明确 `docs/solutions/*.md` 不是 OpenSpec 官方 artifact
 - 如果 OpenSpec change 来源于方案文档，`proposal.md` 是否包含“来源方案文档”章节
 - 如果来源是多个方案文档，`proposal.md` 是否列出全部来源

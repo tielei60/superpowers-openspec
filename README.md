@@ -157,6 +157,7 @@ python3 scripts/abtest_regression.py score --mode both --only q1,q6 --report .ab
 ## 参考文档
 
 - `references/planning-workflow.md`
+- `references/solution-to-openspec-workflow.md`
 - `references/openspec-directory-structure.md`
 - `references/openspec-command-examples.md`
 - `references/intent-to-openspec-mapping.md`
