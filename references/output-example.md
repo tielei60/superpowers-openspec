@@ -2,7 +2,7 @@
 
 本文件只关注一件事：`superpowers-openspec` 的响应应该长什么样。
 
-命令选择本身见 `references/openspec-command-examples.md`，完整方案文档先行流程见 `references/planning-workflow.md`。这里不重复讲整套路由规则，只展示合格输出的最小结构和代表性示例。
+命令选择本身见 `references/intent-to-openspec-mapping.md`，完整方案文档先行流程见 `references/planning-workflow.md`。这里不重复讲整套路由规则，只展示合格输出的最小结构和代表性示例。
 
 ## 标准输出骨架
 

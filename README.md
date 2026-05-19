@@ -106,7 +106,7 @@ docs/solutions/<主题>.md
 | `规划好了，开始实现` | `/opsx:apply` |
 | `检查实现有没有偏离 spec` | `/opsx:verify`（profile 支持时） |
 
-更细的中文意图映射见 `references/intent-to-openspec-mapping.md`，命令判断示例见 `references/openspec-command-examples.md`。
+更细的中文意图映射与命令判断示例见 `references/intent-to-openspec-mapping.md`。
 
 ## 文档分工
 
@@ -114,8 +114,8 @@ docs/solutions/<主题>.md
   - 权威规则来源，保留触发条件、门禁、停止条件和默认映射
 - `references/planning-workflow.md`
   - 完整方案文档先行流程、模板、自检和同步规则
-- `references/openspec-command-examples.md`
-  - 从用户表达映射到 `/opsx:*` 的命令选择示例
+- `references/intent-to-openspec-mapping.md`
+  - 中文意图映射与从用户表达映射到 `/opsx:*` 的命令选择示例
 - `references/output-example.md`
   - 标准输出形态和端到端响应示例
 - `references/spec-template.md`
@@ -159,7 +159,6 @@ python3 scripts/abtest_regression.py score --mode both --only q1,q6 --report .ab
 - `references/planning-workflow.md`
 - `references/solution-to-openspec-workflow.md`
 - `references/openspec-directory-structure.md`
-- `references/openspec-command-examples.md`
 - `references/intent-to-openspec-mapping.md`
 - `references/skill-usage-sequence.md`
 - `references/spec-template.md`

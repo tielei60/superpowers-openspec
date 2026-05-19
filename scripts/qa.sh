@@ -327,7 +327,7 @@ readme = (root / "README.md").read_text()
 template = (root / "references/spec-template.md").read_text()
 checklist = (root / "references/spec-checklist.md").read_text()
 source = (root / "references/source-input-recording.md").read_text()
-commands = (root / "references/openspec-command-examples.md").read_text()
+commands = (root / "references/intent-to-openspec-mapping.md").read_text()
 output = (root / "references/output-example.md").read_text()
 workflow_path = root / "references/planning-workflow.md"
 workflow = workflow_path.read_text() if workflow_path.exists() else ""
@@ -420,7 +420,7 @@ checks = {
     "spec-template.md 含可读性原则": "文档可读性原则" in open("references/spec-template.md").read(),
     "spec-checklist.md 含可读性检查": "## 可读性检查" in open("references/spec-checklist.md").read(),
     "planning-workflow.md 含可读性要求": "可读性要求" in open("references/planning-workflow.md").read(),
-    "openspec-command-examples.md 含可读性要求": "## 文档可读性要求" in open("references/openspec-command-examples.md").read(),
+    "intent-to-openspec-mapping.md 含可读性要求": "## 文档可读性要求" in open("references/intent-to-openspec-mapping.md").read(),
     "output-example.md 含可读性说明": "人类易读语义" in open("references/output-example.md").read(),
     "README.md 含可读性门禁": "## 文档可读性门禁" in open("README.md").read(),
 }

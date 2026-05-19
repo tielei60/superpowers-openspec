@@ -1121,6 +1121,68 @@
           "docs/solutions/references/.+-OpenSpec-拆分设计\\.md"
         ]
       }
+    },
+    {
+      "id": "q31",
+      "eval_id": 31,
+      "tags": [
+        "内容质量类",
+        "方案先行类"
+      ],
+      "prompt": "帮我写一个订单状态机改造的完整方案文档。涉及 5 种状态、3 个角色、多个异步回调。要给技术评审委员会看。",
+      "with_skill": {
+        "expected": "应进入方案文档先行流程，状态流转用图或表格表达，角色权限用表格，异步时序建议 Mermaid。",
+        "not_expected": "不应只用连续段落描述状态流转；不应省略图示建议。",
+        "must_include": [
+          "docs/solutions/",
+          "Mermaid|stateDiagram|状态图",
+          "表格",
+          "sequenceDiagram|时序图",
+          "术语.*解释|解释.*术语"
+        ],
+        "must_exclude": [
+          "只用连续段落",
+          "省略图示"
+        ]
+      },
+      "without_skill": {
+        "expected": "更可能直接给方案正文，不会稳定要求图示和表格表达。",
+        "must_exclude": [
+          "stateDiagram",
+          "sequenceDiagram"
+        ]
+      }
+    },
+    {
+      "id": "q32",
+      "eval_id": 32,
+      "tags": [
+        "内容质量类",
+        "防返工类"
+      ],
+      "prompt": "帮我写一个支付对账模块的方案文档。第三方支付渠道的回调格式还没最终确认，历史订单的对账规则也还在讨论。",
+      "with_skill": {
+        "expected": "应进入方案文档先行流程，并显式列出待确认问题作为独立章节，在风险章节说明影响。",
+        "not_expected": "不应假装回调格式和对账规则已确定；不应把待确认问题藏在正文中。",
+        "must_include": [
+          "docs/solutions/",
+          "待确认问题|待确认",
+          "回调格式|第三方.*回调",
+          "对账规则|历史订单",
+          "风险"
+        ],
+        "must_exclude": [
+          "已确定",
+          "直接进入实现"
+        ]
+      },
+      "without_skill": {
+        "expected": "更可能直接给方案建议，不会稳定把未决项作为独立章节列出。",
+        "must_exclude": [
+          "待确认问题.*独立章节",
+          "docs/solutions/"
+        ]
+      }
     }
   ]
 }

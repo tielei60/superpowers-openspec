@@ -2,14 +2,13 @@
 name: superpowers-openspec
 description: >
   适用于：用户要求先分析、先写 spec、先整理需求、先做详细设计、先写完整 markdown 方案、先写方案或计划，或提出功能改造、功能优化、流程优化、模块重构、能力升级，
-  或把“设计/方案/计划”和“实现/开发/落地”混在一起表达，但任务本质涉及新功能、规则变更、接口或交互变更、数据模型变更、状态或角色流转变化，需要先进入 OpenSpec
-  规范阶段。
+  或把"设计/方案/计划"和"实现/开发/落地"混在一起表达，但任务本质涉及新功能、规则变更、接口或交互变更、数据模型变更、状态或角色流转变化。
 ---
 
 # superpowers-openspec
 
-这是一个面向 OpenSpec 的方案、规范与计划工作流 skill。
-它的职责不是重新定义 OpenSpec，而是先帮助用户把方案、规范和计划的阶段边界说清楚，再将已确认内容落到官方 OpenSpec / OPSX 工作流。
+面向 OpenSpec 的方案、规范与计划工作流 skill。
+职责：帮助用户把方案、规范和计划的阶段边界说清楚，再将已确认内容落到官方 OpenSpec / OPSX 工作流。
 
 ## 权威来源
 
@@ -21,269 +20,130 @@ description: >
 
 ## 触发与不触发
 
-满足任一情况时，进入本 skill：
+满足任一即触发：
 
-- 用户明确要求先分析、先整理需求、先写 spec、先做详细设计、先写方案、先写计划，或先把方案定下来再开发
-- 用户要求先写完整 markdown 方案、先确认完整方案文档，或先沉淀规范再开发
-- 任务属于新功能、功能改造、功能优化、流程优化、模块重构、能力升级、多角色协作流程
-- 任务涉及业务规则变更、接口或交互变更、数据结构变更、状态流转变化、模块边界调整
-- 用户明确提到 OpenSpec、规范阶段、需求文档等表达，并希望先定义再实现
-- 用户把“设计 / 方案 / 计划”和“实现 / 开发 / 落地”混在一起表达，例如 `帮我设计并实现短信发送功能`
+- 用户要求先分析、先整理需求、先写 spec、先做详细设计、先写方案或计划
+- 用户要求先写完整 markdown 方案、先确认完整方案文档
+- 任务属于新功能、功能改造、功能优化、流程优化、模块重构、能力升级
+- 任务涉及业务规则、接口、交互、数据结构、状态流转或模块边界变更
+- 用户把"设计/方案/计划"和"实现/开发/落地"混在一起表达
 
-最小判断规则：
+最小判断规则：只要涉及规则、流程、接口、状态、角色、模块边界或数据结构变化，就进入 OpenSpec 阶段。
 
-- 只要涉及规则、流程、接口、状态、角色、模块边界或数据结构变化，就进入 OpenSpec 阶段
-- 只要本轮关键诉求是方案、计划、规范或需求沟通，就先由本 skill 接管
+不触发：
 
-以下情况不要强制进入本 skill：
-
-- 纯 bug 修复，且不涉及新规则、流程、接口或状态
-- 纯文案修改、样式微调、配置值调整
-- 单点技术修复或局部性能优化，影响范围明确且无需新增规范
+- 纯 bug 修复（不涉及新规则、流程、接口或状态）
+- 纯文案、样式、配置值调整
+- 局部性能优化，影响范围明确且无需新增规范
 - 用户只要求快速定位问题或直接给出修复建议
-
-若不满足上述条件，则交还上层 superpowers skill 或按普通任务处理。
 
 ## 混合意图优先级
 
-在 `superpowers` 调度中，如果当前轮次同时出现“设计 / 方案 / 计划”和“实现 / 开发 / 落地”两类信号，不要因为用户提到了“实现”就直接跳过本 skill。
+当同时出现"设计/方案/计划"和"实现/开发/落地"信号时：
 
-判断顺序：
+1. 先判断任务是否涉及新功能、规则、接口、数据结构、状态或角色变化
+2. 如果是，优先进入 `superpowers-openspec`
+3. 规范阶段完成后，再交由实现入口承接
 
-1. 先判断任务本质上是否涉及新功能、规则、接口、交互、数据结构、状态或角色变化
-2. 如果是，并且用户同时要求设计与实现，则优先进入 `superpowers-openspec`
-3. 规范阶段完成后，再交由 OpenSpec / OPSX 的实现入口或后续执行阶段承接
-
-像 `帮我设计并实现短信发送功能`、`把需求方案和开发计划一起定下来`、`先沟通需求，再把功能做出来`、`先把规范和计划写出来`，都应理解成“带实现诉求的规范阶段入口”，而不是“立刻进入编码”。
-
-## 调度边界
-
-本项目的目标不是替代 `superpowers`，而是借用它的调度能力，把“需求沟通、方案管理、规范沉淀、计划拆解”稳定落到 OpenSpec。
-
-因此：
-
-1. `superpowers` 负责识别是否需要进入规范阶段
-2. 一旦识别到“方案 / 计划 / 规范 / 需求沟通”属于本轮关键诉求，就优先交给 `superpowers-openspec`
-3. `superpowers-openspec` 负责把这些中文意图组织成面向 OpenSpec 的方案、规范与计划工作流
-4. 规范阶段完成后，才交回实现入口
-
-中文意图的默认理解：
-
-- `完整方案文档` -> `docs/solutions/*.md`，需用户确认后再创建或更新 OpenSpec change
-- `方案` -> `proposal.md` 与 `design.md`
-- `计划` -> `tasks.md`
-- `规范`、`规则`、`行为定义` -> `spec.md`
-- `需求沟通`、`先分析`、`先梳理` -> 先收敛问题空间，再决定后续产物
-
-详见 `references/intent-to-openspec-mapping.md`。
-如用户明确要求先确认完整 markdown 方案，详见 `references/planning-workflow.md`。
+`帮我设计并实现短信发送功能`、`先沟通需求，再把功能做出来` 等表达，都是"带实现诉求的规范阶段入口"。
 
 ## 整体流程
 
 ```text
 触发判断 → 方案设计 → 用户确认 → OpenSpec 承接 → 实现入口
-
-方案设计阶段：生成 docs/solutions/*.md → 闭环验证（可选） → 拆分设计（可选）
-OpenSpec 承接：选择 OPSX 入口 → 生成 proposal/spec/design/tasks → 对齐检查
 ```
 
-核心边界：方案文档确认前不进 OpenSpec，规范完成前不进实现。
-
-## 核心职责
-
-本 skill 负责方案、规范与计划阶段的判断和门禁：
-
-1. 判断是否需要先进入完整方案文档、规范或计划阶段
-2. 如果用户要求完整方案文档，先生成并等待用户确认 `docs/solutions/*.md`
-3. 在方案文档确认后，选择合适的官方 OPSX 入口
-4. 明确当前应生成或更新哪些 OpenSpec 产物
-5. 在规范阶段未完成前，阻止直接进入实现
-
-它不负责发明新的 OpenSpec 目录格式，也不负责取代 OpenSpec 的命令工作流。
-
-## 完整方案文档先行
-
-当用户明确要求“先落地完整 markdown 方案”“先写完整方案文档”“先确认可完整评审的方案后再生成 OpenSpec”时，进入面向 OpenSpec 的方案、规范与计划工作流。
-
-执行规则：
-
-1. 先生成 `docs/solutions/<主题>.md`，正文和文件名都必须使用中文，不使用英文文件名或纯数字文件名。
-2. 方案文档必须便于用户完整评审，至少覆盖背景、目标、非目标、已确认决策、关键取舍、方案设计、风险、待确认问题和验收标准。
-3. 如果架构、流程、状态、时序或页面结构仅靠文字难以表达，应在方案文档中补充 Mermaid 或 ASCII 图示。
-4. 在请求用户确认方案文档前，询问用户是否需要先做一次“方案文档自我闭环验证”。
-5. 如果用户需要，自检目标包括目标/非目标、关键取舍、待确认问题、风险、验收标准、图示完整性和 OpenSpec 拆分建议；自检后先修正文档，再交给用户确认。
-6. 闭环验证完成后，在请求用户确认方案文档前，询问用户是否需要先创建 `docs/solutions/references/<主题>-OpenSpec-拆分设计.md`。
-7. 如果用户需要，先创建拆分设计，再进入方案文档确认或后续 OpenSpec 承接；如果用户不需要，直接进入用户确认环节。拆分设计由用户决定，不是强制门禁。
-8. 用户确认方案文档之前，不应创建或更新 OpenSpec change，也不应直接进入 `/opsx:*`。
-9. 用户确认后，才基于一个或多个方案文档创建或更新 OpenSpec change。
-10. `proposal.md` 必须靠前包含”来源方案文档”章节，列出所有来源 `docs/solutions/*.md`。
-
-如果来源是多个方案文档，应全部列出。不要新增 `sources.md` 或 `source-docs.md`。
-
-同步规则：
-
-- 如果方案文档发生实质变化，检查并更新对应 OpenSpec change 的 `proposal.md`、`spec.md`、`design.md` 和 `tasks.md`
-- 如果 OpenSpec 产物发生实质变化，回写或更新对应方案文档
-- 如果变化只影响执行拆分，不改变已确认方案，可以只更新 `tasks.md`，但应确认 `proposal.md` 与方案文档仍然一致
-
-详细模板和示例见 `references/planning-workflow.md`。
-如需把已确认方案文档稳定转换为 OpenSpec 计划，详见 `references/solution-to-openspec-workflow.md`。
-
-## 基于方案文档生成 OpenSpec 计划
-
-当用户明确要求：
-
-- `基于 docs/solutions/<主题>.md 生成 OpenSpec 计划`
-- `按 docs/solutions/<主题>.md 继续生成 proposal / spec / design / tasks`
-- `把已确认方案文档转换成 OpenSpec 计划`
-
-这里仍然属于规范阶段门禁，不是把方案文档直接改写成 `tasks.md`。
-
-最小流程：
-
-```text
-读取 docs/solutions/<主题>.md
-  -> 输出方案提取摘要
-  -> 判断是否足够生成 OpenSpec 计划
-  -> 生成或更新 proposal.md / spec.md / design.md / tasks.md
-  -> 输出简单对齐检查
-```
-
-硬门禁：
-
-- 只处理“已确认方案文档 -> OpenSpec 计划”的承接；未确认时回到 `references/planning-workflow.md`
-- 生成 OpenSpec 计划前，必须先输出“方案提取摘要”
-- 未输出摘要前，不应直接生成 `proposal.md`、`spec.md`、`design.md` 或 `tasks.md`
-- “方案提取摘要”至少覆盖：来源方案、本次变更目标、范围、非目标、关键规则、设计要点、风险与兼容、验收标准、是否可以生成 OpenSpec 计划
-- 如果存在关键未决项，不要直接生成完整 `tasks.md`；先提示补齐，或进入 `/opsx:explore`
-
-最小产物边界：
-
-- `proposal.md`：为什么做、做什么、范围、非目标，并写入“来源方案文档”
-- `spec.md`：业务规则、功能行为、异常路径、验收场景
-- `design.md`：架构、流程、模块边界、数据流、图示与设计取舍
-- `tasks.md`：只写可执行任务、迁移任务、验证任务；每项必须有“完成判断”
-
-生成后补一个简短对齐检查，至少确认已读取来源方案、`proposal.md` 已写来源方案、`spec.md` 已承接关键规则、`design.md` 已承接设计要点、`tasks.md` 每项有完成判断、未决项已说明。
-
-摘要模板、`tasks.md` 示例和对齐检查表放在 `references/solution-to-openspec-workflow.md`。
-
-## 为什么有时必须补图
-
-有些方案和需求，只靠连续文字并不能完整表达真实约束。图示不是“锦上添花”，而是降低歧义的必要补充，尤其在以下情况：
-
-- 架构边界多，只写文字容易看不出模块关系、依赖方向和数据流向
-- 流程分支多，只写步骤容易漏掉判断条件、异常回路和回退路径
-- 涉及跨角色、跨系统、异步通知或状态推进时，只写描述容易看不出时序关系
-- 涉及页面、表单、列表、弹窗或信息区块时，只写段落说明很难准确表达布局
-
-- 文字擅长解释“是什么、为什么”
-- 图更擅长表达“谁和谁有关、先后顺序、分支回路、页面结构”
-
-图示属于 OpenSpec 产物里的表达方式，不是本 skill 新定义的独立官方 artifact。默认放在 `design.md`，必要时也可在相关 `spec.md` 场景说明中引用：
-
-- 架构图：模块边界、系统关系、依赖方向、数据流向；优先 Mermaid
-- 流程图 / 状态图：业务流程、审批路径、异常分支、状态流转；优先 Mermaid `flowchart` 或 `stateDiagram`
-- 时序图：多角色、多服务、前后端交互、异步调用、事件通知；优先 Mermaid `sequenceDiagram`
-- 文本布局图：列表页、详情页、表单页、弹窗、信息面板等页面结构说明；优先 ASCII 文本布局图
-
-默认策略：
-
-- 优先 Mermaid，因为它更适合表达结构、流程和时序
-- 页面文本布局或纯终端快速审阅时，使用 ASCII 作为退化方案
-- 如果输出 Mermaid 图，最后必须做一次自检，确认语法正确、结构完整、没有明显语法错误后再交付
-- Mermaid 自检至少检查：代码块 fence 是否闭合、图类型声明是否正确、括号与连线是否成对、节点或参与者标识是否前后一致
-- 不要把 `architecture.mermaid`、`flowchart.mermaid`、`sequence.mermaid` 重新定义为独立强制文件
-- 不要在明明需要图示时只给一段纯文字总结
-
-## 减少返工的完整性要求
-
-进入 OpenSpec 阶段的目标，不只是把事情“写下来”，而是把那些会在开发阶段反复返工的问题尽量前置暴露出来。
-
-当进入 OpenSpec / OPSX 时，如果存在以下任一情况，不应把方案误判为“已经足够完整，可以直接开发”：
-
-- 关键假设还没有被明确写出
-- 仍有待确认问题，但没有列出来
-- 外部依赖、上游接口、第三方约束没有被识别
-- 兼容性影响、历史数据迁移、状态延续规则没有说明
-- 验收标准、完成判断、验证方式不清楚
-
-输出除命令和产物外，必要时还应明确指出这些“防返工信息”：
-
-- 已知事实与关键假设
-- 待确认问题与缺失输入
-- 外部依赖与约束来源
-- 兼容性、迁移、回滚或降级关注点
-- 验收标准与验证方式
-
-如果这些信息仍明显不完整，优先用 `/opsx:explore` 收敛问题空间，或用 `/opsx:new` + `/opsx:continue` 分步补齐；不要直接把任务推进到“完整 tasks 已可执行”的假象。
-
-## 可选的原始输入记录
-
-如果用户明确要求保留原始输入，可在当前 change 目录下可选补充 `source-notes.md`（摘录/来源）或 `transcript.md`（完整对话过程）。
-两者均为可选补充，不是官方强制 artifact。
-
-详见 `references/source-input-recording.md`。
+核心边界：**方案文档确认前不进 OpenSpec，规范完成前不进实现。**
 
 ## 默认映射
 
-进入本 skill 后，优先使用以下映射：
+| 场景 | 推荐入口 | 重点产物 |
+|------|----------|----------|
+| 输入完整、边界清晰 | `/opsx:propose` | proposal + spec + design + tasks |
+| 输入零散、需收敛 | `/opsx:explore` → `/opsx:propose` | 先补齐假设和边界 |
+| 用户要完整方案文档 | 先 `docs/solutions/*.md` | 确认后再进 `/opsx:*` |
+| 用户要方案 | `/opsx:propose` 或 `/opsx:ff` | proposal + design |
+| 用户要计划 | 前置未定则先 explore | tasks |
+| 用户要规范 | `/opsx:propose` | spec |
+| 分步生成 | `/opsx:new` + `/opsx:continue` | 逐步补齐 |
+| 一次全出 | `/opsx:ff` | 全部产物 |
+| 关键未决项存在 | `/opsx:explore` | 先收敛再规划 |
+| 规范已完成 | `/opsx:apply` | 进入实现 |
+| 变更已完成 | `/opsx:archive` | 归档 |
+| 验证一致性 | `/opsx:verify`（profile 支持时） | — |
+| 同步回主规范 | `/opsx:sync`（profile 支持时） | — |
 
-- 输入完整、需求边界较清晰
-  - 优先进入 `/opsx:propose`
+详见 `references/intent-to-openspec-mapping.md`。
 
-- 输入零散、来自会议纪要、聊天记录或口语描述
-  - 优先进入 `/opsx:explore`
-  - 收敛后进入 `/opsx:propose`
+## 完整方案文档先行
 
-- 用户明确要先写方案
-  - 如果用户要求完整 markdown 方案或先确认可完整评审的方案，先生成 `docs/solutions/<主题>.md`
-  - 用户确认方案文档前，不进入 OpenSpec change
-  - 用户确认后，`proposal.md` 需引用来源方案文档
-  - 关注 `proposal.md` 与 `design.md`
-  - 根据完整程度选择 `/opsx:propose` 或 `/opsx:ff`
+当用户要求先写完整方案文档时，执行以下门禁：
 
-- 用户明确要先写计划或开发计划
-  - 关注 `tasks.md`
-  - 若前置方案或规范仍未定，先进入 `/opsx:explore` 或 `/opsx:new` + `/opsx:continue`
+1. 先生成 `docs/solutions/<主题>.md`，正文和文件名必须使用中文
+2. 方案至少覆盖：背景、目标、非目标、已确认决策、关键取舍、方案设计、风险、待确认问题、验收标准
+3. 复杂结构补充 Mermaid 或 ASCII 图示
+4. 请求确认前，询问用户是否需要"方案文档自我闭环验证"（由用户决定，不是强制门禁）
+5. 闭环验证后，询问是否需要创建 `docs/solutions/references/<主题>-OpenSpec-拆分设计.md`（由用户决定，不是强制门禁）
+6. **用户确认前，不应创建或更新 OpenSpec change，不进入 `/opsx:*`**
+7. 确认后，`proposal.md` 必须靠前包含"来源方案文档"章节
+8. 多方案来源时全部列出，不新增 `sources.md` 或 `source-docs.md`
 
-- 关键信息存在明显未决项，例如假设未写清、依赖不明、迁移或验收口径未定
-  - 优先进入 `/opsx:explore`
-  - 或使用 `/opsx:new` + `/opsx:continue` 分步补齐
+同步规则：方案文档与 OpenSpec 产物发生实质变化时，需检查并同步另一侧。
 
-- 用户希望按步骤生成 proposal / spec / design / tasks
-  - 使用 `/opsx:new`
-  - 然后使用 `/opsx:continue`
-  - 或一次性使用 `/opsx:ff`
+详细模板和示例见 `references/planning-workflow.md`。
 
-- 规范已完成，开始实现
-  - 交给 `/opsx:apply`
+## 基于方案文档生成 OpenSpec 计划
 
-- 变更已完成，准备归档
-  - 交给 `/opsx:archive`
+硬门禁：
 
-- 需要验证实现与规范一致性，或把变更 spec 同步回主规范
-  - 在所选 profile 支持时使用 `/opsx:verify` 与 `/opsx:sync`
+- 只处理已确认方案文档；未确认时回到 `references/planning-workflow.md`
+- 必须先输出"方案提取摘要"，再生成产物
+- 摘要至少覆盖：来源方案、变更目标、范围、非目标、关键规则、设计要点、风险与兼容、验收标准、是否可生成
+- 存在关键未决项时，不直接生成完整 `tasks.md`
+
+最小产物边界：
+
+| 产物 | 内容 |
+|------|------|
+| `proposal.md` | 为什么做、做什么、范围、非目标、来源方案文档 |
+| `spec.md` | 业务规则、功能行为、异常路径、验收场景 |
+| `design.md` | 架构、流程、模块边界、数据流、图示、设计取舍 |
+| `tasks.md` | 可执行任务、迁移任务、验证任务；每项有"完成判断" |
+
+摘要模板和对齐检查表见 `references/solution-to-openspec-workflow.md`。
+
+## 为什么有时必须补图
+
+图示不是锦上添花，而是降低歧义的必要补充。文字擅长"是什么、为什么"，图擅长"谁和谁有关、先后顺序、分支回路、页面结构"。
+
+| 场景 | 优先方式 | 落点 |
+|------|----------|------|
+| 架构图：模块边界、依赖方向、数据流 | Mermaid | `design.md` |
+| 流程图 / 状态图：审批路径、异常分支、状态流转 | Mermaid flowchart/stateDiagram | `design.md` |
+| 时序图：多角色交互、异步调用、事件通知 | Mermaid sequenceDiagram | `design.md` |
+| 页面、表单、列表、弹窗布局 | ASCII 文本布局图 | `design.md` |
+
+规则：
+- 优先 Mermaid，页面布局退化为 ASCII
+- 如果输出 Mermaid 图，最后必须做一次自检（fence 闭合、图类型、节点标识、连线成对）
+- 图示是 `design.md` 的组成部分，不是独立强制文件
+- 不要在明明需要图示时只给纯文字总结
+
+## 减少返工的完整性要求
+
+进入 OpenSpec 时，如果以下任一信息缺失，不应声称方案已完整：
+
+- 关键假设未写明
+- 待确认问题未列出
+- 外部依赖、上游接口、第三方约束未识别
+- 兼容性、迁移、状态延续、回滚规则未说明
+- 验收标准、验证方式不清楚
+
+信息不完整时，优先 `/opsx:explore` 收敛，或 `/opsx:new` + `/opsx:continue` 分步补齐。
 
 ## 语言要求
 
-本 skill 的默认工作语言不是“尽量中文”，而是“必须中文”。
-
-- 工作流判断必须使用中文
-- 命令建议必须使用中文说明
-- 产物说明、门禁提示、未决项提醒、图示建议都必须使用中文
-- 输出的文档内容本身也必须使用中文，包括 `docs/solutions/*.md`、`proposal.md`、`spec.md`、`design.md`、`tasks.md` 及相关补充说明
-- 只有当用户明确要求其他语言时，才可以切换
-
-除非用户明确要求其他语言，否则必须使用中文说明工作流判断、命令建议、产物去向以及产物正文内容。
-
-输出至少应包含以下结果：
-
-- 如果进入完整方案文档先行流程，说明应先生成 `docs/solutions/<主题>.md` 并等待用户确认，同时询问是否需要先做方案文档自我闭环验证
-- 如果已经进入 OpenSpec 阶段，选择当前应执行的 `/opsx:*` 命令，并说明应生成或更新哪些 OpenSpec 产物，例如 `proposal.md`、`spec.md`、`design.md`、`tasks.md`
-- 明确当前仍处于规范阶段，因此不应直接进入实现
-- 如果 OpenSpec change 来源于方案文档，说明 `proposal.md` 需要引用来源方案文档；如果当前需求仅靠文字难以完整说明，明确指出建议补充的图示类型，以及它应进入 `design.md` 或相关设计说明
-- 如果当前方案存在关键未决项，显式列出假设、待确认问题、依赖、迁移/兼容性影响与验收方式；如果用户明确要求保留原始输入，可建议增加 `source-notes.md` 或 `transcript.md`
+默认工作语言是**必须中文**：工作流判断、命令建议、产物说明、门禁提示，以及输出的文档内容本身也必须使用中文，包括 `docs/solutions/*.md`、`proposal.md`、`spec.md`、`design.md`、`tasks.md`。只有当用户明确要求其他语言时，才可以切换。
 
 ## 文档可读性要求
 
@@ -291,34 +151,40 @@ OpenSpec 承接：选择 OPSX 入口 → 生成 proposal/spec/design/tasks → �
 
 - 术语首次出现需解释
 - 优先短句，先说结论
-- 对比、枚举、角色权限、状态映射优先用表格
+- 对比、枚举、状态映射优先用表格
 - 避免模板化套话、内部缩写和未解释代号
-- 技术细节应说明其实际含义
+
+## 常见错误
+
+| 错误 | 正确做法 |
+|------|----------|
+| 用户说"设计并实现"就直接编码 | 先进入规范阶段 |
+| 不应输出 `docs/specs/<feature>/openspec.md` | 使用 `openspec/changes/` |
+| 把 Mermaid 文件列为独立强制产物 | 图示放在 `design.md` 内 |
+| 跳过 `docs/solutions/*.md` 直接生成 change | 先写方案文档，确认后再进 OpenSpec |
+| 新增 `sources.md` 记录来源 | 来源写入 `proposal.md` |
+| 未决项明显时仍给完整 tasks | 先 `/opsx:explore` 收敛 |
+| 同时推荐多个 `/opsx:*` 不做取舍 | 给出唯一推荐命令 |
 
 ## 停止条件
 
-本 skill 在完成以下事项后即停止，不再继续展开：
+本 skill 完成以下事项后即停止：
 
-1. 如果进入完整方案文档先行流程，已生成或说明应生成 `docs/solutions/<主题>.md`，并询问用户是否需要先做自我闭环验证
-2. 如果进入 OpenSpec 阶段，已明确给出当前应执行的 `/opsx:*` 命令，并说明当前应生成或更新哪些 OpenSpec 产物
-3. 已声明当前仍处于规范阶段，不应直接进入实现；如有必要，已说明后续产物中应补充哪些 Mermaid 图或 ASCII 文本布局图，以及 `proposal.md` 的来源方案文档关系
-4. 如有必要，已点出仍需补齐的关键假设、依赖、迁移/兼容性、验收信息，或说明可选的 `source-notes.md` / `transcript.md`
+1. 已说明应生成 `docs/solutions/<主题>.md` 或已给出 `/opsx:*` 命令
+2. 已说明当前应生成或更新哪些产物
+3. 已声明当前处于规范阶段，不进入实现
+4. 如有必要，已点出未决项、图示建议、来源关系或可选的 `source-notes.md`/`transcript.md`
 
-停止后的接力由 OpenSpec / OPSX 承接，而不是由本 skill 继续推进产物内容。若用户继续追问具体规范内容（如 `帮我写 proposal.md`），应说明这属于 OpenSpec 工作流本身的职责。
-
-详见 `references/skill-usage-sequence.md`。
+停止后由 OpenSpec / OPSX 承接。详见 `references/skill-usage-sequence.md`。
 
 ## 参考文件
 
-如需具体示例，按需查看：
-
-- `references/openspec-directory-structure.md`
-- `references/openspec-command-examples.md`
-- `references/intent-to-openspec-mapping.md`
-- `references/planning-workflow.md`
-- `references/solution-to-openspec-workflow.md`
-- `references/skill-usage-sequence.md`
-- `references/spec-template.md`
-- `references/spec-checklist.md`
-- `references/source-input-recording.md`
-- `references/output-example.md`
+- `references/openspec-directory-structure.md` — 官方目录结构
+- `references/intent-to-openspec-mapping.md` — 中文意图映射与命令示例
+- `references/planning-workflow.md` — 方案文档先行流程与模板
+- `references/solution-to-openspec-workflow.md` — 方案转 OpenSpec 计划
+- `references/skill-usage-sequence.md` — skill 使用顺序
+- `references/spec-template.md` — 产物承载建议
+- `references/spec-checklist.md` — 对齐检查清单
+- `references/source-input-recording.md` — 原始输入记录约定
+- `references/output-example.md` — 输出示例
