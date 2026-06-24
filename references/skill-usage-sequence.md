@@ -48,4 +48,4 @@ flowchart LR
 
 如果某份说明把 `superpowers-openspec` 写成“OpenSpec 的替代规范体系”，那就是定位错误。
 
-如果某份说明把 `docs/solutions/*.md` 写成 OpenSpec 官方 artifact，或者要求新增 `sources.md` 记录来源关系，那也是定位错误。来源关系应写入 `proposal.md`。
+如果某份说明把 `docs/solutions/*.md` 写成 OpenSpec 官方 artifact，或者要求新增独立来源文件记录来源关系，那也是定位错误。来源关系应写入 `proposal.md`（规则见 `SKILL.md`）。

@@ -83,7 +83,7 @@ description: >
 2. 方案至少覆盖：背景、目标、非目标、已确认决策、关键取舍、方案设计、风险、待确认问题、验收标准
 3. 复杂结构补充 Mermaid 或 ASCII 图示
 4. 请求确认前，询问用户是否需要"方案文档自我闭环验证"（由用户决定，不是强制门禁）
-5. 闭环验证后，询问是否需要创建 `docs/solutions/references/<主题>-OpenSpec-拆分设计.md`（由用户决定，不是强制门禁）
+5. 若用户选择进行自我闭环验证，完成后询问是否需要创建 `docs/solutions/references/<主题>-OpenSpec-拆分设计.md`（由用户决定，不是强制门禁）
 6. **用户确认前，不应创建或更新 OpenSpec change，不进入 `/opsx:*`**
 7. 确认后，`proposal.md` 必须靠前包含"来源方案文档"章节
 8. 多方案来源时全部列出，不新增 `sources.md` 或 `source-docs.md`
@@ -162,26 +162,37 @@ description: >
 | 如果用户未填写，可能返回错误 | 用户未填写时，返回 400，提示"字段不能为空" |
 | 此方案可能影响旧版本 | 若旧版本客户端调用接口 A，将收到 422；发布前通知调用方升级客户端 |
 
+## 行为描述写法（业务驱动）
+
+`spec.md`、`proposal.md`、`design.md`、`tasks.md` 和 `docs/solutions/*.md` 里描述行为、规则、场景、任务时，每条陈述按顺序写齐三要素：
+
+1. **WHO**：具名角色（顾客 / 运营 / 审批主管 / 风控系统），不用"系统 / 平台 / 模块 / 数据"这类无主语词
+2. **TRIGGER**：触发动作或事件（下单 / 提交审批 / 库存低于阈值）
+3. **OUTCOME**：可观测的业务结果（订单写入历史 / 短信发出 / 库存扣减）
+
+缺 WHO 或缺 TRIGGER 的陈述要改写。这是**形状约束**，不是词汇表：不枚举禁用词，而是要求每条陈述具备可判定的三要素，抽象词（"事实 / 真相 / 数据 / 状态"作为主语时）会因缺少具名角色而自然消失。
+
+| 不合格（无主语 / 抽象） | 合格（WHO + TRIGGER + OUTCOME） |
+|--------------------|------------------------------|
+| 系统存储用户数据 | 顾客完成注册后，资料立即出现在个人中心 |
+| 数据写入订单表 | 顾客下单时，订单写入历史表，状态置为待支付 |
+| 提供鉴权能力 | 运营登录后台时，校验账号密码后放行 |
+| 记录事实 | 顾客退款申请提交后，退款单进入待审核队列 |
+
+**条件式例外**（不是"除非必要"）：描述数据迁移、字段映射或底层存储模型时可用系统术语；描述非功能性约束（性能、容量、安全基线）时可用指标式陈述。详细写法和更多示例见 `references/spec-template.md`。
+
 ## 文档可读性要求
 
-输出文档应使用人类易读语义，避免 AI 式套话和内部缩写。
-
-- 术语首次出现需解释
-- 优先短句，先说结论
-- 对比、枚举、状态映射优先用表格
-- 避免模板化套话、内部缩写和未解释代号
+输出文档应使用人类易读语义，避免 AI 式套话和内部缩写：术语首次出现需解释、优先短句先说结论、对比枚举状态映射优先用表格。
 
 ## 常见错误
 
 | 错误 | 正确做法 |
 |------|----------|
-| 用户说"设计并实现"就直接编码 | 先进入规范阶段 |
-| 不应输出 `docs/specs/<feature>/openspec.md` | 使用 `openspec/changes/` |
 | 把 Mermaid 文件列为独立强制产物 | 图示放在 `design.md` 内 |
-| 跳过 `docs/solutions/*.md` 直接生成 change | 先写方案文档，确认后再进 OpenSpec |
-| 新增 `sources.md` 记录来源 | 来源写入 `proposal.md` |
 | 未决项明显时仍给完整 tasks | 先 `/opsx:explore` 收敛 |
 | 同时推荐多个 `/opsx:*` 不做取舍 | 给出唯一推荐命令 |
+| 用"系统 / 数据 / 状态 / 事实"做主语描述行为 | 改写为 WHO+TRIGGER+OUTCOME，见"行为描述写法" |
 
 ## 停止条件
 
@@ -192,16 +203,4 @@ description: >
 3. 已声明当前处于规范阶段，不进入实现
 4. 如有必要，已点出未决项、图示建议、来源关系或可选的 `source-notes.md`/`transcript.md`
 
-停止后由 OpenSpec / OPSX 承接。详见 `references/skill-usage-sequence.md`。
-
-## 参考文件
-
-- `references/openspec-directory-structure.md` — 官方目录结构
-- `references/intent-to-openspec-mapping.md` — 中文意图映射与命令示例
-- `references/planning-workflow.md` — 方案文档先行流程与模板
-- `references/solution-to-openspec-workflow.md` — 方案转 OpenSpec 计划
-- `references/skill-usage-sequence.md` — skill 使用顺序
-- `references/spec-template.md` — 产物承载建议
-- `references/spec-checklist.md` — 对齐检查清单
-- `references/source-input-recording.md` — 原始输入记录约定
-- `references/output-example.md` — 输出示例
+停止后由 OpenSpec / OPSX 承接。各参考文件已在对应章节内引用，使用顺序见 `references/skill-usage-sequence.md`。

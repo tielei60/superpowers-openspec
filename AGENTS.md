@@ -7,6 +7,7 @@
 ## 构建、测试与开发命令
 
 - `./scripts/qa.sh`：运行完整质量门禁，包含 JSON 校验、文档一致性、A/B 配置检查、评分冒烟和单元测试。
+- `npx skills add tielei60/superpowers-openspec -g -y`：一键全局安装本 skill 到所有支持的 agent（Claude Code、OpenCode、Cursor 等），安装到 `~/.agents/skills/` 并为各 agent 创建 symlink。`openspec` CLI 仍需单独安装：`npm install -g openspec`。
 - `python3 -m unittest discover -s tests -v`：只运行 Python 单元测试。
 - `python3 scripts/abtest_regression.py check`：校验 `evals/evals.json`、`evals/abtest_cases.json` 和提示集是否一致。
 - `python3 scripts/abtest_regression.py sync`：重新生成 `.abtest/with_skill/questions.json` 和 `.abtest/without_skill/questions.json`。

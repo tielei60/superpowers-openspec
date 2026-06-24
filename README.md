@@ -32,6 +32,26 @@
 - 单点技术修复或局部性能优化，影响范围明确且无需新增规范
 - 用户只要求快速定位问题或直接给出修复建议
 
+## 快速安装
+
+一行命令安装到所有支持的 agent（Claude Code、OpenCode、Cursor、Codex 等）：
+
+```bash
+npx skills add tielei60/superpowers-openspec -g -y
+```
+
+`npx skills` 会自动完成：
+- 全局安装 `superpowers-openspec` skill 到 `~/.agents/skills/superpowers-openspec/`
+- 为检测到的 agent 创建 symlink 或写入配置（Claude Code、OpenCode、Cursor 等）
+- 后续更新：`npx skills update superpowers-openspec -g`
+- 移除：`npx skills remove superpowers-openspec -g -y`
+
+`openspec` CLI 仍需单独安装（如未安装）：
+
+```bash
+npm install -g openspec
+```
+
 ## 快速使用
 
 如果环境支持 skill 命令方式，先进入：
@@ -44,8 +64,8 @@
 
 | 场景 | 建议入口 |
 | --- | --- |
-| 需求零散，需要先探索 | `/opsx:explore` |
-| 需求清晰，直接进入规划 | `/opsx:propose` |
+| 输入零散、需收敛 | `/opsx:explore` |
+| 输入完整、边界清晰 | `/opsx:propose` |
 | 希望分步生成产物 | `/opsx:new` + `/opsx:continue` |
 | 希望一次生成全部规划产物 | `/opsx:ff` |
 | 规范已确认，开始实现 | `/opsx:apply` |
@@ -77,7 +97,7 @@ docs/solutions/<主题>.md
 
 - 还处于方案、规范、计划阶段时，不应直接进入 `/opsx:apply`
 - 如果假设、依赖、迁移、兼容性或验收口径仍未明确，优先 `/opsx:explore`，或使用 `/opsx:new` + `/opsx:continue` 分步补齐
-- 如果 change 来源于一个或多个方案文档，来源关系写入 `proposal.md`，不要新增 `sources.md` 或 `source-docs.md`
+- 如果 change 来源于方案文档，来源关系写入 `proposal.md` 的“来源方案文档”章节，不新增独立来源文件（规则见 `SKILL.md`）
 
 ### 表达完整性门禁
 

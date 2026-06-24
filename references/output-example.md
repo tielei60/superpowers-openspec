@@ -2,7 +2,7 @@
 
 本文件只关注一件事：`superpowers-openspec` 的响应应该长什么样。
 
-命令选择本身见 `references/intent-to-openspec-mapping.md`，完整方案文档先行流程见 `references/planning-workflow.md`。这里不重复讲整套路由规则，只展示合格输出的最小结构和代表性示例。
+合格输出必须使用人类易读语义；命令选择见 `references/intent-to-openspec-mapping.md`，完整方案文档先行流程见 `references/planning-workflow.md`。这里只展示合格输出的最小结构和代表性示例。
 
 ## 标准输出骨架
 
@@ -17,8 +17,6 @@
 - 假设、依赖、迁移、兼容性或验收口径等未决项
 - 应补充的 Mermaid 图或 ASCII 文本布局图
 - `proposal.md` 中的”来源方案文档”关系
-
-可读性要求：文档需使用人类易读语义，避免 AI 式套话。术语需解释，先说结论，对比枚举优先用表格，避免内部缩写和未解释代号。
 
 ## 示例一：输入零散，优先 `/opsx:explore`
 
@@ -103,12 +101,10 @@
 
 **确认后的来源关系：**
 
-`proposal.md` 必须包含“来源方案文档”章节，例如：
+`proposal.md` 必须包含“来源方案文档”章节（完整格式见 `references/spec-template.md`），最小示例：
 
 ```md
 ## 来源方案文档
-
-本变更基于以下已确认方案文档生成：
 
 - `docs/solutions/<主题>.md`
 ```

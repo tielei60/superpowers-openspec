@@ -22,8 +22,8 @@ openspec/
 ## 目录语义
 
 - `openspec/specs/`
-  - 当前事实规范
-  - 表示系统当前已经成立或应被视为真相的行为定义
+  - 当前生效的规范
+  - 表示系统当前应遵守的行为定义
 
 - `openspec/changes/<change-name>/`
   - 单次变更工作区

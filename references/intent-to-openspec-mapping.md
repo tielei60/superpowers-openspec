@@ -218,7 +218,7 @@
 
 - `docs/solutions/*.md` 不是 OpenSpec 官方 artifact
 - 它是便于用户评审的上游方案来源
-- 不要新增 `sources.md` 或 `source-docs.md`
+- 来源关系写入 `proposal.md`，不新增独立来源文件（规则见 `SKILL.md`）
 
 ### 11. 用户基于多个方案文档生成一个 OpenSpec change
 
@@ -233,16 +233,7 @@
 - 在 `proposal.md` 中列出全部来源方案文档
 - 后续再生成或更新 `spec.md`、`design.md` 和 `tasks.md`
 
-`proposal.md` 示例：
-
-```md
-## 来源方案文档
-
-本变更基于以下已确认方案文档生成：
-
-- `docs/solutions/方案一.md`
-- `docs/solutions/方案二.md`
-```
+`proposal.md` 示例格式见 `references/spec-template.md` 与 `references/planning-workflow.md` 的“来源方案文档”章节；多方案来源时全部列出，不新增独立来源文件。
 
 ### 12. 用户明确表示复杂关系单靠文字讲不清，或主动要求补图
 
@@ -269,7 +260,7 @@
 说明原则：
 
 - 图示是 `design.md` 或相关设计说明里的表达方式
-- 如果输出 Mermaid 图，最后要做一次自检，确认没有明显语法错误再交付
+- 如果输出 Mermaid 图，交付前需自检（规则见 `SKILL.md`）
 - 不是本 skill 新定义的独立官方 artifact
 - 不要把 Mermaid 三图重新写成固定强制独立文件
 
@@ -303,12 +294,7 @@
 
 ## 文档可读性要求
 
-文档应使用人类易读语义，避免 AI 式套话。
-
-- 术语首次出现需解释
-- 优先短句，先说结论
-- 对比、枚举、状态映射优先用表格
-- 避免内部缩写和未解释代号
+文档可读性与行为描述写法见 `SKILL.md` 的"文档可读性要求"和"行为描述写法"两节；默认工作语言必须中文。
 
 ## 典型反例
 

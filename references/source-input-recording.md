@@ -31,7 +31,7 @@
 - 原始输入摘要
 - 关键原文摘录
 - 需求来源说明
-- 已确认事实
+- 已确认的决策与约束
 - 尚未确认但需要保留的上下文
 
 ### `openspec/changes/<change-name>/transcript.md`
