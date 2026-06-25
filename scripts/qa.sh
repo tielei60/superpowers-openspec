@@ -342,6 +342,7 @@ checks = {
     "SKILL.md 含 proposal 来源引用": "来源方案文档" in skill and "proposal.md" in skill,
     "SKILL.md 含可选自检询问": "自我闭环验证" in skill and "询问用户" in skill and "不是强制门禁" in skill,
     "SKILL.md 含业务化表达要求": "业务化表达要求" in skill and "先讲业务场景，再讲系统处理，最后讲技术支撑" in skill,
+    "SKILL.md 含字段与唯一性业务语义要求": "表名、字段名、枚举、接口字段" in skill and "稳定、非空、不可变的业务字段或字段组合" in skill,
     "README.md 标明 quickstart 定位": "README.md` 只保留快速使用说明" in readme or "README 只保留快速使用说明" in readme,
     "README.md 含使用说明": "docs/solutions/" in readme and "来源方案文档" in readme and "快速使用" in readme,
     "README.md 含可选自检说明": "自我闭环验证由用户决定" in readme and "不是强制步骤" in readme,
@@ -356,6 +357,7 @@ checks = {
     "spec-template 含来源引用": "来源方案文档" in template and "docs/solutions/<主题>.md" in template,
     "spec-checklist 含同步检查": "是否检查并同步另一侧" in checklist,
     "spec-checklist 含可选自检检查": "是否询问用户是否需要方案文档自我闭环验证" in checklist and "强制步骤" in checklist,
+    "spec-checklist 含字段与唯一性检查": "表名、字段名、枚举、接口字段" in checklist and "unique_key" in checklist and "业务字段或字段组合" in checklist,
     "source-input 区分 transcript 与方案文档": "docs/solutions/*.md" in source and "默认不保存完整对话过程" in source,
 }
 
@@ -392,6 +394,7 @@ checks = {
     "SKILL.md 强调文档正文必须中文": "文档内容本身也必须使用中文" in skill and "proposal.md" in skill and "design.md" in skill,
     "SKILL.md 含可读性要求": "人类易读语义" in skill and "术语首次出现需解释" in skill,
     "SKILL.md 含业务化表达要求": "业务化表达要求" in skill and "技术词不是禁用词" in skill and "通过写法规则约束" in skill,
+    "SKILL.md 含实现词业务解释要求": "DTO、MQ、Job、状态机、唯一键、缓存、锁、回调" in skill and "解决的业务问题" in skill,
 }
 
 fail = False
@@ -427,6 +430,7 @@ checks = {
     "SKILL.md 含业务化表达要求": "业务化表达要求" in open("SKILL.md").read(),
     "spec-template.md 含可读性原则": "文档可读性原则" in open("references/spec-template.md").read(),
     "spec-template.md 含业务化表达原则": "业务化表达原则" in open("references/spec-template.md").read(),
+    "spec-template.md 含数据设计表达原则": "数据设计表达原则" in open("references/spec-template.md").read() and "唯一索引" in open("references/spec-template.md").read(),
     "spec-checklist.md 含可读性检查": "## 可读性检查" in open("references/spec-checklist.md").read(),
     "spec-checklist.md 含业务化表达检查": "业务系统设计文档" in open("references/spec-checklist.md").read(),
     "planning-workflow.md 含可读性要求": "可读性要求" in open("references/planning-workflow.md").read(),

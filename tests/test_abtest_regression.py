@@ -36,7 +36,7 @@ class AbtestRegressionCliTests(unittest.TestCase):
             payload = json.loads(report_path.read_text(encoding="utf-8"))
             self.assertEqual(payload["command"], "check")
             self.assertEqual(payload["summary"]["failures"], 0)
-            self.assertEqual(payload["summary"]["cases"], 34)
+            self.assertEqual(payload["summary"]["cases"], 35)
             self.assertTrue(any(item["scope"] == "coverage" for item in payload["results"]))
 
     def test_check_report_detects_prompt_drift_from_custom_cases_path(self) -> None:
@@ -134,7 +134,7 @@ class AbtestRegressionCliTests(unittest.TestCase):
             payload = json.loads(report_path.read_text(encoding="utf-8"))
             self.assertEqual(payload["command"], "sync")
             self.assertEqual(payload["summary"]["bundles_written"], 2)
-            self.assertEqual(payload["summary"]["cases"], 34)
+            self.assertEqual(payload["summary"]["cases"], 35)
 
     def test_score_report_writes_summary_for_tracked_fixture_dir(self) -> None:
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -352,6 +352,34 @@ class AbtestRegressionCliTests(unittest.TestCase):
             "通过写法规则约束",
             "示例，不是穷举",
             "先解释业务含义和用户可见结果",
+        ]
+        for phrase in required_phrases:
+            self.assertIn(phrase, content)
+
+    def test_skill_requires_business_semantics_for_fields_and_unique_keys(self) -> None:
+        content = (
+            (ROOT / "SKILL.md").read_text(encoding="utf-8")
+            + "\n"
+            + (ROOT / "references/spec-template.md").read_text(encoding="utf-8")
+            + "\n"
+            + (ROOT / "references/spec-checklist.md").read_text(encoding="utf-8")
+        )
+
+        required_phrases = [
+            "DTO、MQ、Job、状态机、唯一键、缓存、锁、回调",
+            "说明它解决的业务问题",
+            "表名、字段名、枚举、接口字段",
+            "先说明业务语义",
+            "info、type、status、source、object_id",
+            "稳定、非空、不可变的业务字段或字段组合",
+            "唯一索引",
+            "不默认新增单独",
+            "unique_key",
+            "request_key",
+            "idempotent",
+            "idempotency",
+            "业务字段不稳定、可空、会变更、无法覆盖一次请求",
+            "请求级去重",
         ]
         for phrase in required_phrases:
             self.assertIn(phrase, content)

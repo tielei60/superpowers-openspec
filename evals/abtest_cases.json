@@ -1253,6 +1253,50 @@
           "docs/solutions/"
         ]
       }
+    },
+    {
+      "id": "q35",
+      "eval_id": 35,
+      "tags": [
+        "数据设计类",
+        "业务化表达类",
+        "唯一性类",
+        "防返工类"
+      ],
+      "prompt": "帮我写一个订单导入和回调处理的方案文档。里面可能会涉及 DTO、MQ、Job、状态机、唯一键、缓存、锁、回调，也需要设计表字段和去重规则。",
+      "with_skill": {
+        "expected": "应进入方案文档先行流程；先讲业务场景和业务结果，再解释 DTO/MQ/Job/状态机/唯一键等实现词解决的业务问题；字段和枚举先说明业务语义；唯一性优先业务字段组合唯一索引，不默认新增请求唯一键。",
+        "not_expected": "不应只堆实现词；不应默认新增 unique_key/request_key/idempotency；不应把泛字段名当禁用词。",
+        "must_include": [
+          "docs/solutions/",
+          "业务场景|业务动作|业务结果",
+          "DTO|MQ|Job|状态机|唯一键|缓存|锁|回调",
+          "解决.*业务问题|业务问题",
+          "表名|字段名|枚举|接口字段",
+          "业务语义",
+          "info|type|status|source|object_id",
+          "稳定.*非空.*不可变|稳定、非空、不可变",
+          "业务字段|字段组合",
+          "唯一索引",
+          "不默认新增|默认新增",
+          "unique_key|request_key|idempotent|idempotency",
+          "请求级去重|请求唯一键"
+        ],
+        "must_exclude": [
+          "直接新增 request_key",
+          "默认新增 request_key",
+          "默认新增 unique_key",
+          "默认新增 idempotency",
+          "禁止使用 info",
+          "禁止使用 status"
+        ]
+      },
+      "without_skill": {
+        "expected": "更可能直接从技术实现展开，不会稳定约束业务字段组合唯一索引或请求唯一键例外条件。",
+        "must_exclude": [
+          "docs/solutions/"
+        ]
+      }
     }
   ]
 }
