@@ -194,12 +194,14 @@ if not m:
 
 description = " ".join(m.group(1).split())
 checks = {
-    "description 以 适用于 开头": description.startswith("适用于"),
-    "description 包含触发条件": any(k in description for k in ["新功能", "规则变更", "接口", "交互", "数据模型", "状态", "角色流转", "OpenSpec 规范阶段"]),
-    "description 包含功能改造优化触发": any(k in description for k in ["功能改造", "功能优化", "流程优化", "模块重构", "能力升级"]),
-    "description 包含方案文档触发": any(k in description for k in ["完整 markdown 方案", "完整方案文档", "方案文档", "docs/solutions"]),
-    "description 包含混合意图触发": any(k in description for k in ["方案", "计划", "设计/方案/计划", "实现/开发/落地"]),
-    "description 不混入命令流程或旧定位": "/opsx:" not in description and "职责" not in description and "桥接" not in description,
+    "description 使用中文触发说明": description.startswith("用于："),
+    "description 不超过 500 字符": len(description) <= 500,
+    "description 只描述触发条件": all(k not in description for k in ["/opsx:", "docs/solutions", "确认后", "生成", "职责", "桥接"]),
+    "description 包含需求分析/spec/设计触发": all(k in description for k in ["分析需求", "写 spec", "详细设计"]),
+    "description 包含方案文档/计划触发": all(k in description for k in ["方案文档", "制定计划"]),
+    "description 包含功能和接口变化触发": all(k in description for k in ["功能变更", "接口变更"]),
+    "description 包含数据/状态/角色/模块边界触发": all(k in description for k in ["数据模型", "状态流转", "角色流程", "模块边界"]),
+    "description 包含混合意图触发": "设计与实现混合" in description,
     "正文保留停止条件节": "## 停止条件" in content,
     "正文包含混合意图处理": any(k in content for k in ["帮我设计并实现短信发送功能", "混合意图优先级", "带实现诉求的规范阶段入口"]),
     "正文包含方案规范计划定位": all(k in content for k in ["面向 OpenSpec 的方案、规范与计划工作流", "方案", "计划", "规范"]),
@@ -336,13 +338,17 @@ checks = {
     "planning-workflow reference 存在": workflow_path.exists(),
     "SKILL.md 含工作流中文定位": "面向 OpenSpec 的方案、规范与计划工作流" in skill,
     "SKILL.md 含 docs/solutions 门禁": "docs/solutions/" in skill and "用户确认" in skill and "不应创建或更新 OpenSpec change" in skill,
+    "SKILL.md 含方案文档优先级": "先写方案文档，确认后再进 OpenSpec" in skill and "优先级高于" in skill,
     "SKILL.md 含 proposal 来源引用": "来源方案文档" in skill and "proposal.md" in skill,
     "SKILL.md 含可选自检询问": "自我闭环验证" in skill and "询问用户" in skill and "不是强制门禁" in skill,
+    "SKILL.md 含业务化表达要求": "业务化表达要求" in skill and "先讲业务场景，再讲系统处理，最后讲技术支撑" in skill,
     "README.md 标明 quickstart 定位": "README.md` 只保留快速使用说明" in readme or "README 只保留快速使用说明" in readme,
     "README.md 含使用说明": "docs/solutions/" in readme and "来源方案文档" in readme and "快速使用" in readme,
     "README.md 含可选自检说明": "自我闭环验证由用户决定" in readme and "不是强制步骤" in readme,
+    "README.md 含业务化表达说明": "业务系统设计文档" in readme and "技术词不是禁用词" in readme,
     "README.md 含参考分工": "文档分工" in readme and "references/planning-workflow.md" in readme and "references/output-example.md" in readme,
     "reference 含中文模板": "# 方案：<标题>" in workflow and "必须使用中文" in workflow,
+    "reference 含业务化表达模板": "解决的业务问题" in workflow and "技术支撑" in workflow,
     "reference 含可选自检说明": "自我闭环验证不是强制门禁" in workflow and "由用户决定" in workflow,
     "命令示例含可选自检说明": "询问是否需要先做方案文档自我闭环验证" in commands and "不是强制步骤" in commands,
     "输出示例含可选自检说明": "询问是否需要方案文档自我闭环验证" in output and "不是强制步骤" in output,
@@ -381,10 +387,11 @@ files = [
 
 skill = (root / "SKILL.md").read_text()
 checks = {
-    "SKILL.md 含语言要求节": "## 语言要求" in skill and "## 文档可读性要求" in skill,
+    "SKILL.md 含产物质量要求节": "## 产物质量要求" in skill,
     "SKILL.md 强调必须中文": "必须中文" in skill and "只有当用户明确要求其他语言时" in skill,
     "SKILL.md 强调文档正文必须中文": "文档内容本身也必须使用中文" in skill and "proposal.md" in skill and "design.md" in skill,
     "SKILL.md 含可读性要求": "人类易读语义" in skill and "术语首次出现需解释" in skill,
+    "SKILL.md 含业务化表达要求": "业务化表达要求" in skill and "技术词不是禁用词" in skill and "通过写法规则约束" in skill,
 }
 
 fail = False
@@ -416,13 +423,20 @@ python3 - <<'EOF'
 import sys
 
 checks = {
-    "SKILL.md 含文档可读性要求": "## 文档可读性要求" in open("SKILL.md").read(),
+    "SKILL.md 含文档可读性要求": "文档可读性要求" in open("SKILL.md").read(),
+    "SKILL.md 含业务化表达要求": "业务化表达要求" in open("SKILL.md").read(),
     "spec-template.md 含可读性原则": "文档可读性原则" in open("references/spec-template.md").read(),
+    "spec-template.md 含业务化表达原则": "业务化表达原则" in open("references/spec-template.md").read(),
     "spec-checklist.md 含可读性检查": "## 可读性检查" in open("references/spec-checklist.md").read(),
+    "spec-checklist.md 含业务化表达检查": "业务系统设计文档" in open("references/spec-checklist.md").read(),
     "planning-workflow.md 含可读性要求": "可读性要求" in open("references/planning-workflow.md").read(),
+    "planning-workflow.md 含业务化表达要求": "业务场景 -> 系统处理 -> 技术支撑" in open("references/planning-workflow.md").read(),
     "intent-to-openspec-mapping.md 含可读性要求": "## 文档可读性要求" in open("references/intent-to-openspec-mapping.md").read(),
+    "intent-to-openspec-mapping.md 含业务化表达要求": "业务系统设计文档" in open("references/intent-to-openspec-mapping.md").read(),
     "output-example.md 含可读性说明": "人类易读语义" in open("references/output-example.md").read(),
+    "output-example.md 含业务化表达说明": "先讲业务场景，再讲系统处理，最后讲技术支撑" in open("references/output-example.md").read(),
     "README.md 含可读性门禁": "## 文档可读性门禁" in open("README.md").read(),
+    "README.md 含业务化表达门禁": "业务系统设计文档" in open("README.md").read(),
 }
 
 fail = False
