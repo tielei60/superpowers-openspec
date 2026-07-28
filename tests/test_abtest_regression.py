@@ -36,7 +36,7 @@ class AbtestRegressionCliTests(unittest.TestCase):
             payload = json.loads(report_path.read_text(encoding="utf-8"))
             self.assertEqual(payload["command"], "check")
             self.assertEqual(payload["summary"]["failures"], 0)
-            self.assertEqual(payload["summary"]["cases"], 35)
+            self.assertEqual(payload["summary"]["cases"], 36)
             self.assertTrue(any(item["scope"] == "coverage" for item in payload["results"]))
 
     def test_check_report_detects_prompt_drift_from_custom_cases_path(self) -> None:
@@ -134,7 +134,7 @@ class AbtestRegressionCliTests(unittest.TestCase):
             payload = json.loads(report_path.read_text(encoding="utf-8"))
             self.assertEqual(payload["command"], "sync")
             self.assertEqual(payload["summary"]["bundles_written"], 2)
-            self.assertEqual(payload["summary"]["cases"], 35)
+            self.assertEqual(payload["summary"]["cases"], 36)
 
     def test_score_report_writes_summary_for_tracked_fixture_dir(self) -> None:
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -403,6 +403,29 @@ class AbtestRegressionCliTests(unittest.TestCase):
         self.assertIn("功能变更", description)
         self.assertIn("数据模型", description)
         self.assertIn("设计与实现混合", description)
+        self.assertRegex(description, r"OpenSpec|OPSX")
+        self.assertIn("对外行为", description)
+
+    def test_skill_executes_artifact_requests_instead_of_only_routing(self) -> None:
+        content = (ROOT / "SKILL.md").read_text(encoding="utf-8")
+
+        required_phrases = [
+            "要求编写、更新或转换产物",
+            "实际创建或更新",
+            "只询问路径、阶段或命令",
+            "只返回路由判断",
+        ]
+        for phrase in required_phrases:
+            self.assertIn(phrase, content)
+
+    def test_openai_interface_metadata_matches_skill(self) -> None:
+        metadata_path = ROOT / "agents" / "openai.yaml"
+
+        self.assertTrue(metadata_path.exists())
+        content = metadata_path.read_text(encoding="utf-8")
+        self.assertIn('display_name: "Superpowers OpenSpec"', content)
+        self.assertRegex(content, r'short_description: "[^"\n]{25,64}"')
+        self.assertIn("$superpowers-openspec", content)
 
     def test_skill_has_quick_execution_path(self) -> None:
         content = (ROOT / "SKILL.md").read_text(encoding="utf-8")

@@ -202,6 +202,8 @@ checks = {
     "description 包含功能和接口变化触发": all(k in description for k in ["功能变更", "接口变更"]),
     "description 包含数据/状态/角色/模块边界触发": all(k in description for k in ["数据模型", "状态流转", "角色流程", "模块边界"]),
     "description 包含混合意图触发": "设计与实现混合" in description,
+    "description 包含 OpenSpec/OPSX 场景": "OpenSpec" in description and "OPSX" in description,
+    "description 以对外行为变化收窄触发": "对外行为" in description,
     "正文保留停止条件节": "## 停止条件" in content,
     "正文包含混合意图处理": any(k in content for k in ["帮我设计并实现短信发送功能", "混合意图优先级", "带实现诉求的规范阶段入口"]),
     "正文包含方案规范计划定位": all(k in content for k in ["面向 OpenSpec 的方案、规范与计划工作流", "方案", "计划", "规范"]),
@@ -343,6 +345,7 @@ checks = {
     "SKILL.md 含可选自检询问": "自我闭环验证" in skill and "询问用户" in skill and "不是强制门禁" in skill,
     "SKILL.md 含业务化表达要求": "业务化表达要求" in skill and "先讲业务场景，再讲系统处理，最后讲技术支撑" in skill,
     "SKILL.md 含字段与唯一性业务语义要求": "表名、字段名、枚举、接口字段" in skill and "稳定、非空、不可变的业务字段或字段组合" in skill,
+    "SKILL.md 区分执行请求与路由询问": all(x in skill for x in ["要求编写、更新或转换产物", "实际创建或更新", "只询问路径、阶段或命令", "只返回路由判断"]),
     "README.md 标明 quickstart 定位": "README.md` 只保留快速使用说明" in readme or "README 只保留快速使用说明" in readme,
     "README.md 含使用说明": "docs/solutions/" in readme and "来源方案文档" in readme and "快速使用" in readme,
     "README.md 含可选自检说明": "自我闭环验证由用户决定" in readme and "不是强制步骤" in readme,
@@ -525,6 +528,37 @@ EOF
 else
   echo "  SKIP: .abtest/ 不存在（本地可选目录）"
 fi
+
+# ─────────────────────────────────────────────
+# [18] Codex agent interface metadata
+# ─────────────────────────────────────────────
+section "[18] Agent interface metadata"
+python3 - <<'EOF'
+import pathlib, sys
+
+path = pathlib.Path("agents/openai.yaml")
+if not path.is_file():
+    print("  FAIL: agents/openai.yaml 不存在")
+    sys.exit(1)
+
+content = path.read_text()
+checks = {
+    "display_name 与 skill 一致": 'display_name: "Superpowers OpenSpec"' in content,
+    "short_description 已提供": 'short_description: "' in content,
+    "default_prompt 显式调用 skill": "$superpowers-openspec" in content,
+}
+
+fail = False
+for desc, result in checks.items():
+    if result:
+        print(f"  PASS: {desc}")
+    else:
+        print(f"  FAIL: {desc}")
+        fail = True
+
+sys.exit(1 if fail else 0)
+EOF
+if [ $? -ne 0 ]; then FAIL=$((FAIL + 1)); else PASS=$((PASS + 1)); fi
 
 # ─────────────────────────────────────────────
 # 汇总

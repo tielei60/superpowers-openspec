@@ -377,6 +377,18 @@
       "expected_output": "应进入方案文档先行流程，先生成 docs/solutions/<主题>.md；文档先讲业务场景、参与方、业务动作、规则变化和业务结果，再讲 DTO、MQ、Job、状态机、唯一键、缓存、锁、回调等技术落点，并说明这些技术词解决的业务问题。表名、字段名、枚举、接口字段应先说明业务语义；info、type、status、source、object_id 等泛字段不禁止，但需要说明当前业务含义、取值来源和影响流程。唯一性应优先使用稳定、非空、不可变的业务字段或字段组合并建立唯一索引；不默认新增 unique_key / request_key / idempotent / idempotency 字段。只有业务字段不稳定、可空、会变更、无法覆盖一次请求，或入口确实需要请求级去重时，才设计单独请求唯一键字段，并说明业务字段或组合唯一索引为什么不适用。",
       "not_expected": "不应直接堆 DTO、MQ、Job、状态机、唯一键、缓存、锁、回调等实现词而不解释业务问题；不应把 info/type/status/source/object_id 当成禁用词；不应默认新增 unique_key/request_key/idempotency 等请求唯一键字段；不应跳过业务字段组合唯一索引的判断。",
       "files": []
+    },
+    {
+      "id": 36,
+      "tags": [
+        "误触发类",
+        "边界类",
+        "skill维护类"
+      ],
+      "prompt": "优化当前 skill 项目的触发描述和回归测试，保持对外行为不变，不需要方案。",
+      "expected_output": "不应强制进入 superpowers-openspec；应识别这是 skill 项目内部维护，且用户明确说明对外行为不变、不需要方案，可按普通文档与测试维护任务处理。",
+      "not_expected": "不应因为出现“优化”或“项目”就建议 /opsx:explore、/opsx:propose、docs/solutions/*.md 或创建 OpenSpec change。",
+      "files": []
     }
   ]
 }

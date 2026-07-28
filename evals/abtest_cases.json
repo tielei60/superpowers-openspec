@@ -1297,6 +1297,36 @@
           "docs/solutions/"
         ]
       }
+    },
+    {
+      "id": "q36",
+      "eval_id": 36,
+      "tags": [
+        "误触发类",
+        "边界类",
+        "skill维护类"
+      ],
+      "prompt": "优化当前 skill 项目的触发描述和回归测试，保持对外行为不变，不需要方案。",
+      "with_skill": {
+        "expected": "不应进入 OpenSpec；应按普通 skill 文档与测试维护任务处理。",
+        "not_expected": "不应因为出现优化或项目就升级到规范阶段。",
+        "must_include": [
+          "普通|直接处理|无需.*OpenSpec|不需要.*OpenSpec"
+        ],
+        "must_exclude": [
+          "/opsx:explore",
+          "/opsx:propose",
+          "docs/solutions/",
+          "创建 OpenSpec change"
+        ]
+      },
+      "without_skill": {
+        "expected": "应直接维护 skill 文档与回归测试。",
+        "must_exclude": [
+          "/opsx:",
+          "docs/solutions/"
+        ]
+      }
     }
   ]
 }
